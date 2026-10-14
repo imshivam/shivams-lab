@@ -6,6 +6,8 @@ window.LAB_UPDATED = "2026-10-14";
 window.PROJECTS = [
   {
     id: "stay-connected",
+    tint: ["#F7F0DF", "#E8DABB"],
+    tintDark: ["#3B3426", "#2A251B"],
     name: "Stay Connected",
     kind: "app",
     platform: "iPhone app",
@@ -31,6 +33,8 @@ window.PROJECTS = [
   },
   {
     id: "joint-finances",
+    tint: ["#E6F7EC", "#C2EAD2"],
+    tintDark: ["#1F3A2B", "#16291F"],
     name: "Joint Finances",
     kind: "app",
     platform: "iPhone and Android app",
@@ -57,6 +61,8 @@ window.PROJECTS = [
   },
   {
     id: "paramount-warner",
+    tint: ["#2E2D25", "#161613"],
+    tintDark: ["#2E2D25", "#161613"],
     name: "Paramount Buys Warner Bros.",
     kind: "artifact",
     platform: "Claude artifact",
@@ -76,6 +82,8 @@ window.PROJECTS = [
   },
   {
     id: "empires",
+    tint: ["#2A2A31", "#0E0E11"],
+    tintDark: ["#2A2A31", "#0E0E11"],
     name: "Empires of History",
     kind: "web",
     platform: "Website on your Mac",
@@ -97,6 +105,8 @@ window.PROJECTS = [
   },
   {
     id: "brushwork",
+    tint: ["#F6EFE3", "#E3D5BD"],
+    tintDark: ["#3A342A", "#29241C"],
     name: "Brushwork",
     kind: "web",
     platform: "Website",
@@ -121,6 +131,8 @@ window.PROJECTS = [
   },
   {
     id: "communities-london",
+    tint: ["#EEF3FB", "#F7E6EF"],
+    tintDark: ["#1D2638", "#2C1C27"],
     name: "Communities of London",
     kind: "artifact",
     platform: "Claude artifact",
@@ -141,6 +153,8 @@ window.PROJECTS = [
   },
   {
     id: "portals",
+    tint: ["#2A281E", "#100F0B"],
+    tintDark: ["#2A281E", "#100F0B"],
     name: "Portals",
     kind: "artifact",
     platform: "Claude artifact",
@@ -161,6 +175,8 @@ window.PROJECTS = [
   },
   {
     id: "festival-checker",
+    tint: ["#13203A", "#070A12"],
+    tintDark: ["#13203A", "#070A12"],
     name: "Festival Checker",
     kind: "web",
     platform: "Website",
@@ -183,6 +199,8 @@ window.PROJECTS = [
   },
   {
     id: "menulens",
+    tint: ["#FFE6CF", "#FFC9B4"],
+    tintDark: ["#43281C", "#2F1B14"],
     name: "MenuLens",
     kind: "app",
     platform: "iPhone app",

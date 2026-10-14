@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Version History – Shivam’s Lab</title>
+  <meta name="description" content="Every version of Shivam’s Lab: what changed, why, and what it looked like.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2F2F7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .back {
+      position: absolute; left: calc(var(--margin) + var(--safe-left) - 8px); top: 4px;
+      display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 12px 0 8px; border-radius: 999px;
+      color: var(--tint-text); text-decoration: none; font-weight: 500; pointer-events: auto;
+    }
+    .back svg { width: 11px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    @media (hover: hover) { .back:hover { background: var(--fill-3); } }
+    .intro { margin-top: 4px; color: var(--label-2); font-size: 0.941rem; line-height: 1.3125; max-width: 60ch; }
+    .version { margin-top: 40px; max-width: 860px; }
+    .version-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0 4px; }
+    .version-head h2 { font-size: 1.647rem; line-height: 1.214; letter-spacing: 0.014em; font-weight: 700; }
+    .version-head time { font-size: 0.882rem; color: var(--label-2); }
+    .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; background: var(--tint); color: #fff; font-size: 0.706rem; font-weight: 600; letter-spacing: 0; vertical-align: 3px; }
+    .version h3 { margin: 6px 4px 0; font-size: 1.176rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.023em; }
+    .version .summary { margin: 6px 4px 0; line-height: 1.41; }
+    .version .why { margin: 14px 4px 0; padding: 14px 16px; border-radius: 18px; background: var(--bg-2); color: var(--label-2); font-size: 0.941rem; line-height: 1.38; }
+    .version .why b { color: var(--label); font-weight: 600; }
+    .changes { margin: 16px 0 0; padding: 0; list-style: none; border-radius: 22px; background: var(--bg-2); overflow: hidden; box-shadow: var(--shadow-card); }
+    .changes li { position: relative; display: flex; gap: 12px; padding: 12px 16px; line-height: 1.35; }
+    .changes li + li::before { content: ""; position: absolute; top: 0; left: 46px; right: 0; height: 0.5px; background: var(--separator); }
+    .changes svg { flex: none; width: 18px; height: 18px; margin-top: 1px; fill: none; stroke: var(--tint); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .report { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin: 8px 4px 0; color: var(--tint-text); text-decoration: none; font-weight: 500; }
+    .report svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    @media (hover: hover) { .report:hover { text-decoration: underline; } }
+    .shots {
+      display: flex; gap: 12px; margin: 16px calc(-1 * (var(--margin) + var(--safe-left))) 0; padding: 2px calc(var(--margin) + var(--safe-left)) 10px;
+      overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; list-style: none;
+    }
+    .shots::-webkit-scrollbar { display: none; }
+    .shots li { flex: none; scroll-snap-align: start; }
+    .shots a { display: block; border-radius: 18px; overflow: hidden; box-shadow: 0 0 0 0.5px var(--separator), var(--shadow-card); background: var(--bg-3); }
+    .shots img { display: block; height: 340px; width: auto; }
+    .shots .tablet img { height: 340px; }
+    .shots .wide img { height: 340px; }
+    @media (max-width: 500px) { .shots img, .shots .tablet img, .shots .wide img { height: 300px; } }
+    .shots a:focus-visible { outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to versions</a>
+  <header class="toolbar" id="toolbar">
+    <div class="toolbar-inner">
+      <a class="back" href="./"><svg viewBox="0 0 11 18" aria-hidden="true"><path d="M9 2 2 9l7 7"/></svg>Lab</a>
+      <span class="toolbar-title" aria-hidden="true">Version History</span>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <div class="page">
+      <h1 class="large-title" id="largeTitle">Version History</h1>
+      <p class="intro">What changed in each version of the Lab, why, and what it looked like. Newest first. Tap a screenshot to see it full size.</p>
+      <div id="versions"></div>
+      <footer class="footer"><p><a href="./">Back to the Lab</a></p></footer>
+    </div>
+  </main>
+  <script src="changelog.js"></script>
+  <script>
+    (function () {
+      const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+      const date = (iso) => new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date(iso + "T12:00:00"));
+      const CHECK = '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5 7.2 13 14.5 5"/></svg>';
+      const ARROW = '<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M4.5 10.5 10.5 4.5M5.5 4.5h5v5"/></svg>';
+      document.getElementById("versions").innerHTML = window.VERSIONS.map((v, i) => `
+        <section class="version" id="v${esc(v.version)}" aria-labelledby="h${i}">
+          <div class="version-head"><h2 id="h${i}">Version ${esc(v.version)} ${i === 0 ? '<span class="badge">Current</span>' : ""}</h2>
+            <time datetime="${esc(v.date)}">${date(v.date)}</time></div>
+          <h3>${esc(v.title)}</h3>
+          <p class="summary">${esc(v.summary)}</p>
+          <ul class="changes">${v.changes.map((c) => `<li>${CHECK}<span>${esc(c)}</span></li>`).join("")}</ul>
+          ${v.why ? `<p class="why"><b>Why.</b> ${esc(v.why)}</p>` : ""}
+          ${v.report ? `<a class="report" href="${esc(v.report.url)}" target="_blank" rel="noopener">${esc(v.report.label)}${ARROW}</a>` : ""}
+          <ul class="shots" aria-label="Screenshots of version ${esc(v.version)}">${v.shots.map((s) =>
+            `<li class="${esc(s.kind)}"><a href="${esc(s.src)}" target="_blank" rel="noopener"><img src="${esc(s.src)}" alt="${esc(s.alt)}" loading="lazy" decoding="async"></a></li>`).join("")}</ul>
+        </section>`).join("");
+      const toolbar = document.getElementById("toolbar");
+      new IntersectionObserver(([e]) => toolbar.classList.toggle("scrolled", !e.isIntersecting), { rootMargin: "-52px 0px 0px 0px" })
+        .observe(document.getElementById("largeTitle"));
+    })();
+  </script>
+</body>
+</html>

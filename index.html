@@ -24,7 +24,7 @@
 
   <header class="toolbar" id="toolbar">
     <div class="toolbar-inner">
-      <span class="toolbar-title" id="toolbarTitle" aria-hidden="true">Shivam’s Lab</span>
+      <span class="toolbar-title" id="toolbarTitle" aria-hidden="true"><span class="toolbar-flask" id="toolbarFlask"></span>Shivam’s Lab</span>
       <div class="search search--top glass" role="search">
         <svg class="search-glyph" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.75"/><path d="M12.8 12.8 17 17"/></svg>
         <label class="visually-hidden" for="searchTop">Search projects</label>
@@ -37,7 +37,7 @@
   <main id="main" tabindex="-1">
     <div class="page">
       <div class="masthead">
-        <span class="lab-mark" id="labMark"></span>
+        <button class="flask" id="flask" type="button" aria-label="Surprise me: open a random project" title="Surprise me"></button>
         <div>
           <h1 class="large-title" id="largeTitle">Shivam’s Lab</h1>
           <p class="masthead-sub" id="summary"></p>
@@ -50,12 +50,7 @@
 
       <p class="visually-hidden" id="resultStatus" aria-live="polite"></p>
 
-      <section class="shelf-section" id="shelfSection" aria-labelledby="shelfTitle">
-        <h2 class="section-title" id="shelfTitle">Latest</h2>
-        <ul class="shelf" id="shelf" role="list"></ul>
-      </section>
-
-      <div class="groups" id="groups"></div>
+      <div id="timeline"></div>
 
       <div class="empty" id="empty" hidden>
         <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="13"/><path d="M31 31l9 9"/></svg>

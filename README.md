@@ -11,4 +11,6 @@ Live: https://imshivam.github.io/shivams-lab/
 3. Pick an icon from `icons.js`, or draw a new one there on the 100 × 100 grid.
 4. Optional: add a screenshot to `assets/shots/` and set `shot`. Only use pictures without personal data, because this page is public.
 
-The design follows Apple's Human Interface Guidelines. See `REVIEW.md` for the review and what changed.
+The design follows Apple's Human Interface Guidelines (see `REVIEW.md`) and research into Apple's most magical motion design (see `MAGIC.md`).
+
+When you change the site, add an entry to `changelog.js`. It feeds the Version History page (`changelog.html`).
