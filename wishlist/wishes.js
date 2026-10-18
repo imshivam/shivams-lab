@@ -2,7 +2,7 @@
 // To add a wish, copy an entry and keep each list in the order you want it shown.
 // id: stable and unique. Later it will key reservations, so don't rename an id once the page is shared.
 // cat: "clothing" | "footwear" | "gadget" | "home" | "accessory". price and was are text, as the shop shows them.
-// Photos come from each product page: run `python3 wishlist/tools/fetch_images.py` after adding a wish.
+// Photos, link checks and prices: GitHub runs wishlist/tools/fetch_images.py monthly and whenever this file changes.
 // image (optional): a photo URL to use when the product page's own preview picture is wrong.
 // gone (optional): true when the shop no longer sells it at this link. The tile then says so and isn't a link.
 // photoFrom (optional): another shop's page for the same product, used only for the photo when the main shop blocks automated visits.

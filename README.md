@@ -19,6 +19,7 @@ When you change the site, add an entry to `changelog.js`. It feeds the Version H
 
 `wishlist/` is a separate page: things I'd love as gifts, at https://imshivam.github.io/shivams-lab/wishlist/
 
-- Wishes and shops live in `wishlist/wishes.js`. Each wish has a stable `id`; don't rename one after the page is shared, because reservations will be keyed on it later.
-- Photos come from each product page. After adding a wish, run `python3 wishlist/tools/fetch_images.py` from the repository root. It saves the page's preview picture to `wishlist/img/` and lists it in `wishlist/images.js`. If a page's picture is wrong, set `image` on that wish to the right photo's URL and run it again with `--force`.
-- It reuses the Lab's `styles.css`, so both pages share one design system.
+- Wishes and shops live in `wishlist/wishes.js`. Each wish has a stable `id`; don't rename one after the page is shared.
+- Photos, link checks and prices are kept up to date by `wishlist/tools/fetch_images.py`, which GitHub Actions runs on the 1st of every month and whenever `wishes.js` changes (`.github/workflows/wishlist-photos.yml`). Each run's summary lists dead links, price changes and photos it couldn't get.
+- If a shop blocks automated visits, set `photoFrom` on the wish to another shop's page for the same product. If a page's photo is wrong, set `image` to the right photo's address.
+- The page has its own copy of the Lab's design system (`wishlist/base.css`), so changes to the Lab's `styles.css` can't break it.

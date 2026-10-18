@@ -11,9 +11,20 @@
   <meta name="apple-mobile-web-app-title" content="Wish List">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="canonical" href="https://imshivam.github.io/shivams-lab/wishlist/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://imshivam.github.io/shivams-lab/wishlist/">
   <meta property="og:title" content="Shivam’s Wish List">
   <meta property="og:description" content="Things Shivam would love, if you’re ever looking for a gift.">
-  <link rel="stylesheet" href="../styles.css">
+  <meta property="og:image" content="https://imshivam.github.io/shivams-lab/wishlist/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Four things from Shivam’s wish list.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shivam’s Wish List">
+  <meta name="twitter:description" content="Things Shivam would love, if you’re ever looking for a gift.">
+  <meta name="twitter:image" content="https://imshivam.github.io/shivams-lab/wishlist/og.jpg">
+  <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="wishlist.css">
 </head>
 <body>
@@ -22,6 +33,15 @@
   <header class="toolbar" id="toolbar">
     <div class="toolbar-inner">
       <span class="toolbar-title" aria-hidden="true"><span class="toolbar-gift" id="toolbarGift"></span>Wish List</span>
+      <div class="toolbar-actions">
+        <div class="menu-wrap">
+          <button class="round glass" id="viewButton" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="viewMenu" aria-label="Layout"></button>
+          <div class="menu glass" id="viewMenu" role="group" aria-label="Layout" hidden></div>
+        </div>
+        <button class="round glass" id="share" type="button" aria-label="Share this wish list">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V2.8M6.6 6 10 2.6 13.4 6M6.5 9H5.2c-.9 0-1.6.7-1.6 1.6v5.6c0 .9.7 1.6 1.6 1.6h9.6c.9 0 1.6-.7 1.6-1.6v-5.6c0-.9-.7-1.6-1.6-1.6h-1.3"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -35,8 +55,10 @@
         </div>
       </div>
 
-      <div class="segmented" role="group" aria-label="Show" id="segmented">
-        <span class="segmented-thumb" aria-hidden="true"></span>
+      <div class="filterbar" id="filterbar">
+        <div class="segmented" role="group" aria-label="Show" id="segmented">
+          <span class="segmented-thumb" aria-hidden="true"></span>
+        </div>
       </div>
 
       <div id="wishes"></div>
@@ -52,7 +74,20 @@
   </main>
 
   <p class="visually-hidden" id="status" aria-live="polite"></p>
+  <div class="toast glass" id="toast" role="status" hidden></div>
 
+  <div class="scrim" id="scrim" hidden></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1" hidden>
+    <div class="sheet-bar" id="grabber">
+      <span class="sheet-grabber" aria-hidden="true"></span>
+      <button class="sheet-close glass" id="sheetClose" type="button" aria-label="Close">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5.5 5.5 9 9m0-9-9 9"/></svg>
+      </button>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+
+  <script src="status.js"></script>
   <script src="images.js"></script>
   <script src="wishes.js"></script>
   <script src="wishlist.js"></script>

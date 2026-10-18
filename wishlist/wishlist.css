@@ -1,19 +1,55 @@
 /* Shivam's Wish List
-   Builds on the Lab's styles.css: the same text styles, system colours, tiles, segmented control and glass.
-   This file adds the category colours, the price tag, the gift and the list of shops. */
+   On top of base.css: product photos, the price tag, the three layouts, the sticky filter,
+   the layout menu, the details sheet, the gift and the list of shops. */
 
-/* ---------- Product photos ----------
-   Shop photos are shot on white or light grey, so the tile is white to match.
-   In Dark Mode it is dimmed a little so it doesn't glow (HIG Dark Mode). */
-.wish .tile-art { --t1: #FFFFFF; --t2: #FFFFFF; --d1: #E6E6EA; --d2: #E6E6EA; }
-.tile-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 6%; box-sizing: border-box; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tile-art img { filter: brightness(0.94); } }
-:root[data-theme="dark"] .tile-art img { filter: brightness(0.94); }
-/* Until a photo has been fetched, the tile shows the brand's name. */
-.no-photo { padding: 0 16px 28px; text-align: center; font-size: 1.176rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.023em; color: rgba(60, 60, 67, 0.76); }
-.wish .tile-art:not(.has-photo) { --t1: #F2F2F7; --t2: #E5E5EA; --d1: #2C2C2E; --d2: #1C1C1E; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .no-photo { color: rgba(235, 235, 245, 0.6); } }
-:root[data-theme="dark"] .no-photo { color: rgba(235, 235, 245, 0.6); }
+/* ---------- Toolbar: layout and share buttons ---------- */
+.toolbar-actions {
+  position: absolute; top: 4px; right: calc(var(--margin) + var(--safe-right) - 4px);
+  display: flex; gap: 8px; pointer-events: auto;
+}
+.round {
+  display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%;
+  color: var(--label); -webkit-tap-highlight-color: transparent;
+}
+.round svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.round:active { transform: scale(0.92); }
+.menu-wrap { position: relative; }
+.menu {
+  position: absolute; top: 52px; right: 0; z-index: 30; display: grid; min-width: 210px; padding: 6px; border-radius: 20px;
+  background: color-mix(in srgb, var(--bg-2) 82%, transparent);
+}
+.menu[hidden] { display: none; }
+.menu button {
+  display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border: 0; border-radius: 14px;
+  background: transparent; text-align: left; font-size: 1rem;
+}
+.menu button > svg:first-child { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--label); stroke-width: 1.7; stroke-linejoin: round; stroke-linecap: round; }
+.menu button span { flex: 1; }
+.menu .tick { width: 17px; height: 17px; fill: none; stroke: var(--tint-text); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; visibility: hidden; }
+.menu button[aria-pressed="true"] .tick { visibility: visible; }
+.menu button:hover, .menu button:focus-visible { background: var(--fill-3); outline: none; }
+
+.toast {
+  position: fixed; z-index: 60; left: 50%; bottom: calc(var(--safe-bottom) + 24px); transform: translate(-50%, 12px);
+  padding: 12px 18px; border-radius: 999px; font-weight: 600; opacity: 0; max-width: calc(100vw - 32px); overflow-wrap: anywhere;
+  transition: opacity 0.2s var(--ease), transform 0.3s var(--spring);
+}
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.toast[hidden] { display: none; }
+
+/* ---------- Filter bar: sticks under the toolbar while you scroll ---------- */
+.filterbar {
+  position: sticky; z-index: 15; top: calc(var(--safe-top) + 52px);
+  margin: 0 calc(-1 * (var(--margin) + var(--safe-left))); padding: 6px calc(var(--margin) + var(--safe-left)) 8px;
+}
+.filterbar .segmented { margin: 12px 0 0; }
+.filterbar.stuck { -webkit-backdrop-filter: blur(16px) saturate(180%); backdrop-filter: blur(16px) saturate(180%); background: color-mix(in srgb, var(--bg) 82%, transparent); }
+.filterbar.stuck .segmented { margin-top: 0; }
+/* Once the bar is stuck, the toolbar drops its fading edge and the two read as one glass header. */
+.toolbar.joined::before, .toolbar.joined::after { bottom: 0; }
+.toolbar.joined::before { -webkit-mask-image: none; mask-image: none; -webkit-backdrop-filter: blur(16px) saturate(180%); backdrop-filter: blur(16px) saturate(180%); }
+.toolbar.joined::after { background: color-mix(in srgb, var(--bg) 82%, transparent); }
+@media (prefers-reduced-transparency: reduce) { .toolbar.joined::after { background: var(--bg); } }
 
 /* ---------- The gift in the masthead ---------- */
 .gift {
@@ -28,29 +64,91 @@
 @media (hover: hover) { .gift:hover { transform: scale(1.05) rotate(-3deg); } }
 .gift:focus-visible { outline-offset: 4px; }
 .gift .spark { position: absolute; left: 50%; top: 30%; width: 7px; height: 7px; margin: -3.5px; border-radius: 2px; pointer-events: none; }
-.toolbar-gift {
-  display: inline-block; width: 24px; height: 24px; flex: none; border-radius: 7px;
-  background: linear-gradient(160deg, #FF6B81, #E0405A);
-}
+.toolbar-gift { display: inline-block; width: 24px; height: 24px; flex: none; border-radius: 7px; background: linear-gradient(160deg, #FF6B81, #E0405A); }
 .toolbar-gift svg { width: 100%; height: 100%; }
+.gift svg * { transform-box: fill-box; }
+.alive .g-lid { transform-origin: 50% 100%; animation: g-lid 0.9s var(--spring); }
+@keyframes g-lid { 0%, 100% { transform: none; } 35% { transform: translateY(-10px) rotate(-8deg); } 65% { transform: translateY(-2px) rotate(3deg); } }
 
 /* On a phone the title needs the full width, so the gift sits above it. */
 @media (max-width: 559px) {
   .masthead { flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 12px; }
 }
 
-/* ---------- Sections ---------- */
-.cat-section { margin-top: 30px; }
+/* ---------- Product photos ----------
+   Each photo sits on the colour around its own edge (--photo-bg), so there is never a box around it.
+   plain: a studio background, so the product floats with space around it.
+   fill: a busier photo close to the frame's shape fills the frame.
+   framed: a busier photo of another shape sits whole on its edge colour.
+   In Dark Mode the light photos are dimmed a little, so they don't glow (HIG Dark Mode). */
+.photo { background: var(--photo-bg); }
+/* The page sizes each photo to its own shape (--iw, --ih), so the soft edge lands on the photo's edge. */
+.photo img {
+  position: absolute; left: 50%; top: 50%; width: var(--iw, 100%); height: var(--ih, 100%); transform: translate(-50%, -50%);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(transparent, #000 5%, #000 95%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(transparent, #000 5%, #000 95%, transparent);
+  mask-composite: intersect;
+}
+.photo.fill img { left: 0; top: 0; width: 100%; height: 100%; transform: none; object-fit: cover; object-position: 50% 30%; -webkit-mask-image: none; mask-image: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .photo { background: color-mix(in srgb, var(--photo-bg) 86%, #000); }
+  :root:not([data-theme="light"]) .photo img { filter: brightness(0.86); }
+}
+:root[data-theme="dark"] .photo { background: color-mix(in srgb, var(--photo-bg) 86%, #000); }
+:root[data-theme="dark"] .photo img { filter: brightness(0.86); }
+/* Without a photo (no link to take one from, or no longer on sale), the frame shows the name. */
+.no-photo-art { background: var(--fill-3); }
+.no-photo { padding: 0 16px 28px; text-align: center; font-size: 1.176rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.023em; color: var(--label-2); }
 
-/* ---------- Wish tiles ---------- */
-.wish .tile-art { overflow: hidden; }
-.wish .tile-art { aspect-ratio: 4 / 5; }
+/* ---------- Sections ---------- */
+.cat-section { margin-top: 26px; }
+
+/* ---------- Tiles: large and grid ---------- */
+.wish .tile-art { overflow: hidden; aspect-ratio: 4 / 5; }
 .wish .tile-meta { margin-top: 0; }
 .wish .tile-name { margin-top: 1px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.wish .tile-line { -webkit-line-clamp: 4; }
+.view-grid .tile-line { -webkit-line-clamp: 2; }
+.view-large .tile-line { -webkit-line-clamp: 3; }
 .wish-nolink { display: block; margin-top: 3px; font-size: 0.765rem; line-height: 1.385; color: var(--label-2); }
+.is-gone .tile-name, .is-gone .row-name { color: var(--label-2); }
 
-/* Price tag: a small glass pill in the corner of the picture.  */
+.view-large .tiles { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+@media (min-width: 640px) { .view-large .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; } }
+@media (min-width: 1100px) { .view-large .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.view-large .tile-text { padding-top: 12px; }
+.view-large .tile-name { font-size: 1.176rem; line-height: 1.25; letter-spacing: -0.023em; }
+.view-large .tile-line { font-size: 0.941rem; }
+.view-large .price { left: 14px; bottom: 14px; font-size: 1rem; padding: 6px 12px; }
+
+/* ---------- List ---------- */
+.rows {
+  display: grid; grid-template-columns: minmax(0, 1fr); margin: 0; padding: 0; list-style: none;
+  border-radius: 22px; background: var(--bg-2); box-shadow: var(--shadow-card); overflow: hidden;
+}
+@media (min-width: 900px) {
+  .rows { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; background: none; box-shadow: none; border-radius: 0; overflow: visible; }
+  .rows li { border-radius: 22px; background: var(--bg-2); box-shadow: var(--shadow-card); overflow: hidden; }
+}
+@media (max-width: 899px) {
+  .rows li + li .row::before { content: ""; position: absolute; top: 0; left: 108px; right: 0; height: 0.5px; background: var(--separator); }
+}
+.row {
+  position: relative; display: flex; align-items: center; gap: 14px; min-height: 104px; padding: 12px 16px 12px 12px;
+  color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent;
+}
+.row-art { position: relative; display: grid; place-items: center; flex: none; width: 80px; height: 80px; border-radius: 16px; overflow: hidden; box-shadow: inset 0 0 0 0.5px var(--glass-edge); }
+
+.row-art .no-photo { padding: 0 6px; font-size: 0.706rem; line-height: 1.2; }
+.row-text { flex: 1; min-width: 0; }
+.row-name { display: -webkit-box; font-weight: 600; line-height: 1.25; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.row .tile-line { -webkit-line-clamp: 2; }
+.row-price { display: block; margin-top: 6px; }
+.row:active { background: var(--highlight); }
+@media (hover: hover) { .row:hover { background: color-mix(in srgb, var(--highlight) 45%, transparent); } }
+.row:focus-visible { outline-offset: -3px; border-radius: 22px; }
+
+/* ---------- Price tag: a small glass pill ---------- */
 .price {
   position: absolute; left: 10px; bottom: 10px; display: inline-flex; align-items: baseline; gap: 6px;
   padding: 5px 10px; border-radius: 999px;
@@ -60,68 +158,61 @@
   -webkit-backdrop-filter: blur(10px) saturate(180%); backdrop-filter: blur(10px) saturate(180%);
   box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.9), 0 2px 8px -2px rgba(0, 0, 0, 0.12);
 }
+.price.inline { position: static; padding: 3px 9px; background: var(--fill-3); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .price s { font-weight: 400; color: var(--label-2); }
 .price .sale { margin-left: 2px; padding: 1px 6px; border-radius: 999px; background: #C8202F; color: #fff; font-size: 0.706rem; font-weight: 600; letter-spacing: 0; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .price { background: rgba(28, 28, 30, 0.72); box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.14); }
+  :root:not([data-theme="light"]) .price:not(.inline) { background: rgba(28, 28, 30, 0.72); box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.14); }
   :root:not([data-theme="light"]) .price .sale { background: #E5343F; }
 }
-:root[data-theme="dark"] .price { background: rgba(28, 28, 30, 0.72); box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.14); }
+:root[data-theme="dark"] .price:not(.inline) { background: rgba(28, 28, 30, 0.72); box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.14); }
 :root[data-theme="dark"] .price .sale { background: #E5343F; }
 
-/* The "open in a new tab" arrow, top right, only on hover or focus. */
-.out {
-  position: absolute; right: 10px; top: 10px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
-  background: rgba(255, 255, 255, 0.78); color: var(--label); opacity: 0; transform: scale(0.8);
-  transition: opacity 0.2s var(--ease), transform 0.3s var(--spring);
-}
-.out svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .out { background: rgba(28, 28, 30, 0.72); } }
-:root[data-theme="dark"] .out { background: rgba(28, 28, 30, 0.72); }
-@media (hover: hover) and (pointer: fine) { a.tile:hover .out { opacity: 1; transform: none; } }
-a.tile:focus-visible .out { opacity: 1; transform: none; }
-
-/* Without a link, the tile is not a control: no lift, no pointer light. */
-div.tile .tile-art::after { display: none; }
-
 /* A wish picked by the gift gets a short ring, so the eye can find it. */
-.tile.picked .tile-art { animation: picked 1.6s var(--ease); }
+.tile.picked .tile-art, .row.picked .row-art { animation: picked 1.6s var(--ease); }
 @keyframes picked {
-  0% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 0 color-mix(in srgb, var(--tint) 55%, transparent); }
-  25% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 6px color-mix(in srgb, var(--tint) 55%, transparent); }
-  100% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 14px color-mix(in srgb, var(--tint) 0%, transparent); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--tint) 55%, transparent); }
+  25% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--tint) 55%, transparent); }
+  100% { box-shadow: 0 0 0 14px color-mix(in srgb, var(--tint) 0%, transparent); }
 }
 
-/* ---------- The gift's lid pops once ---------- */
-.gift svg * { transform-box: fill-box; }
-.alive .g-lid { transform-origin: 50% 100%; animation: g-lid 0.9s var(--spring); }
-@keyframes g-lid { 0%, 100% { transform: none; } 35% { transform: translateY(-10px) rotate(-8deg); } 65% { transform: translateY(-2px) rotate(3deg); } }
+/* ---------- Details sheet ---------- */
+.detail-art {
+  position: relative; display: grid; place-items: center; overflow: hidden; border-radius: 26px;
+  aspect-ratio: 4 / 5; width: min(100%, calc(min(62vh, 640px) * 0.8)); margin: 0 auto;
+  box-shadow: inset 0 0 0 0.5px var(--glass-edge);
+}
+
+.detail-art .price { left: 14px; bottom: 14px; font-size: 1rem; padding: 6px 12px; }
+.detail-head { padding: 18px 4px 0; }
+.detail-brand { font-size: 0.882rem; color: var(--label-2); letter-spacing: -0.016em; }
+.detail-name { margin-top: 2px; }
+.detail-note { margin: 10px 4px 0; font-size: 1rem; line-height: 1.41; }
+.detail-box { margin: 18px 0 0; padding: 14px 16px; border-radius: 18px; background: var(--sheet-cell); font-size: 0.941rem; line-height: 1.35; color: var(--label-2); }
+.detail-checked { margin: 12px 4px 0; font-size: 0.765rem; line-height: 1.385; color: var(--label-2); }
+::view-transition-group(wish-art) { animation-duration: 0.5s; animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+::view-transition-old(wish-art), ::view-transition-new(wish-art) { height: 100%; object-fit: cover; }
 
 /* ---------- Shops I like ---------- */
 .shops { margin-top: 40px; }
 .shops[hidden] { display: none; }
 .shops .month-head { margin-bottom: 4px; }
 .shops-intro { margin: 0 4px 14px; font-size: 0.882rem; line-height: 1.333; letter-spacing: -0.016em; color: var(--label-2); }
-.shop-list {
-  display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 18px; margin: 0; padding: 0; list-style: none;
-}
+.shop-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 18px; margin: 0; padding: 0; list-style: none; }
 @media (min-width: 768px) { .shop-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; } }
 .shop-list li { border-radius: 22px; background: var(--bg-2); box-shadow: var(--shadow-card); overflow: hidden; }
 @media (max-width: 767px) {
   .shop-list { border-radius: 22px; background: var(--bg-2); box-shadow: var(--shadow-card); overflow: hidden; }
   .shop-list li { border-radius: 0; background: none; box-shadow: none; }
-  .shop-list li + li a::before { content: ""; position: absolute; top: 0; left: 70px; right: 0; height: 0.5px; background: var(--separator); }
+  .shop-list li + li a::before { content: ""; position: absolute; top: 0; left: 74px; right: 0; height: 0.5px; background: var(--separator); }
 }
-.shop {
-  position: relative; display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 16px;
-  color: inherit; text-decoration: none;
-}
+.shop { position: relative; display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 16px; color: inherit; text-decoration: none; }
 .shop-art {
   position: relative; display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 11px; overflow: hidden;
-  background: var(--fill-3); font-weight: 600; color: var(--label-2); box-shadow: inset 0 0 0 0.5px var(--separator);
+  font-weight: 600; color: var(--label-2); box-shadow: inset 0 0 0 0.5px var(--separator);
 }
-.shop-art.has-photo { background: #fff; }
-.shop-art img { width: 100%; height: 100%; object-fit: cover; }
+
+.shop-art .no-photo { padding: 0; font-size: 1rem; }
 .shop-text { flex: 1; min-width: 0; }
 .shop-name { display: block; font-weight: 600; }
 .shop-line { display: block; margin-top: 1px; font-size: 0.882rem; line-height: 1.333; letter-spacing: -0.016em; color: var(--label-2); }
@@ -133,11 +224,13 @@ div.tile .tile-art::after { display: none; }
 
 /* ---------- Accessibility settings ---------- */
 @media (prefers-reduced-transparency: reduce) {
-  .price, .out { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg-2); }
+  .price:not(.inline), .filterbar.stuck, .menu { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg-2); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .gift:hover, .gift:active { transform: none; }
+  .gift:hover, .gift:active, .round:active { transform: none; }
+  ::view-transition-group(wish-art) { animation: none; }
 }
 @media (forced-colors: active) {
-  .price, .shop-list, .gift { border: 1px solid CanvasText; }
+  .price, .shop-list, .rows, .gift, .menu, .round { border: 1px solid CanvasText; }
+  .menu button[aria-pressed="true"] { outline: 2px solid Highlight; }
 }

@@ -1,8 +1,12 @@
-# Fetches a product photo for each wish from its shop page, and commits any new ones.
-# Runs when wishlist/wishes.js changes on main, or by hand from the Actions tab.
+# Keeps the wish list accurate: fetches a photo for each wish, checks that every link still works,
+# reads today's price from the shop's own page, and commits what changed. The run's summary lists
+# anything that needs a look (a dead link, a price change, a photo it couldn't get).
+# Runs on the 1st of each month, when wishlist/wishes.js changes on main, or by hand from the Actions tab.
 name: Wish list photos
 
 on:
+  schedule:
+    - cron: "17 7 1 * *"  # 07:17 UTC on the 1st of each month
   workflow_dispatch:
     inputs:
       force:
@@ -24,8 +28,8 @@ jobs:
   photos:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Install Pillow and a browser for shops that refuse plain requests
@@ -33,15 +37,16 @@ jobs:
           pip install pillow playwright
           python -m playwright install --with-deps chromium
           sudo apt-get install -y xvfb
-      - name: Fetch photos
+      - name: Check links and prices, fetch photos
         env:
           WISHLIST_HEADED: "1"
-        run: xvfb-run -a python3 wishlist/tools/fetch_images.py ${{ inputs.force && '--force' || '' }}
-      - name: Commit new photos
+        run: xvfb-run -a python3 wishlist/tools/fetch_images.py --check ${{ inputs.force && '--force' || '' }}
+      - name: Commit changes
         run: |
-          git add wishlist/img wishlist/images.js
-          if git diff --cached --quiet; then echo "No new photos."; exit 0; fi
+          git add wishlist/img wishlist/images.js wishlist/status.js wishlist/og.jpg
+          if git diff --cached --quiet; then echo "Nothing changed."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898900+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Wish list: update product photos"
+          git commit -m "Wish list: update photos, links and prices"
+          git pull --rebase origin main
           git push
