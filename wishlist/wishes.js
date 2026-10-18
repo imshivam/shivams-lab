@@ -29,7 +29,7 @@ window.WISHES = [
   { id: "red-wing-8864", cat: "footwear", brand: "Red Wing", name: "Classic Moc Toe Boots 8864 GORE-TEX, Russet Taos", note: "Unique and classic. Red Wing London no longer lists it, so this links to Son of a Stag in London.", price: "£349", url: "https://sonofastag.com/products/red-wing-8864-6-inch-gore-tex-moc-toe-boots-oro-russet-taos" },
 
   // Gadgets
-  { id: "dji-mini-5-pro", cat: "gadget", brand: "DJI", name: "DJI Mini 5 Pro", note: "The full combo with the smart remote. £1,129 with a 256 GB SD card and the 2-year care plan.", price: "£979", url: "https://www.dji.com/uk/mini-5-pro" },
+  { id: "dji-mini-5-pro", cat: "gadget", brand: "DJI", name: "DJI Mini 5 Pro", note: "The full combo with the smart remote. £1,129 with a 256 GB SD card and the 2-year care plan.", price: "£979", url: "https://www.dji.com/uk/mini-5-pro", image: "https://www-cdn.djiits.com/cms/uploads/3462d29fa23cf5d29fce9171fb2b6b9d@374*374.png" },
   { id: "ray-ban-meta", cat: "gadget", brand: "Ray-Ban Meta", name: "Ray-Ban Meta glasses", price: "£400+", url: "https://www.ray-ban.com/uk/ray-ban-meta-ai-glasses", photoFrom: "https://business.currys.co.uk/catalogue/cameras-smart-tech/smart-tech/smart-toys-and-gadgets/ray-ban-meta-meta-wayfarer-gen-2-glasses-shiny-black-with-green-lenses/N740821W" },
   { id: "lumie-sad-lamp", cat: "gadget", brand: "Lumie", name: "Task SAD lamp, golden yellow", price: "£279", url: "https://www.lumie.com/products/task-golden-yellow" },
   { id: "vinyl-player", cat: "gadget", name: "A really good vinyl player", note: "Top quality. One with a speaker is great, or Bluetooth to a Sonos is enough." },

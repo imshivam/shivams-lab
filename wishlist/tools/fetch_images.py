@@ -15,7 +15,8 @@ wishlist/img/<id>.jpg (up to 1200 px) and wishlist/img/<id>-s.jpg (480 px, for s
   3. the page's product data or preview picture (og:image), unless it is a logo;
   4. in a real browser (needs Playwright), the largest photo near the top of the page.
 It asks the shop for a larger copy of each photo where the photo's address has a size in it.
-A link that no longer exists, or now goes to a different product, is reported and gets no photo.
+A link that seems to no longer exist, or now goes to a different product, is reported and gets no new photo;
+any photo it already has is kept, since shops can send GitHub's US servers somewhere else.
 
 Outputs: wishlist/images.js (each photo's size and edge colour, so the page can frame it),
 wishlist/status.js (with --check: when each link was checked, whether it works, today's price),
@@ -453,11 +454,7 @@ def main():
         except Exception as err:  # keep going; report every failure at the end
             report.append("- %s: no photo (%s)" % (e.get("name") or e.get("brand"), str(err)[:160]))
             print("failed", id_, "-", err)
-            if isinstance(err, Gone) and have:
-                for suffix in ("", "-s"):  # a photo of some other page is worse than none
-                    p = os.path.join(IMG_DIR, id_ + suffix + ".jpg")
-                    if os.path.exists(p):
-                        os.remove(p)
+            # An existing photo is kept: a shop can turn GitHub's US servers away from a page that still exists.
         time.sleep(3)
     if browser:
         browser.close()

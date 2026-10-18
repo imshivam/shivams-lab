@@ -13,6 +13,10 @@ on:
         description: "Fetch every photo again"
         type: boolean
         default: false
+      only:
+        description: "Fetch these photos again (wish ids, comma-separated)"
+        type: string
+        default: ""
   push:
     branches: [main]
     paths: [wishlist/wishes.js, wishlist/tools/fetch_images.py]
@@ -42,7 +46,8 @@ jobs:
       - name: Check links and prices, fetch photos
         env:
           WISHLIST_HEADED: "1"
-        run: xvfb-run -a python3 wishlist/tools/fetch_images.py --check ${{ inputs.force && '--force' || '' }}
+          ONLY: ${{ inputs.only }}
+        run: xvfb-run -a python3 wishlist/tools/fetch_images.py --check ${{ inputs.force && '--force' || '' }} ${ONLY:+--only "$ONLY"}
       - name: Commit changes
         run: |
           git add wishlist/img wishlist/images.js wishlist/status.js wishlist/og.jpg

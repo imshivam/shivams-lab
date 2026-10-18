@@ -49,6 +49,14 @@ window.WISH_IMAGES = {
     "src": "img/desigual-printed-jeans.jpg",
     "w": 800
   },
+  "dji-mini-5-pro": {
+    "bg": "#ffffff",
+    "h": 374,
+    "plain": true,
+    "small": "img/dji-mini-5-pro-s.jpg",
+    "src": "img/dji-mini-5-pro.jpg",
+    "w": 374
+  },
   "ecco-grainer": {
     "bg": "#ffffff",
     "h": 800,
