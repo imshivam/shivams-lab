@@ -17,7 +17,9 @@ window.WISH_IMAGES = {
   "moss-wool-parka": "img/moss-wool-parka.jpg",
   "onitsuka-tiger": "img/onitsuka-tiger.jpg",
   "ray-ban-meta": "img/ray-ban-meta.jpg",
+  "red-wing-8864": "img/red-wing-8864.jpg",
   "solovair-zip-derby": "img/solovair-zip-derby.jpg",
   "universal-works": "img/universal-works.jpg",
-  "vivobarefoot-primus-lite-3-5": "img/vivobarefoot-primus-lite-3-5.jpg"
+  "vivobarefoot-primus-lite-3-5": "img/vivobarefoot-primus-lite-3-5.jpg",
+  "vivobarefoot-primus-lite-iv": "img/vivobarefoot-primus-lite-iv.jpg"
 };
