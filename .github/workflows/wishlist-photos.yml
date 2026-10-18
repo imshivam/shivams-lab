@@ -32,8 +32,11 @@ jobs:
         run: |
           pip install pillow playwright
           python -m playwright install --with-deps chromium
+          sudo apt-get install -y xvfb
       - name: Fetch photos
-        run: python3 wishlist/tools/fetch_images.py ${{ inputs.force && '--force' || '' }}
+        env:
+          WISHLIST_HEADED: "1"
+        run: xvfb-run -a python3 wishlist/tools/fetch_images.py ${{ inputs.force && '--force' || '' }}
       - name: Commit new photos
         run: |
           git add wishlist/img wishlist/images.js

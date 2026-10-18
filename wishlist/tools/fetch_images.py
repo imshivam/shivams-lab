@@ -11,6 +11,7 @@ wishlist/img/<id>.jpg (at most 800 px, on white) and lists it in wishlist/images
   2. on a Shopify store, the product's first photo from the store's product data;
   3. the page's product data or preview picture (og:image), unless it is a logo;
   4. in a real browser (needs Playwright), the largest photo near the top of the page.
+A link that no longer exists, or now goes to a different product, is reported and gets no photo.
 Resizing needs Pillow (pip install pillow); without it the photo is saved as downloaded.
 """
 
@@ -90,6 +91,21 @@ def page_image(page, final):
     return None
 
 
+class Gone(Exception):
+    """The product page no longer exists, or now sends you to a different product."""
+
+
+def handle(url):
+    m = re.search(r"/products/([^/?#]+)", url)
+    return m.group(1) if m else None
+
+
+def check_same_product(url, final):
+    h = handle(url)
+    if h and handle(final) != h:
+        raise Gone("the link now goes to a different page: " + final)
+
+
 def shopify_image(url):
     """Shopify stores publish product data as JSON, which names the product's own photos."""
     parts = urllib.parse.urlsplit(url)
@@ -97,13 +113,17 @@ def shopify_image(url):
     base = "%s://%s" % (parts.scheme, parts.netloc)
     try:
         if "/products/" in path:
-            data = json.loads(get(base + path + ".js", "application/json")[0])
+            raw, final = get(base + path + ".js", "application/json")
+            check_same_product(url, final)
+            data = json.loads(raw)
             img = data.get("featured_image") or (data.get("images") or [None])[0]
         elif "/collections/" in path:
             data = json.loads(get(base + path + "/products.json?limit=1", "application/json")[0])
             img = data["products"][0]["images"][0]["src"]
         else:
             return None
+    except Gone:
+        raise
     except Exception:
         return None
     return urllib.parse.urljoin(base + "/", img) if img else None
@@ -113,7 +133,13 @@ def find_image(url):
     src = shopify_image(url)
     if src:
         return src
-    raw, final = get(url)
+    try:
+        raw, final = get(url)
+    except urllib.error.HTTPError as err:
+        if err.code in (404, 410):
+            raise Gone("the product page no longer exists (%d)" % err.code)
+        raise
+    check_same_product(url, final)
     return page_image(raw.decode("utf-8", "replace"), final)
 
 
@@ -130,18 +156,29 @@ LARGEST = """() => {
 def fetch_with_browser(url, given):
     """Open the page in headless Chromium, which most shops accept, and download the photo in the same session."""
     from playwright.sync_api import sync_playwright
+    # A visible, real Chrome (run under xvfb on a server) gets past bot checks that stop headless browsers.
+    headed = os.environ.get("WISHLIST_HEADED") == "1"
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        opts = {"headless": not headed, "args": ["--disable-blink-features=AutomationControlled"]}
+        try:
+            browser = p.chromium.launch(channel="chrome", **opts) if headed else p.chromium.launch(**opts)
+        except Exception:
+            browser = p.chromium.launch(**opts)
         try:
             ctx = browser.new_context(user_agent=UA, locale="en-GB", viewport={"width": 1280, "height": 1000})
             page = ctx.new_page()
-            page.goto(url, wait_until="domcontentloaded", timeout=60000)
-            page.wait_for_timeout(5000)
+            page.add_init_script("Object.defineProperty(navigator, 'webdriver', { get: () => undefined })")
+            resp = page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            page.wait_for_timeout(6000)
+            if resp and resp.status in (404, 410):
+                raise Gone("the product page no longer exists (%d)" % resp.status)
+            check_same_product(url, page.url)
             page.mouse.wheel(0, 600)
             page.wait_for_timeout(1500)
             src = given or page_image(page.content(), page.url) or page.evaluate(LARGEST)
             if not src:
-                raise ValueError("no product photo found on the page")
+                raise ValueError("no product photo found on the page (status %s, title %r)"
+                                 % (resp.status if resp else "?", page.title()[:80]))
             src = urllib.parse.urljoin(page.url, src)
             r = ctx.request.get(src, headers={"Referer": page.url})
             if not r.ok:
@@ -174,6 +211,8 @@ def fetch(e):
         if not src:
             raise ValueError("no product photo in the page's source")
         return src, get(src, "image/avif,image/webp,image/*,*/*")[0]
+    except Gone:
+        raise
     except Exception as plain_err:
         try:
             import playwright  # noqa: F401
@@ -206,8 +245,11 @@ def main():
         except Exception as err:  # keep going; report every failure at the end
             failed.append((e["id"], str(err)))
             print("failed", e["id"], "-", err)
-            if os.path.exists(path):  # an old photo that was asked to be replaced is kept
+            if isinstance(err, Gone) and os.path.exists(path):
+                os.remove(path)  # a photo of some other page is worse than none
+            elif os.path.exists(path):  # an old photo that was asked to be replaced is kept
                 images[e["id"]] = rel
+        time.sleep(3)  # be gentle: some shops limit how often one visitor can ask
     with open(os.path.join(ROOT, "images.js"), "w") as f:
         f.write("// Written by tools/fetch_images.py. Each photo comes from the product page linked in wishes.js.\n")
         f.write("window.WISH_IMAGES = " + json.dumps(images, indent=2, sort_keys=True) + ";\n")
