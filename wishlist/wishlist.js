@@ -32,7 +32,7 @@
 
   // ---------- Masthead and footer ----------
   $("#summary").innerHTML =
-    `${wishes.length} things I’d love, if you’re ever looking for a gift.<br>Can’t decide? ${finePointer ? "Click" : "Tap"} the gift.`;
+    `${wishes.filter((w) => !w.gone).length} things I’d love, if you’re ever looking for a gift.<br>Can’t decide? ${finePointer ? "Click" : "Tap"} the gift.`;
   $("#footer").innerHTML =
     `<p>Prices are what each shop showed when I added the item. Check the shop for today’s price.</p>
      <p>Updated ${fmtDate(window.WISHES_UPDATED)}.</p>`;
