@@ -6,6 +6,8 @@ window.WISH_IMAGES = {
   "desigual-floral-trousers": "img/desigual-floral-trousers.jpg",
   "desigual-printed-jeans": "img/desigual-printed-jeans.jpg",
   "dji-mini-5-pro": "img/dji-mini-5-pro.jpg",
+  "ecco-grainer": "img/ecco-grainer.jpg",
+  "ecco-waterproof": "img/ecco-waterproof.jpg",
   "embassy": "img/embassy.jpg",
   "kardo": "img/kardo.jpg",
   "lightbox-noble-wall-light": "img/lightbox-noble-wall-light.jpg",
@@ -13,5 +15,5 @@ window.WISH_IMAGES = {
   "moss-wool-parka": "img/moss-wool-parka.jpg",
   "onitsuka-tiger": "img/onitsuka-tiger.jpg",
   "solovair-zip-derby": "img/solovair-zip-derby.jpg",
-  "universal-works": "img/universal-works.jpg",
+  "universal-works": "img/universal-works.jpg"
 };
