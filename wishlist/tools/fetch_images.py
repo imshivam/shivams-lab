@@ -121,7 +121,7 @@ def shopify_image(url):
     try:
         if "/products/" in path:
             raw, final = get(base + path + ".js", "application/json")
-            check_same_product(url, final)
+            check_same_product(url, final, product=False)  # same handle is enough for the data address
             data = json.loads(raw)
             img = data.get("featured_image") or (data.get("images") or [None])[0]
         elif "/collections/" in path:
