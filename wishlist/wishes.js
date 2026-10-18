@@ -36,7 +36,7 @@ window.WISHES = [
 
   // Home
   { id: "lightbox-noble-wall-light", cat: "home", brand: "Lightbox", name: "Noble Rechargeable Wall Light, Gold & Frosted", note: "Really good for the entrance.", price: "£245", url: "https://www.lightboxshop.co.uk/noble-rechargeable-wall-light-gold-and-frosted.html" },
-  { id: "ninja-crispi-pro", cat: "home", brand: "Ninja", name: "Ninja Crispi Pro air fryer", url: "https://www.sharkninja.co.uk/kitchen/cooking-appliances/air-fryers/crispi-portable-air-fryers", photoFrom: "https://www.argos.co.uk/product/8920120" },
+  { id: "ninja-crispi-pro", cat: "home", brand: "Ninja", name: "Ninja Crispi Pro air fryer", url: "https://www.sharkninja.co.uk/kitchen/cooking-appliances/air-fryers/crispi-portable-air-fryers" },
 
   // Accessories
   { id: "blunt-metro-mister-mort", cat: "accessory", brand: "Blunt", name: "Mister Mort Metro umbrella", note: "Artsy, unique and fun.", price: "£85", url: "https://bluntumbrellas.co.uk/products/mister-mort-metro?variant=55726889435511", gone: true },
