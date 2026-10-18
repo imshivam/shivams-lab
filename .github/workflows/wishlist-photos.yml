@@ -1,6 +1,6 @@
-# Keeps the wish list accurate: fetches a photo for each wish, checks that every link still works,
-# reads today's price from the shop's own page, and commits what changed. The run's summary lists
-# anything that needs a look (a dead link, a price change, a photo it couldn't get).
+# Keeps the wish list accurate: fetches a photo for each wish and checks that every link still works.
+# It never changes prices or marks a wish as gone by itself: the run's summary lists anything that
+# needs a look (a link that may be dead, a price that differs, a photo it couldn't get).
 # Runs on the 1st of each month, when wishlist/wishes.js changes on main, or by hand from the Actions tab.
 name: Wish list photos
 
@@ -29,6 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: main  # the latest main, not the commit that queued this run
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -48,5 +50,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898900+github-actions[bot]@users.noreply.github.com"
           git commit -m "Wish list: update photos, links and prices"
-          git pull --rebase origin main
+          git pull --rebase -X theirs origin main  # on a clash, this run's files win
           git push

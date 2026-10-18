@@ -141,7 +141,12 @@ def handle(url):
     return m.group(1) if m else None
 
 
+LOCALE_HOME = re.compile(r"^/?([a-z]{2}([-_][a-z]{2})?)/?$", re.I)
+
+
 def check_same_product(url, final, product=True):
+    if LOCALE_HOME.match(urllib.parse.urlsplit(final).path) and not LOCALE_HOME.match(urllib.parse.urlsplit(url).path):
+        raise Blocked("the shop sent the visit to another country's site: " + final)
     h = handle(url)
     if h and handle(final) != h:
         raise Gone("the link now goes to a different page: " + final)
@@ -178,15 +183,16 @@ def shopify_image(url):
 def bigger(src):
     """The same photo at a larger size, where its address says what size to send."""
     s = re.sub(r"@\d+\*\d+(?=\.\w+$|\?)", "", src)                       # DJI: name@374*374.png
-    s = re.sub(r"/w_\d+,", "/w_%d," % BIG, s)                             # adidas: /images/w_600,
+    s = re.sub(r"\bw_(\d+),h_(\d+)", lambda m: "w_%d,h_%d" % (BIG, round(int(m.group(2)) * BIG / int(m.group(1)))), s)
+    s = re.sub(r"/w_\d+,(?!h_)", "/w_%d," % BIG, s)                        # adidas: /images/w_600,
     s = re.sub(r"_(\d+x\d*|\d*x\d+)(?=\.\w+(\?|$))", "", s)              # Shopify: name_600x.jpg
     parts = urllib.parse.urlsplit(s)
     q = urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
     out = []
     for k, v in q:
-        if k.lower() in ("width", "w", "wid") and v.isdigit():
+        if k.lower() in ("width", "w", "wid", "sw") and v.isdigit():
             out.append((k, str(BIG)))
-        elif k.lower() in ("height", "h", "hei", "preset", "dpr"):
+        elif k.lower() in ("height", "h", "hei", "sh", "preset", "dpr"):
             continue                                                       # let the width set the size
         else:
             out.append((k, v))
@@ -418,18 +424,18 @@ def main():
             result["checked"] = today
             status[e["id"]] = result
             if result["ok"] is False:
-                report.append("- **%s**: link no longer works (%s)" % (e["name"], result["why"]))
+                report.append("- **%s**: the link may no longer work (%s). Check it, and set `gone: true` in wishes.js if so." % (e["name"], result["why"]))
             elif result["ok"] is None:
                 report.append("- %s: couldn't check (%s)" % (e["name"], result["why"]))
             elif result.get("price") and e.get("price") and result["price"] != e["price"]:
-                report.append("- %s: price now %s (listed as %s)" % (e["name"], result["price"], e["price"]))
+                report.append("- %s: the shop's page says %s; wishes.js says %s. Check it and update wishes.js if right." % (e["name"], result["price"], e["price"]))
             print("check ", e["id"], json.dumps(result))
             time.sleep(3)  # be gentle: some shops limit how often one visitor can ask
 
     for e in entries:
         id_ = e["id"]
         have = os.path.exists(os.path.join(IMG_DIR, id_ + ".jpg"))
-        gone = e.get("gone") or status.get(id_, {}).get("gone")
+        gone = e.get("gone")
         if (have and not force and id_ not in only) or gone or not (e.get("url") or e.get("image")):
             continue
         try:

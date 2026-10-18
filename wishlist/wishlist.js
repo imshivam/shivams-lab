@@ -37,19 +37,12 @@
   };
   const announce = (text) => { $("#status").textContent = text; };
 
-  // ---------- The wishes, with what the monthly check found ----------
-  // A price the check read from the shop's own page replaces the one typed in; a sale price
-  // keeps its "was" price only while the shop still shows the same sale price.
+  // ---------- The wishes ----------
+  // Prices and "no longer on sale" come only from wishes.js. The monthly check reports differences for a person
+  // to look at; it never changes the page, because a shop can show GitHub's US servers a different page.
   const wishes = window.WISHES.map((w, order) => {
     const st = STATUS[w.id] || {};
-    const price = st.price || w.price;
-    return {
-      ...w, order, price,
-      was: w.was && price === w.price ? w.was : null,
-      gone: !!(w.gone || st.gone),
-      checked: st.checked && st.ok ? st.checked : null,
-      priceChecked: !!(st.ok && st.price),
-    };
+    return { ...w, order, gone: !!w.gone, checked: st.ok ? st.checked : null };
   });
   const live = wishes.filter((w) => !w.gone);
 
@@ -60,7 +53,7 @@
     `${live.length} things I’d love, if you’re ever looking for a gift.<br>Can’t decide? ${finePointer ? "Click" : "Tap"} the gift.`;
   const lastCheck = Object.values(STATUS).map((s) => s.checked).filter(Boolean).sort().pop();
   $("#footer").innerHTML = lastCheck
-    ? `<p>Links and prices are checked once a month, most recently on ${fmtDate(lastCheck)}. Check the shop for today’s price.</p>`
+    ? `<p>Prices are what each shop showed when I added the item. Links are checked once a month, most recently on ${fmtDate(lastCheck)}.</p>`
     : `<p>Prices are what each shop showed when I added the item. Check the shop for today’s price.</p>
        <p>Updated ${fmtDate(window.WISHES_UPDATED)}.</p>`;
 
@@ -277,9 +270,8 @@
   const host = (url) => new URL(url).hostname.replace(/^www\./, "");
 
   function detailHTML(w) {
-    const checked = w.checked
-      ? (w.priceChecked ? `Price checked on the shop’s site on ${fmtDate(w.checked)}.` : `Link checked on ${fmtDate(w.checked)}. The price is what the shop showed when I added it.`)
-      : w.price ? `The price is what the shop showed when I added it.` : "";
+    const checked = [w.checked ? `Link checked on ${fmtDate(w.checked)}.` : "",
+      w.price ? "The price is what the shop showed when I added it." : ""].filter(Boolean).join(" ");
     return `
       ${art(w, "detail-art", 4 / 5, SIZES.sheet, priceHTML(w), { whole: true })}
       <div class="detail-head">
