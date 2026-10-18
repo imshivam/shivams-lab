@@ -1,0 +1,44 @@
+# Fetches a product photo for each wish from its shop page, and commits any new ones.
+# Runs when wishlist/wishes.js changes on main, or by hand from the Actions tab.
+name: Wish list photos
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Fetch every photo again"
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths: [wishlist/wishes.js, wishlist/tools/fetch_images.py]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wishlist-photos
+  cancel-in-progress: false
+
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Pillow and a browser for shops that refuse plain requests
+        run: |
+          pip install pillow playwright
+          python -m playwright install --with-deps chromium
+      - name: Fetch photos
+        run: python3 wishlist/tools/fetch_images.py ${{ inputs.force && '--force' || '' }}
+      - name: Commit new photos
+        run: |
+          git add wishlist/img wishlist/images.js
+          if git diff --cached --quiet; then echo "No new photos."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898900+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Wish list: update product photos"
+          git push

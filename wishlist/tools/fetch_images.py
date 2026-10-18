@@ -9,6 +9,8 @@ For each entry in wishlist/wishes.js with a url, it reads the product page's pre
 wishlist/img/<id>.jpg (at most 800 px, on white) and lists it in wishlist/images.js.
 An entry's `image` field, if set, is used instead of the page's picture.
 Resizing needs Pillow (pip install pillow); without it the photo is saved as downloaded.
+If a shop refuses a plain request and Playwright is installed (pip install playwright;
+playwright install chromium), it tries again in a real browser.
 """
 
 import html
@@ -74,6 +76,32 @@ def find_image(url):
     return urllib.parse.urljoin(final, src) if src else None
 
 
+def fetch_with_browser(url, given):
+    """Open the page in headless Chromium, which most shops accept, and download the photo in the same session."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        ctx = browser.new_context(user_agent=UA, locale="en-GB", viewport={"width": 1280, "height": 900})
+        page = ctx.new_page()
+        page.goto(url, wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_timeout(4000)
+        src = given
+        if not src:
+            content = page.content()
+            src = meta(content, "og:image:secure_url") or meta(content, "og:image") or meta(content, "twitter:image") or ld_image(content)
+        if not src:
+            browser.close()
+            raise ValueError("no preview picture on the page")
+        src = urllib.parse.urljoin(page.url, src)
+        r = ctx.request.get(src, headers={"Referer": page.url})
+        if not r.ok:
+            browser.close()
+            raise ValueError("photo download returned %d" % r.status)
+        data = r.body()
+        browser.close()
+        return src, data
+
+
 def save(data, path):
     try:
         from io import BytesIO
@@ -104,10 +132,18 @@ def main():
         if not e.get("url") and not e.get("image"):
             continue
         try:
-            src = e.get("image") or find_image(e["url"])
-            if not src:
-                raise ValueError("no preview picture on the page")
-            data, _ = get(src, "image/avif,image/webp,image/*,*/*")
+            try:
+                src = e.get("image") or find_image(e["url"])
+                if not src:
+                    raise ValueError("no preview picture on the page")
+                data, _ = get(src, "image/avif,image/webp,image/*,*/*")
+            except Exception as plain_err:
+                try:
+                    import playwright  # noqa: F401
+                except ImportError:
+                    raise plain_err
+                print("retry ", e["id"], "in a browser after:", plain_err)
+                src, data = fetch_with_browser(e.get("url") or e["image"], e.get("image"))
             save(data, path)
             images[e["id"]] = rel
             print("ok    ", e["id"], "<-", src)
