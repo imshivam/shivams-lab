@@ -14,3 +14,11 @@ Live: https://imshivam.github.io/shivams-lab/
 The design follows Apple's Human Interface Guidelines (see `REVIEW.md`) and research into Apple's most magical motion design (see `MAGIC.md`).
 
 When you change the site, add an entry to `changelog.js`. It feeds the Version History page (`changelog.html`).
+
+## Wish list
+
+`wishlist/` is a separate page: things I'd love as gifts, at https://imshivam.github.io/shivams-lab/wishlist/
+
+- Wishes and shops live in `wishlist/wishes.js`. Each wish has a stable `id`; don't rename one after the page is shared, because reservations will be keyed on it later.
+- Each wish gets a drawing from `wishlist/glyphs.js` (pick one in `GLYPH_FOR`, or it uses its category's default).
+- It reuses the Lab's `styles.css`, so both pages share one design system.

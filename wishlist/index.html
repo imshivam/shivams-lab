@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Shivam’s Wish List</title>
+  <meta name="description" content="Things Shivam would love, if you’re ever looking for a gift.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2F2F7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+  <meta name="apple-mobile-web-app-title" content="Wish List">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:title" content="Shivam’s Wish List">
+  <meta property="og:description" content="Things Shivam would love, if you’re ever looking for a gift.">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="wishlist.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the wish list</a>
+
+  <header class="toolbar" id="toolbar">
+    <div class="toolbar-inner">
+      <span class="toolbar-title" aria-hidden="true"><span class="toolbar-gift" id="toolbarGift"></span>Wish List</span>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="page">
+      <div class="masthead">
+        <button class="gift" id="gift" type="button" aria-label="Can’t decide? Pick a wish for me" title="Pick a wish for me"></button>
+        <div>
+          <h1 class="large-title" id="largeTitle">Shivam’s Wish List</h1>
+          <p class="masthead-sub" id="summary"></p>
+        </div>
+      </div>
+
+      <div class="segmented" role="group" aria-label="Show" id="segmented">
+        <span class="segmented-thumb" aria-hidden="true"></span>
+      </div>
+
+      <div id="wishes"></div>
+
+      <section class="shops" id="shops" aria-labelledby="shops-h">
+        <div class="month-head"><h2 id="shops-h">Shops I Like</h2></div>
+        <p class="shops-intro">No particular item. A gift card or anything from these is a safe bet.</p>
+        <ul class="shop-list" role="list" id="shopList"></ul>
+      </section>
+
+      <footer class="footer" id="footer"></footer>
+    </div>
+  </main>
+
+  <p class="visually-hidden" id="status" aria-live="polite"></p>
+
+  <script src="glyphs.js"></script>
+  <script src="wishes.js"></script>
+  <script src="wishlist.js"></script>
+</body>
+</html>
