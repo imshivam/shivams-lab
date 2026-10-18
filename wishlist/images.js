@@ -15,6 +15,7 @@ window.WISH_IMAGES = {
   "lightbox-noble-wall-light": "img/lightbox-noble-wall-light.jpg",
   "lumie-sad-lamp": "img/lumie-sad-lamp.jpg",
   "moss-wool-parka": "img/moss-wool-parka.jpg",
+  "ninja-crispi-pro": "img/ninja-crispi-pro.jpg",
   "onitsuka-tiger": "img/onitsuka-tiger.jpg",
   "ray-ban-meta": "img/ray-ban-meta.jpg",
   "red-wing-8864": "img/red-wing-8864.jpg",
