@@ -7,8 +7,8 @@ window.WISH_STATUS = {
   },
   "adidas-spain-away-authentic-ls": {
     "checked": "2026-10-18",
-    "ok": null,
-    "why": "the shop refused the visit (status 403, 'adidas')"
+    "ok": true,
+    "price": null
   },
   "adidas-spain-away-jersey": {
     "checked": "2026-10-18",

@@ -51,11 +51,11 @@ window.WISH_IMAGES = {
   },
   "dji-mini-5-pro": {
     "bg": "#ffffff",
-    "h": 374,
+    "h": 870,
     "plain": true,
     "small": "img/dji-mini-5-pro-s.jpg",
     "src": "img/dji-mini-5-pro.jpg",
-    "w": 374
+    "w": 870
   },
   "ecco-grainer": {
     "bg": "#ffffff",
