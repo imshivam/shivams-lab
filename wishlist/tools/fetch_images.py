@@ -28,8 +28,10 @@ import html
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.parse
 import urllib.request
@@ -259,6 +261,7 @@ class Browser:
             self.browser = self.browser or self.pw.chromium.launch(**opts)
         ctx = self.browser.new_context(user_agent=UA, locale="en-GB", viewport={"width": 1280, "height": 1000})
         page = ctx.new_page()
+        page.set_default_timeout(40000)  # no single step may hang the run
         page.add_init_script("Object.defineProperty(navigator, 'webdriver', { get: () => undefined })")
         resp = page.goto(url, wait_until="domcontentloaded", timeout=60000)
         page.wait_for_timeout(6000)
@@ -283,7 +286,7 @@ class Browser:
             if not src:
                 raise ValueError("no product photo found on the page (%r)" % page.title()[:60])
             def fetch(u):  # same browser session and referrer, which some image servers require
-                r = ctx.request.get(urllib.parse.urljoin(page.url, u), headers={"Referer": page.url})
+                r = ctx.request.get(urllib.parse.urljoin(page.url, u), headers={"Referer": page.url}, timeout=30000)
                 if not r.ok:
                     raise ValueError("photo download returned %d" % r.status)
                 return r.body()
@@ -305,9 +308,78 @@ class Browser:
             ctx.close()
 
     def close(self):
-        if self.browser:
-            self.browser.close()
-            self.pw.stop()
+        """Close the browser; after a timeout it may be stuck, so errors are ignored and a fresh one starts next time."""
+        try:
+            if self.browser:
+                self.browser.close()
+            if self.pw:
+                self.pw.stop()
+        except Exception:
+            pass
+        self.pw = self.browser = None
+
+
+class TookTooLong(Exception):
+    pass
+
+
+class Helper:
+    """Runs each browser visit in its own short-lived process (this script with --helper), so a page that
+    never finishes loading can be stopped outright instead of holding up the whole run."""
+
+    LIMIT = 150  # seconds per visit
+
+    def _run(self, kind, arg):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "out")
+            p = subprocess.Popen([sys.executable, os.path.abspath(__file__), "--helper", kind, arg, out],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
+            try:
+                stdout, stderr = p.communicate(timeout=self.LIMIT)
+            except subprocess.TimeoutExpired:
+                os.killpg(p.pid, signal.SIGKILL)  # the helper, its browser and everything they started
+                p.communicate()
+                raise TookTooLong("gave up after %d seconds" % self.LIMIT)
+            why = (stderr.strip().splitlines() or ["the browser failed"])[-1][:200]
+            if p.returncode == 3:
+                raise Gone(why)
+            if p.returncode == 4:
+                raise Blocked(why)
+            if p.returncode != 0:
+                raise ValueError(why)
+            return stdout.strip(), open(out, "rb").read()
+
+    def photo(self, e):
+        src, data = self._run("photo", json.dumps(e))
+        im = Image.open(BytesIO(data))
+        im.load()
+        return src, im
+
+    def page(self, url):
+        final, data = self._run("page", url)
+        return data.decode("utf-8", "replace"), final
+
+
+def helper(kind, arg, out):
+    """The --helper side: one browser visit, result written to out, outcome in the exit code."""
+    b = Browser()
+    try:
+        if kind == "photo":
+            src, im = b.photo(json.loads(arg))
+            im.save(out, "PNG")
+            print(src)
+        else:
+            page, final = b.page(arg)
+            open(out, "w").write(page)
+            print(final)
+    except Gone as err:
+        print(err, file=sys.stderr)
+        sys.exit(3)
+    except Blocked as err:
+        print(err, file=sys.stderr)
+        sys.exit(4)
+    finally:
+        b.close()
 
 
 def frame(im):
@@ -399,6 +471,7 @@ def make_og(data, images):
 
 
 def main():
+    sys.stdout.reconfigure(line_buffering=True)  # show progress in the run's log as it happens
     force = "--force" in sys.argv
     only = set(sys.argv[sys.argv.index("--only") + 1].split(",")) if "--only" in sys.argv else set()
     os.makedirs(IMG_DIR, exist_ok=True)
@@ -406,7 +479,7 @@ def main():
     entries = data["wishes"] + data["brands"]
     try:
         import playwright  # noqa: F401
-        browser = Browser()
+        browser = Helper()
     except ImportError:
         browser = None
     report = []
@@ -439,16 +512,18 @@ def main():
         gone = e.get("gone")
         if (have and not force and id_ not in only) or gone or not (e.get("url") or e.get("image")):
             continue
-        try:
+        def fetch():
             try:
-                src, im = fetch_plain(e)
+                return fetch_plain(e)
             except Gone:
                 raise
             except Exception as plain_err:
                 if not browser:
                     raise
                 print("retry ", id_, "in a browser after:", plain_err)
-                src, im = browser.photo(e)
+                return browser.photo(e)
+        try:
+            src, im = fetch()
             save(id_, im)
             print("ok    ", id_, "<-", src, im.size)
         except Exception as err:  # keep going; report every failure at the end
@@ -456,8 +531,6 @@ def main():
             print("failed", id_, "-", err)
             # An existing photo is kept: a shop can turn GitHub's US servers away from a page that still exists.
         time.sleep(3)
-    if browser:
-        browser.close()
 
     for e in entries:  # photos saved before small copies existed
         big = os.path.join(IMG_DIR, e["id"] + ".jpg")
@@ -482,4 +555,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:2] == ["--helper"]:
+        helper(*sys.argv[2:5])
+    else:
+        main()
