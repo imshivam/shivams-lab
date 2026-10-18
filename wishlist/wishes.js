@@ -17,7 +17,7 @@ window.WISHES = [
   { id: "adidas-spain-away-authentic-ls", cat: "clothing", brand: "adidas", name: "Spain 26 Away Authentic Long Sleeve Jersey", price: "£130", url: "https://www.adidas.co.uk/-/KA1957.html", image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/849dd93c8ea14234b60e1bbed2f4bf26_9366/Spain_26_Away_Authentic_Long_Sleeve_Jersey_White_KA1957_HM1.jpg" },
   { id: "moss-wool-parka", cat: "clothing", brand: "Moss", name: "Dark Chestnut Wool Parka", price: "£249", url: "https://www.moss.co.uk/burnt-orange-wool-parka-967036713" },
   { id: "universal-works-gower", cat: "clothing", brand: "Universal Works", name: "Black Not Shearling Gower Jacket", price: "£335", url: "https://universalworks.com/products/universal-works-gower-jacket-in-black-not-shearling?country=GB" },
-  { id: "hackett-velospeed", cat: "clothing", brand: "Hackett", name: "Velospeed Jacket", note: "The exact one I saved has gone from Hackett’s site, so this links to the Velospeed range. Size XS.", price: "£490", url: "https://www.hackett.com/uk/en_gb/men/b/velospeed/", photoFrom: "https://www.galerieslafayette.com/p/veste+velospeed-hackett+london/2013221542101/295" },
+  { id: "hackett-velospeed", cat: "clothing", brand: "Hackett", name: "Velospeed Jacket", note: "The exact one I saved has gone from Hackett’s site, so this links to the Velospeed range. Size XS.", price: "£490", url: "https://www.hackett.com/uk/en_gb/men/b/velospeed/" },
   { id: "zara-blue-jumper", cat: "clothing", brand: "Zara", name: "Blue wool blend jumper", price: "£49.99", url: "https://www.zara.com/uk/en/regular-fit-wool-blend-jumper-p02632306.html?v1=479751243" },
 
   // Footwear
@@ -25,7 +25,7 @@ window.WISHES = [
   { id: "vivobarefoot-primus-lite-3-5", cat: "footwear", brand: "Vivobarefoot", name: "Primus Lite 3.5 in Obsidian", price: "£77", was: "£110", url: "https://www.vivobarefoot.com/uk/primus-lite-3-5-mens?colour=Obsidian", photoFrom: "https://www.outnorth.com/int/brands/vivobarefoot/vivobarefoot-men-s-primus-lite-3-5-obsidian-FS634071" },
   { id: "solovair-zip-derby", cat: "footwear", brand: "Solovair", name: "Burgundy Rub-Off 8 Eye Zip Derby Boot", price: "£189", url: "https://uk.nps-solovair.com/collections/mens/products/s8-551-bur-zip-g?variant=30679406542913" },
   { id: "ecco-grainer", cat: "footwear", brand: "Ecco", name: "Grainer black boots", note: "Looks like a proper combat boot and seems comfortable for all-day wear. Can replace the Birkenstock ones.", url: "https://gb.ecco.com/product/ecco-grainer/214724/01001" },
-  { id: "red-wing-8864", cat: "footwear", brand: "Red Wing", name: "Classic Moc Toe Boots 8864 GORE-TEX, Russet Taos", note: "Unique and classic.", price: "£349", url: "https://www.redwinglondon.com/collections/red-wing-boots/products/classic-moc-toe-boots-8864-gore-tex" },
+  { id: "red-wing-8864", cat: "footwear", brand: "Red Wing", name: "Classic Moc Toe Boots 8864 GORE-TEX, Russet Taos", note: "Unique and classic. Red Wing London no longer lists it, so this links to Urban Industry.", price: "£349", url: "https://urbanindustry.co.uk/products/red-wing-classic-6-moc-toe-boot-gore-tex-russet-taos" },
 
   // Gadgets
   { id: "dji-mini-5-pro", cat: "gadget", brand: "DJI", name: "DJI Mini 5 Pro", note: "The full combo with the smart remote. £1,129 with a 256 GB SD card and the 2-year care plan.", price: "£979", url: "https://www.dji.com/uk/mini-5-pro" },
@@ -45,7 +45,7 @@ window.WISHES = [
 window.BRANDS = [
   { id: "kardo", cat: "clothing", brand: "Kardo", line: "Indian menswear with real craft", price: "£200–600", url: "https://kardo.co/product-category/aw25-craft-mens/" },
   { id: "universal-works", cat: "clothing", brand: "Universal Works", line: "Modern menswear", url: "https://universalworks.com/collections/clothing" },
-  { id: "allsaints-leather", cat: "clothing", brand: "AllSaints", line: "Leather jackets, in XS and XXS", price: "£300–500+", url: "https://www.allsaints.com/men/leathers/leather-jackets?start=24&sz=24" },
+  { id: "allsaints-leather", cat: "clothing", brand: "AllSaints", line: "Leather jackets, in XS and XXS", price: "£300–500+", url: "https://www.allsaints.com/men/leathers/leather-jackets" },
   { id: "embassy", cat: "footwear", brand: "Embassy", line: "Quirky leather shoes and boots", price: "£100–235", url: "https://embassylondon.co.uk/collections/mens-leather-footwear" },
   { id: "ecco-waterproof", cat: "footwear", brand: "Ecco", line: "Waterproof and hiking shoes, with arch support", price: "£100–200", url: "https://gb.ecco.com/men/shoes/waterproof-and-gore-tex" },
   { id: "onitsuka-tiger", cat: "footwear", brand: "Onitsuka Tiger", line: "Cool, fun trainers", price: "£120–250", url: "https://www.onitsukatiger.com/gb/en-gb/men/shoes/all-shoes/" },

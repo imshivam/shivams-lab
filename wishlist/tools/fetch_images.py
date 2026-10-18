@@ -98,7 +98,7 @@ class Gone(Exception):
 
 
 def handle(url):
-    m = re.search(r"/products/([^/?#]+)", url)
+    m = re.search(r"/products/([^/?#]+?)(\.js|\.json)?(?:[/?#]|$)", url)
     return m.group(1) if m else None
 
 
@@ -149,7 +149,8 @@ def find_image(url):
 LARGEST = """() => {
   const seen = [...document.images]
     .map((i) => ({ src: i.currentSrc || i.src, r: i.getBoundingClientRect(), w: i.naturalWidth, h: i.naturalHeight }))
-    .filter((i) => i.src && !i.src.startsWith("data:") && i.w >= 300 && i.h >= 300 && i.r.width >= 150 && i.r.top < 1400);
+    .filter((i) => i.src && !i.src.startsWith("data:") && i.w >= 300 && i.h >= 300 && i.r.width >= 150 && i.r.top < 1400
+      && i.r.height / i.r.width >= 0.75);  // product photos are square or tall; wide ones are banners
   seen.sort((a, b) => b.r.width * b.r.height - a.r.width * a.r.height);
   return seen.length ? seen[0].src : null;
 }"""
