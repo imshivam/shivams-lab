@@ -4,6 +4,7 @@
 // cat: "clothing" | "footwear" | "gadget" | "home" | "accessory". price and was are text, as the shop shows them.
 // Photos come from each product page: run `python3 wishlist/tools/fetch_images.py` after adding a wish.
 // image (optional): a photo URL to use when the product page's own preview picture is wrong.
+// gone (optional): true when the shop no longer sells it at this link. The tile then says so and isn't a link.
 // photoFrom (optional): another shop's page for the same product, used only for the photo when the main shop blocks automated visits.
 
 window.WISHES_UPDATED = "2026-10-18";
@@ -16,9 +17,9 @@ window.WISHES = [
   { id: "adidas-spain-away-authentic", cat: "clothing", brand: "adidas", name: "Spain 26 Away Authentic Jersey", note: "Short sleeve.", price: "£120", url: "https://www.adidas.co.uk/-/JN4392.html", image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/764f9e7d0914477083cbdb77a45bc36e_9366/Spain_26_Away_Authentic_Jersey_White_JN4392_HM53.jpg" },
   { id: "adidas-spain-away-authentic-ls", cat: "clothing", brand: "adidas", name: "Spain 26 Away Authentic Long Sleeve Jersey", price: "£130", url: "https://www.adidas.co.uk/-/KA1957.html", image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/849dd93c8ea14234b60e1bbed2f4bf26_9366/Spain_26_Away_Authentic_Long_Sleeve_Jersey_White_KA1957_HM1.jpg" },
   { id: "moss-wool-parka", cat: "clothing", brand: "Moss", name: "Dark Chestnut Wool Parka", price: "£249", url: "https://www.moss.co.uk/burnt-orange-wool-parka-967036713" },
-  { id: "universal-works-gower", cat: "clothing", brand: "Universal Works", name: "Black Not Shearling Gower Jacket", price: "£335", url: "https://universalworks.com/products/universal-works-gower-jacket-in-black-not-shearling?country=GB" },
+  { id: "universal-works-gower", cat: "clothing", brand: "Universal Works", name: "Black Not Shearling Gower Jacket", price: "£335", url: "https://universalworks.com/products/universal-works-gower-jacket-in-black-not-shearling?country=GB", gone: true },
   { id: "hackett-velospeed", cat: "clothing", brand: "Hackett", name: "Velospeed Jacket", note: "The exact one I saved has gone from Hackett’s site, so this links to the Velospeed range. Size XS.", price: "£490", url: "https://www.hackett.com/uk/en_gb/men/b/velospeed/" },
-  { id: "zara-blue-jumper", cat: "clothing", brand: "Zara", name: "Blue wool blend jumper", price: "£49.99", url: "https://www.zara.com/uk/en/regular-fit-wool-blend-jumper-p02632306.html?v1=479751243" },
+  { id: "zara-blue-jumper", cat: "clothing", brand: "Zara", name: "Blue wool blend jumper", price: "£49.99", url: "https://www.zara.com/uk/en/regular-fit-wool-blend-jumper-p02632306.html?v1=479751243", gone: true },
 
   // Footwear
   { id: "vivobarefoot-primus-lite-iv", cat: "footwear", brand: "Vivobarefoot", name: "Primus Lite IV", note: "For running and training.", price: "£110", url: "https://www.vivobarefoot.com/uk/primus-lite-iv-mens?colour=Mineral", photoFrom: "https://www.rdrc.sg/products/vivobarefoot-primus-lite-iv-mineral-mens" },
@@ -35,10 +36,10 @@ window.WISHES = [
 
   // Home
   { id: "lightbox-noble-wall-light", cat: "home", brand: "Lightbox", name: "Noble Rechargeable Wall Light, Gold & Frosted", note: "Really good for the entrance.", price: "£245", url: "https://www.lightboxshop.co.uk/noble-rechargeable-wall-light-gold-and-frosted.html" },
-  { id: "ninja-crispi-pro", cat: "home", brand: "Ninja", name: "Ninja Crispi Pro air fryer" },
+  { id: "ninja-crispi-pro", cat: "home", brand: "Ninja", name: "Ninja Crispi Pro air fryer", url: "https://www.sharkninja.co.uk/kitchen/cooking-appliances/air-fryers/crispi-portable-air-fryers", photoFrom: "https://www.argos.co.uk/product/8920120" },
 
   // Accessories
-  { id: "blunt-metro-mister-mort", cat: "accessory", brand: "Blunt", name: "Mister Mort Metro umbrella", note: "Artsy, unique and fun.", price: "£85", url: "https://bluntumbrellas.co.uk/products/mister-mort-metro?variant=55726889435511", photoFrom: "https://www.hyphenkidz.co.nz/products/blunt-x-mordechai-rubinstein-metro-umbrella" },
+  { id: "blunt-metro-mister-mort", cat: "accessory", brand: "Blunt", name: "Mister Mort Metro umbrella", note: "Artsy, unique and fun.", price: "£85", url: "https://bluntumbrellas.co.uk/products/mister-mort-metro?variant=55726889435511", gone: true },
 ];
 
 // Shops I like as a whole. Good for a gift card, or for browsing.

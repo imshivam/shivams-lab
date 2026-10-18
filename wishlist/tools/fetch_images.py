@@ -243,7 +243,7 @@ def main():
         if os.path.exists(path) and not force and e["id"] not in only:
             images[e["id"]] = rel
             continue
-        if not e.get("url") and not e.get("image"):
+        if e.get("gone") or (not e.get("url") and not e.get("image")):
             continue
         try:
             src, data = fetch(e)

@@ -87,13 +87,15 @@
   }
 
   function tileHTML(w) {
+    const link = w.url && !w.gone;
     const inner = `
-      <span class="tile-art${IMAGES[w.id] ? " has-photo" : ""}">${photo(w)}${priceHTML(w)}${w.url ? `<span class="out">${ARROW}</span>` : ""}</span>
+      <span class="tile-art${IMAGES[w.id] ? " has-photo" : ""}">${photo(w)}${w.gone ? "" : priceHTML(w)}${link ? `<span class="out">${ARROW}</span>` : ""}</span>
       <span class="tile-text">${w.brand ? `<span class="tile-meta">${esc(w.brand)}</span>` : ""}
         <span class="tile-name">${esc(w.name)}</span>
         ${w.note ? `<span class="tile-line">${esc(w.note)}</span>` : ""}
-        ${w.url ? "" : `<span class="wish-nolink">No link, any good one is perfect</span>`}</span>`;
-    return w.url
+        ${w.gone ? `<span class="wish-nolink">No longer on sale at the shop</span>`
+          : w.url ? "" : `<span class="wish-nolink">No link, any good one is perfect</span>`}</span>`;
+    return link
       ? `<li><a class="tile wish" href="${esc(w.url)}" target="_blank" rel="noopener" data-id="${esc(w.id)}">${inner}<span class="visually-hidden"> (opens the shop in a new tab)</span></a></li>`
       : `<li><div class="tile wish" data-id="${esc(w.id)}">${inner}</div></li>`;
   }
@@ -147,7 +149,7 @@
   let lastPick = null;
   gift.addEventListener("click", () => {
     if (state.filter !== "all") setFilter("all");
-    const pool = wishes.filter((w) => w.id !== lastPick);
+    const pool = wishes.filter((w) => w.id !== lastPick && !w.gone);
     const pick = pool[Math.floor(Math.random() * pool.length)];
     lastPick = pick.id;
     const tile = $(`.tile[data-id="${pick.id}"]`);
