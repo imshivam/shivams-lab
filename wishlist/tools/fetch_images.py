@@ -8,6 +8,8 @@ Run from the repository root:  python3 wishlist/tools/fetch_images.py
 For each entry in wishlist/wishes.js with a url, it finds the product's photo, saves it as
 wishlist/img/<id>.jpg (at most 800 px, on white) and lists it in wishlist/images.js. In order, it tries:
   1. the entry's `image` field, if set;
+  (If the entry has `photoFrom`, the steps below read that page instead of `url`: another shop
+   selling the same product, for shops that block automated visits.)
   2. on a Shopify store, the product's first photo from the store's product data;
   3. the page's product data or preview picture (og:image), unless it is a logo;
   4. in a real browser (needs Playwright), the largest photo near the top of the page.
@@ -100,10 +102,15 @@ def handle(url):
     return m.group(1) if m else None
 
 
-def check_same_product(url, final):
+def check_same_product(url, final, product=True):
     h = handle(url)
     if h and handle(final) != h:
         raise Gone("the link now goes to a different page: " + final)
+    # Shops send a product that has gone to their home page or to search.
+    path = urllib.parse.urlsplit(final).path.strip("/")
+    moved = urllib.parse.urlsplit(url).path.strip("/") != path
+    if product and moved and (path.count("/") < 2 or "search" in final.lower()):
+        raise Gone("the link now goes to the shop's home page or search: " + final)
 
 
 def shopify_image(url):
@@ -133,12 +140,7 @@ def find_image(url):
     src = shopify_image(url)
     if src:
         return src
-    try:
-        raw, final = get(url)
-    except urllib.error.HTTPError as err:
-        if err.code in (404, 410):
-            raise Gone("the product page no longer exists (%d)" % err.code)
-        raise
+    raw, final = get(url)  # a 404 here is checked again in the browser, as some shops refuse plain requests
     check_same_product(url, final)
     return page_image(raw.decode("utf-8", "replace"), final)
 
@@ -153,7 +155,7 @@ LARGEST = """() => {
 }"""
 
 
-def fetch_with_browser(url, given):
+def fetch_with_browser(url, given, product=True):
     """Open the page in headless Chromium, which most shops accept, and download the photo in the same session."""
     from playwright.sync_api import sync_playwright
     # A visible, real Chrome (run under xvfb on a server) gets past bot checks that stop headless browsers.
@@ -172,7 +174,7 @@ def fetch_with_browser(url, given):
             page.wait_for_timeout(6000)
             if resp and resp.status in (404, 410):
                 raise Gone("the product page no longer exists (%d)" % resp.status)
-            check_same_product(url, page.url)
+            check_same_product(url, page.url, product)
             page.mouse.wheel(0, 600)
             page.wait_for_timeout(1500)
             src = given or page_image(page.content(), page.url) or page.evaluate(LARGEST)
@@ -181,6 +183,9 @@ def fetch_with_browser(url, given):
                                  % (resp.status if resp else "?", page.title()[:80]))
             src = urllib.parse.urljoin(page.url, src)
             r = ctx.request.get(src, headers={"Referer": page.url})
+            if not r.ok and not given:  # the preview picture is broken: use the largest photo on the page
+                src = page.evaluate(LARGEST)
+                r = ctx.request.get(src, headers={"Referer": page.url}) if src else r
             if not r.ok:
                 raise ValueError("photo download returned %d" % r.status)
             return src, r.body()
@@ -206,8 +211,10 @@ def save(data, path):
 
 
 def fetch(e):
+    url = e.get("photoFrom") or e.get("url")
+    product = "line" not in e  # shops in "Shops I like" are not single products
     try:
-        src = e.get("image") or find_image(e["url"])
+        src = e.get("image") or find_image(url)
         if not src:
             raise ValueError("no product photo in the page's source")
         return src, get(src, "image/avif,image/webp,image/*,*/*")[0]
@@ -219,7 +226,7 @@ def fetch(e):
         except ImportError:
             raise plain_err
         print("retry ", e["id"], "in a browser after:", plain_err)
-        return fetch_with_browser(e.get("url") or e["image"], e.get("image"))
+        return fetch_with_browser(url or e["image"], e.get("image"), product)
 
 
 def main():

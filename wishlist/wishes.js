@@ -4,6 +4,7 @@
 // cat: "clothing" | "footwear" | "gadget" | "home" | "accessory". price and was are text, as the shop shows them.
 // Photos come from each product page: run `python3 wishlist/tools/fetch_images.py` after adding a wish.
 // image (optional): a photo URL to use when the product page's own preview picture is wrong.
+// photoFrom (optional): another shop's page for the same product, used only for the photo when the main shop blocks automated visits.
 
 window.WISHES_UPDATED = "2026-10-18";
 
@@ -16,19 +17,19 @@ window.WISHES = [
   { id: "adidas-spain-away-authentic-ls", cat: "clothing", brand: "adidas", name: "Spain 26 Away Authentic Long Sleeve Jersey", price: "£130", url: "https://www.adidas.co.uk/-/KA1957.html", image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/849dd93c8ea14234b60e1bbed2f4bf26_9366/Spain_26_Away_Authentic_Long_Sleeve_Jersey_White_KA1957_HM1.jpg" },
   { id: "moss-wool-parka", cat: "clothing", brand: "Moss", name: "Dark Chestnut Wool Parka", price: "£249", url: "https://www.moss.co.uk/burnt-orange-wool-parka-967036713" },
   { id: "universal-works-gower", cat: "clothing", brand: "Universal Works", name: "Black Not Shearling Gower Jacket", price: "£335", url: "https://universalworks.com/products/universal-works-gower-jacket-in-black-not-shearling?country=GB" },
-  { id: "hackett-velospeed", cat: "clothing", brand: "Hackett", name: "Velospeed Jacket", price: "£490", url: "https://www.hackett.com/uk/en_gb/pd/velospeed-HM4000043.html?dwvar_HM4000043_size=S055XS&dwvar_HM4000043_color=781&variationGroupID=HM4000043781" },
+  { id: "hackett-velospeed", cat: "clothing", brand: "Hackett", name: "Velospeed Jacket", note: "The exact one I saved has gone from Hackett’s site, so this links to the Velospeed range. Size XS.", price: "£490", url: "https://www.hackett.com/uk/en_gb/men/b/velospeed/", photoFrom: "https://www.galerieslafayette.com/p/veste+velospeed-hackett+london/2013221542101/295" },
   { id: "zara-blue-jumper", cat: "clothing", brand: "Zara", name: "Blue wool blend jumper", price: "£49.99", url: "https://www.zara.com/uk/en/regular-fit-wool-blend-jumper-p02632306.html?v1=479751243" },
 
   // Footwear
-  { id: "vivobarefoot-primus-lite-iv", cat: "footwear", brand: "Vivobarefoot", name: "Primus Lite IV", note: "For running and training.", price: "£110", url: "https://www.vivobarefoot.com/uk/primus-lite-iv-mens?colour=Mineral" },
-  { id: "vivobarefoot-primus-lite-3-5", cat: "footwear", brand: "Vivobarefoot", name: "Primus Lite 3.5 in Obsidian", price: "£77", was: "£110", url: "https://www.vivobarefoot.com/uk/primus-lite-3-5-mens?colour=Obsidian" },
+  { id: "vivobarefoot-primus-lite-iv", cat: "footwear", brand: "Vivobarefoot", name: "Primus Lite IV", note: "For running and training.", price: "£110", url: "https://www.vivobarefoot.com/uk/primus-lite-iv-mens?colour=Mineral", photoFrom: "https://www.rdrc.sg/products/vivobarefoot-primus-lite-iv-mineral-mens" },
+  { id: "vivobarefoot-primus-lite-3-5", cat: "footwear", brand: "Vivobarefoot", name: "Primus Lite 3.5 in Obsidian", price: "£77", was: "£110", url: "https://www.vivobarefoot.com/uk/primus-lite-3-5-mens?colour=Obsidian", photoFrom: "https://www.outnorth.com/int/brands/vivobarefoot/vivobarefoot-men-s-primus-lite-3-5-obsidian-FS634071" },
   { id: "solovair-zip-derby", cat: "footwear", brand: "Solovair", name: "Burgundy Rub-Off 8 Eye Zip Derby Boot", price: "£189", url: "https://uk.nps-solovair.com/collections/mens/products/s8-551-bur-zip-g?variant=30679406542913" },
   { id: "ecco-grainer", cat: "footwear", brand: "Ecco", name: "Grainer black boots", note: "Looks like a proper combat boot and seems comfortable for all-day wear. Can replace the Birkenstock ones.", url: "https://gb.ecco.com/product/ecco-grainer/214724/01001" },
   { id: "red-wing-8864", cat: "footwear", brand: "Red Wing", name: "Classic Moc Toe Boots 8864 GORE-TEX, Russet Taos", note: "Unique and classic.", price: "£349", url: "https://www.redwinglondon.com/collections/red-wing-boots/products/classic-moc-toe-boots-8864-gore-tex" },
 
   // Gadgets
   { id: "dji-mini-5-pro", cat: "gadget", brand: "DJI", name: "DJI Mini 5 Pro", note: "The full combo with the smart remote. £1,129 with a 256 GB SD card and the 2-year care plan.", price: "£979", url: "https://www.dji.com/uk/mini-5-pro" },
-  { id: "ray-ban-meta", cat: "gadget", brand: "Ray-Ban Meta", name: "Ray-Ban Meta glasses", price: "£400+", url: "https://www.ray-ban.com/uk/ray-ban-meta-ai-glasses" },
+  { id: "ray-ban-meta", cat: "gadget", brand: "Ray-Ban Meta", name: "Ray-Ban Meta glasses", price: "£400+", url: "https://www.ray-ban.com/uk/ray-ban-meta-ai-glasses", photoFrom: "https://business.currys.co.uk/catalogue/cameras-smart-tech/smart-tech/smart-toys-and-gadgets/ray-ban-meta-meta-wayfarer-gen-2-glasses-shiny-black-with-green-lenses/N740821W" },
   { id: "lumie-sad-lamp", cat: "gadget", brand: "Lumie", name: "Task SAD lamp, golden yellow", price: "£279", url: "https://www.lumie.com/products/task-golden-yellow" },
   { id: "vinyl-player", cat: "gadget", name: "A really good vinyl player", note: "Top quality. One with a speaker is great, or Bluetooth to a Sonos is enough." },
 
@@ -37,7 +38,7 @@ window.WISHES = [
   { id: "ninja-crispi-pro", cat: "home", brand: "Ninja", name: "Ninja Crispi Pro air fryer" },
 
   // Accessories
-  { id: "blunt-metro-mister-mort", cat: "accessory", brand: "Blunt", name: "Mister Mort Metro umbrella", note: "Artsy, unique and fun.", price: "£85", url: "https://bluntumbrellas.co.uk/products/mister-mort-metro?variant=55726889435511" },
+  { id: "blunt-metro-mister-mort", cat: "accessory", brand: "Blunt", name: "Mister Mort Metro umbrella", note: "Artsy, unique and fun.", price: "£85", url: "https://bluntumbrellas.co.uk/products/mister-mort-metro?variant=55726889435511", photoFrom: "https://www.hyphenkidz.co.nz/products/blunt-x-mordechai-rubinstein-metro-umbrella" },
 ];
 
 // Shops I like as a whole. Good for a gift card, or for browsing.
