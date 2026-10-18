@@ -48,9 +48,8 @@ window.WISH_STATUS = {
   },
   "lumie-sad-lamp": {
     "checked": "2026-10-18",
-    "gone": true,
-    "ok": false,
-    "why": "the link now goes to a different page: https://www.lumie.com/en-us"
+    "ok": null,
+    "why": "the shop sent the visit to another country's site: https://www.lumie.com/en-us"
   },
   "moss-wool-parka": {
     "checked": "2026-10-18",
