@@ -2,6 +2,8 @@
 // To add a wish, copy an entry and keep each list in the order you want it shown.
 // id: stable and unique. Later it will key reservations, so don't rename an id once the page is shared.
 // cat: "clothing" | "footwear" | "gadget" | "home" | "accessory". price and was are text, as the shop shows them.
+// Photos come from each product page: run `python3 wishlist/tools/fetch_images.py` after adding a wish.
+// image (optional): a photo URL to use when the product page's own preview picture is wrong.
 
 window.WISHES_UPDATED = "2026-10-18";
 
@@ -9,9 +11,9 @@ window.WISHES = [
   // Clothing
   { id: "desigual-floral-trousers", cat: "clothing", brand: "Desigual", name: "Long floral trousers", price: "£155", url: "https://www.desigual.com/en_GB/26SMPW15.html" },
   { id: "desigual-printed-jeans", cat: "clothing", brand: "Desigual", name: "Printed jeans", price: "£149", url: "https://www.desigual.com/en_GB/26WMDD085053.html" },
-  { id: "adidas-spain-away-jersey", cat: "clothing", brand: "adidas", name: "Spain 26 Away Jersey", note: "The supporter version, short sleeve.", price: "£85", url: "https://www.adidas.co.uk/-/JN4397.html" },
-  { id: "adidas-spain-away-authentic", cat: "clothing", brand: "adidas", name: "Spain 26 Away Authentic Jersey", note: "Short sleeve.", price: "£120", url: "https://www.adidas.co.uk/-/JN4392.html" },
-  { id: "adidas-spain-away-authentic-ls", cat: "clothing", brand: "adidas", name: "Spain 26 Away Authentic Long Sleeve Jersey", price: "£130", url: "https://www.adidas.co.uk/-/KA1957.html" },
+  { id: "adidas-spain-away-jersey", cat: "clothing", brand: "adidas", name: "Spain 26 Away Jersey", note: "The supporter version, short sleeve.", price: "£85", url: "https://www.adidas.co.uk/-/JN4397.html", image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/d3d30120532e4e4dbe9b5a0d51fe1df2_9366/Spain_26_Away_Jersey_White_JN4397_21_model.jpg" },
+  { id: "adidas-spain-away-authentic", cat: "clothing", brand: "adidas", name: "Spain 26 Away Authentic Jersey", note: "Short sleeve.", price: "£120", url: "https://www.adidas.co.uk/-/JN4392.html", image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/764f9e7d0914477083cbdb77a45bc36e_9366/Spain_26_Away_Authentic_Jersey_White_JN4392_HM53.jpg" },
+  { id: "adidas-spain-away-authentic-ls", cat: "clothing", brand: "adidas", name: "Spain 26 Away Authentic Long Sleeve Jersey", price: "£130", url: "https://www.adidas.co.uk/-/KA1957.html", image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/849dd93c8ea14234b60e1bbed2f4bf26_9366/Spain_26_Away_Authentic_Long_Sleeve_Jersey_White_KA1957_HM1.jpg" },
   { id: "moss-wool-parka", cat: "clothing", brand: "Moss", name: "Dark Chestnut Wool Parka", price: "£249", url: "https://www.moss.co.uk/burnt-orange-wool-parka-967036713" },
   { id: "universal-works-gower", cat: "clothing", brand: "Universal Works", name: "Black Not Shearling Gower Jacket", price: "£335", url: "https://universalworks.com/products/universal-works-gower-jacket-in-black-not-shearling?country=GB" },
   { id: "hackett-velospeed", cat: "clothing", brand: "Hackett", name: "Velospeed Jacket", price: "£490", url: "https://www.hackett.com/uk/en_gb/pd/velospeed-HM4000043.html?dwvar_HM4000043_size=S055XS&dwvar_HM4000043_color=781&variationGroupID=HM4000043781" },

@@ -18,7 +18,15 @@
   const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const ARROW = '<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M4.5 10.5 10.5 4.5M5.5 4.5h5v5"/></svg>';
-  const glyph = (id, cat) => window.glyphSVG(window.GLYPH_FOR[id], cat);
+  const IMAGES = window.WISH_IMAGES || {};
+  const GIFT = `<svg viewBox="0 0 100 100" aria-hidden="true"><g>
+      <rect x="22" y="44" width="56" height="36" rx="5" fill="#fff"/><rect x="46" y="44" width="8" height="36" fill="#FFD36B"/>
+      <g class="g-lid"><rect x="18" y="32" width="64" height="14" rx="4" fill="#fff"/><rect x="46" y="32" width="8" height="14" fill="#FFD36B"/>
+        <path d="M50 32q-14-16-20-6 0 6 20 6zM50 32q14-16 20-6 0 6-20 6z" fill="#FFD36B" stroke="#FFD36B" stroke-width="2.4" stroke-linejoin="round"/></g></g></svg>`;
+  // The product photo, or the brand's name until a photo has been fetched.
+  const photo = (x) => IMAGES[x.id]
+    ? `<img src="${esc(IMAGES[x.id])}" alt="" loading="lazy" decoding="async">`
+    : `<span class="no-photo">${esc(x.brand || x.name)}</span>`;
 
   const state = { filter: "all" };
 
@@ -80,14 +88,14 @@
 
   function tileHTML(w) {
     const inner = `
-      <span class="tile-art cat-${w.cat}">${glyph(w.id, w.cat)}${priceHTML(w)}${w.url ? `<span class="out">${ARROW}</span>` : ""}</span>
+      <span class="tile-art${IMAGES[w.id] ? " has-photo" : ""}">${photo(w)}${priceHTML(w)}${w.url ? `<span class="out">${ARROW}</span>` : ""}</span>
       <span class="tile-text">${w.brand ? `<span class="tile-meta">${esc(w.brand)}</span>` : ""}
         <span class="tile-name">${esc(w.name)}</span>
         ${w.note ? `<span class="tile-line">${esc(w.note)}</span>` : ""}
         ${w.url ? "" : `<span class="wish-nolink">No link, any good one is perfect</span>`}</span>`;
     return w.url
-      ? `<li><a class="tile wish cat-${w.cat}" href="${esc(w.url)}" target="_blank" rel="noopener" data-id="${esc(w.id)}">${inner}<span class="visually-hidden"> (opens the shop in a new tab)</span></a></li>`
-      : `<li><div class="tile wish cat-${w.cat}" data-id="${esc(w.id)}">${inner}</div></li>`;
+      ? `<li><a class="tile wish" href="${esc(w.url)}" target="_blank" rel="noopener" data-id="${esc(w.id)}">${inner}<span class="visually-hidden"> (opens the shop in a new tab)</span></a></li>`
+      : `<li><div class="tile wish" data-id="${esc(w.id)}">${inner}</div></li>`;
   }
 
   function render() {
@@ -101,51 +109,14 @@
 
     const shops = brands.filter((b) => shown(b.cat));
     $("#shops").hidden = !shops.length;
-    $("#shopList").innerHTML = shops.map((b) => `<li class="cat-${b.cat}"><a class="shop" href="${esc(b.url)}" target="_blank" rel="noopener" data-id="${esc(b.id)}">
-        <span class="shop-art">${glyph(b.id, b.cat)}</span>
+    $("#shopList").innerHTML = shops.map((b) => `<li><a class="shop" href="${esc(b.url)}" target="_blank" rel="noopener" data-id="${esc(b.id)}">
+        <span class="shop-art${IMAGES[b.id] ? " has-photo" : ""}">${IMAGES[b.id] ? `<img src="${esc(IMAGES[b.id])}" alt="" loading="lazy" decoding="async">` : esc(b.brand[0])}</span>
         <span class="shop-text"><span class="shop-name">${esc(b.brand)}</span><span class="shop-line">${esc(b.line)}</span></span>
         ${b.price ? `<span class="shop-price">${esc(b.price)}</span>` : ""}${ARROW}
         <span class="visually-hidden"> (opens the shop in a new tab)</span></a></li>`).join("");
-    watchTiles();
   }
 
-  // ---------- Living drawings ----------
-  // A drawing acts out its object once: on hover or focus, and the first time its tile appears on a touch screen.
-  const awake = new WeakMap();
-  function wake(svg) {
-    if (!svg || reduceMotion()) return;
-    svg.classList.remove("alive");
-    void svg.getBoundingClientRect();
-    svg.classList.add("alive");
-    clearTimeout(awake.get(svg));
-    awake.set(svg, setTimeout(() => svg.classList.remove("alive"), 1600));
-  }
-  const greeted = new Set();
-  let greetQueue = Promise.resolve();
-  const greeter = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (!e.isIntersecting) return;
-      greeter.unobserve(e.target);
-      const id = e.target.dataset.id;
-      if (greeted.has(id)) return;
-      greeted.add(id);
-      const tile = e.target;
-      greetQueue = greetQueue.then(() => new Promise((r) => { wake(tile.querySelector(".glyph")); setTimeout(r, 140); }));
-    });
-  }, { threshold: 0.6 });
-  function watchTiles() {
-    document.querySelectorAll(".tile").forEach((t) => { if (!finePointer && !greeted.has(t.dataset.id)) greeter.observe(t); });
-  }
   const main = $("#main");
-  main.addEventListener("pointerover", (e) => {
-    if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
-    const el = e.target.closest(".tile, .shop");
-    if (el && !el.contains(e.relatedTarget)) wake(el.querySelector(".glyph"));
-  });
-  main.addEventListener("focusin", (e) => {
-    const el = e.target.closest(".tile, .shop");
-    if (el) wake(el.querySelector(".glyph"));
-  });
   // The highlight follows the pointer across the tile.
   if (finePointer) {
     main.addEventListener("pointermove", (e) => {
@@ -160,9 +131,17 @@
   // ---------- The gift: pick a wish for me ----------
   // The lid pops, a few sparks fly, and the page brings one wish into view.
   const gift = $("#gift");
-  gift.innerHTML = window.glyphSVG("gift");
-  $("#toolbarGift").innerHTML = window.glyphSVG("gift");
-  setTimeout(() => wake($("svg", gift)), 400);
+  gift.innerHTML = GIFT;
+  $("#toolbarGift").innerHTML = GIFT;
+  // The lid pops once: when the page opens and each time you press the gift.
+  const popLid = () => {
+    if (reduceMotion()) return;
+    const svg = $("svg", gift);
+    svg.classList.remove("alive");
+    void svg.getBoundingClientRect();
+    svg.classList.add("alive");
+  };
+  setTimeout(popLid, 400);
 
   const SPARKS = ["#FFD36B", "#FFFFFF", "#7FB2F5", "#73D39A", "#FF8A98"];
   let lastPick = null;
@@ -178,11 +157,10 @@
       tile.classList.remove("picked");
       void tile.offsetWidth;
       tile.classList.add("picked");
-      setTimeout(() => wake(tile.querySelector(".glyph")), 450);
       $("#status").textContent = `Picked ${pick.brand ? pick.brand + " " : ""}${pick.name}${pick.price ? ", " + pick.price : ""}`;
     };
     if (reduceMotion()) { reveal(); return; }
-    wake($("svg", gift));
+    popLid();
     for (let i = 0; i < 9; i++) {
       const s = document.createElement("span");
       s.className = "spark";

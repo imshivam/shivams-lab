@@ -2,36 +2,24 @@
    Builds on the Lab's styles.css: the same text styles, system colours, tiles, segmented control and glass.
    This file adds the category colours, the price tag, the gift and the list of shops. */
 
-/* ---------- Category colours ----------
-   --t1/--t2 and --d1/--d2 are the tile gradient in light and dark (styles.css → .tile-art).
-   --g is the bold colour of the drawing, --g2 its light details. */
-.cat-clothing  { --t1: #FDE8E8; --t2: #F6CDD0; --d1: #3D2326; --d2: #2A181A; --g: #C83E52; --g2: #FFFFFF; }
-.cat-footwear  { --t1: #E5EFFC; --t2: #C9DDF7; --d1: #1E2B3E; --d2: #141D2B; --g: #2D69B8; --g2: #FFFFFF; }
-.cat-gadget    { --t1: #FFF3D4; --t2: #FBE2A6; --d1: #3A3020; --d2: #292216; --g: #A9700A; --g2: #FFFFFF; }
-.cat-home      { --t1: #E4F5E9; --t2: #C6E7D1; --d1: #1F3428; --d2: #15251C; --g: #2B8551; --g2: #FFFFFF; }
-.cat-accessory { --t1: #EEE8FB; --t2: #DBCFF6; --d1: #2B2441; --d2: #1D182D; --g: #6549C4; --g2: #FFFFFF; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .cat-clothing  { --g: #FF8A98; --g2: #3D2326; }
-  :root:not([data-theme="light"]) .cat-footwear  { --g: #7FB2F5; --g2: #1E2B3E; }
-  :root:not([data-theme="light"]) .cat-gadget    { --g: #F2C25B; --g2: #3A3020; }
-  :root:not([data-theme="light"]) .cat-home      { --g: #73D39A; --g2: #1F3428; }
-  :root:not([data-theme="light"]) .cat-accessory { --g: #B6A2FF; --g2: #2B2441; }
-}
-:root[data-theme="dark"] .cat-clothing  { --g: #FF8A98; --g2: #3D2326; }
-:root[data-theme="dark"] .cat-footwear  { --g: #7FB2F5; --g2: #1E2B3E; }
-:root[data-theme="dark"] .cat-gadget    { --g: #F2C25B; --g2: #3A3020; }
-:root[data-theme="dark"] .cat-home      { --g: #73D39A; --g2: #1F3428; }
-:root[data-theme="dark"] .cat-accessory { --g: #B6A2FF; --g2: #2B2441; }
-
-/* The drawings are flat colour, so they get a softer shadow than the Lab's app icons. */
-.tile-art .glyph { width: 54%; filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.12)); }
+/* ---------- Product photos ----------
+   Shop photos are shot on white or light grey, so the tile is white to match.
+   In Dark Mode it is dimmed a little so it doesn't glow (HIG Dark Mode). */
+.wish .tile-art { --t1: #FFFFFF; --t2: #FFFFFF; --d1: #E6E6EA; --d2: #E6E6EA; }
+.tile-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 6%; box-sizing: border-box; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tile-art img { filter: brightness(0.94); } }
+:root[data-theme="dark"] .tile-art img { filter: brightness(0.94); }
+/* Until a photo has been fetched, the tile shows the brand's name. */
+.no-photo { padding: 0 16px 28px; text-align: center; font-size: 1.176rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.023em; color: rgba(60, 60, 67, 0.76); }
+.wish .tile-art:not(.has-photo) { --t1: #F2F2F7; --t2: #E5E5EA; --d1: #2C2C2E; --d2: #1C1C1E; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .no-photo { color: rgba(235, 235, 245, 0.6); } }
+:root[data-theme="dark"] .no-photo { color: rgba(235, 235, 245, 0.6); }
 
 /* ---------- The gift in the masthead ---------- */
 .gift {
   position: relative; flex: none; width: 60px; height: 60px; padding: 0; border: 0; border-radius: 16px;
   background: linear-gradient(160deg, #FF6B81, #E0405A);
   box-shadow: inset 0 0 0 0.5px var(--icon-edge), 0 6px 16px -8px rgba(224, 64, 90, 0.7);
-  --g: #FFFFFF; --g2: #FFD36B;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
   transition: transform 0.35s var(--spring);
 }
@@ -42,7 +30,7 @@
 .gift .spark { position: absolute; left: 50%; top: 30%; width: 7px; height: 7px; margin: -3.5px; border-radius: 2px; pointer-events: none; }
 .toolbar-gift {
   display: inline-block; width: 24px; height: 24px; flex: none; border-radius: 7px;
-  background: linear-gradient(160deg, #FF6B81, #E0405A); --g: #FFFFFF; --g2: #FFD36B;
+  background: linear-gradient(160deg, #FF6B81, #E0405A);
 }
 .toolbar-gift svg { width: 100%; height: 100%; }
 
@@ -55,13 +43,14 @@
 .cat-section { margin-top: 30px; }
 
 /* ---------- Wish tiles ---------- */
-.wish .tile-art { aspect-ratio: 5 / 4; }
+.wish .tile-art { overflow: hidden; }
+.wish .tile-art { aspect-ratio: 4 / 5; }
 .wish .tile-meta { margin-top: 0; }
 .wish .tile-name { margin-top: 1px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .wish .tile-line { -webkit-line-clamp: 4; }
 .wish-nolink { display: block; margin-top: 3px; font-size: 0.765rem; line-height: 1.385; color: var(--label-2); }
 
-/* Price tag: a small glass pill in the corner of the picture. The picture never moves underneath it. */
+/* Price tag: a small glass pill in the corner of the picture.  */
 .price {
   position: absolute; left: 10px; bottom: 10px; display: inline-flex; align-items: baseline; gap: 6px;
   padding: 5px 10px; border-radius: 999px;
@@ -98,28 +87,14 @@ div.tile .tile-art::after { display: none; }
 /* A wish picked by the gift gets a short ring, so the eye can find it. */
 .tile.picked .tile-art { animation: picked 1.6s var(--ease); }
 @keyframes picked {
-  0% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 0 color-mix(in srgb, var(--g) 60%, transparent); }
-  25% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 6px color-mix(in srgb, var(--g) 60%, transparent); }
-  100% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 14px color-mix(in srgb, var(--g) 0%, transparent); }
+  0% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 0 color-mix(in srgb, var(--tint) 55%, transparent); }
+  25% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 6px color-mix(in srgb, var(--tint) 55%, transparent); }
+  100% { box-shadow: inset 0 0 0 0.5px var(--glass-edge), 0 0 0 14px color-mix(in srgb, var(--tint) 0%, transparent); }
 }
 
-/* ---------- Living drawings: each one acts out its object, once ---------- */
-.glyph * { transform-box: fill-box; }
-.alive .g-hop { transform-origin: 50% 100%; animation: g-hop 0.9s var(--spring); }
-.alive .g-step { transform-origin: 20% 100%; animation: g-step 0.9s var(--spring); }
-.alive .g-spin { transform-origin: center; animation: g-spin 1.4s cubic-bezier(0.3, 0, 0.2, 1); }
-.alive .g-lift { animation: g-lift 1.4s var(--spring); }
-.alive .g-rotors { animation: g-rotors 1.4s ease; }
-.alive .g-open { transform-origin: 50% 100%; animation: g-open 1s var(--spring); }
-.alive .g-glow { transform-origin: center; animation: g-glow 1.4s ease; }
+/* ---------- The gift's lid pops once ---------- */
+.gift svg * { transform-box: fill-box; }
 .alive .g-lid { transform-origin: 50% 100%; animation: g-lid 0.9s var(--spring); }
-@keyframes g-hop { 0%, 100% { transform: none; } 30% { transform: scale(1.06, 0.92); } 60% { transform: translateY(-7px) scale(0.97, 1.04); } }
-@keyframes g-step { 0%, 100% { transform: none; } 35% { transform: rotate(-9deg); } 65% { transform: rotate(3deg); } }
-@keyframes g-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
-@keyframes g-lift { 0%, 100% { transform: none; } 45% { transform: translateY(-9px); } 75% { transform: translateY(-3px); } }
-@keyframes g-rotors { 0%, 100% { opacity: 0.38; } 20%, 80% { opacity: 0.7; } }
-@keyframes g-open { 0% { transform: scaleX(0.35) scaleY(1.1); } 60% { transform: scaleX(1.06); } 100% { transform: none; } }
-@keyframes g-glow { 0%, 100% { opacity: 0.55; transform: none; } 45% { opacity: 1; transform: scale(1.35); } }
 @keyframes g-lid { 0%, 100% { transform: none; } 35% { transform: translateY(-10px) rotate(-8deg); } 65% { transform: translateY(-2px) rotate(3deg); } }
 
 /* ---------- Shops I like ---------- */
@@ -141,10 +116,12 @@ div.tile .tile-art::after { display: none; }
   position: relative; display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 16px;
   color: inherit; text-decoration: none;
 }
-.shop-art { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 11px; background: linear-gradient(160deg, var(--t1), var(--t2)); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .shop-art { background: linear-gradient(160deg, var(--d1), var(--d2)); } }
-:root[data-theme="dark"] .shop-art { background: linear-gradient(160deg, var(--d1), var(--d2)); }
-.shop-art .glyph { width: 30px; height: 30px; }
+.shop-art {
+  position: relative; display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 11px; overflow: hidden;
+  background: var(--fill-3); font-weight: 600; color: var(--label-2); box-shadow: inset 0 0 0 0.5px var(--separator);
+}
+.shop-art.has-photo { background: #fff; }
+.shop-art img { width: 100%; height: 100%; object-fit: cover; }
 .shop-text { flex: 1; min-width: 0; }
 .shop-name { display: block; font-weight: 600; }
 .shop-line { display: block; margin-top: 1px; font-size: 0.882rem; line-height: 1.333; letter-spacing: -0.016em; color: var(--label-2); }
