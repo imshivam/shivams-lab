@@ -12,8 +12,8 @@ window.WISH_STATUS = {
   },
   "adidas-spain-away-jersey": {
     "checked": "2026-10-19",
-    "ok": true,
-    "price": null
+    "ok": null,
+    "why": "playwright._impl._errors.Error: Page.content: Unable to retrieve content because the page is navigating and changing the content."
   },
   "desigual-floral-trousers": {
     "checked": "2026-10-19",
