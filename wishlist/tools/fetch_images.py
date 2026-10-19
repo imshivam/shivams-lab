@@ -449,13 +449,19 @@ def make_og(data, images):
         if len(picks) < 4 and w["id"] in images and w["id"] not in picks and not w.get("gone"):
             picks.append(w["id"])
     W, H, pad, gap = 1200, 630, 48, 24
-    og = Image.new("RGB", (W, H), "#F2F2F7")
+    og = Image.new("RGB", (W, H), "#000000")
+    # The page's look: black, with a soft green glow from the top.
+    glow = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(glow).ellipse((-W * 0.2, -H * 0.9, W * 1.2, H * 0.55), fill=110)
+    from PIL import ImageFilter
+    og.paste(Image.new("RGB", (W, H), (110, 150, 104)), (0, 0), glow.filter(ImageFilter.GaussianBlur(120)))
     cw = (W - 2 * pad - 3 * gap) // 4
     ch = H - 2 * pad
     for i, id_ in enumerate(picks):
         info = images[id_]
-        card = Image.new("RGB", (cw, ch), info["bg"])
-        im = Image.open(os.path.join(ROOT, info["src"])).convert("RGB")
+        dim = tuple(round(int(info["bg"][k:k + 2], 16) * 0.88) for k in (1, 3, 5))  # as dimmed on the page
+        card = Image.new("RGB", (cw, ch), dim)
+        im = Image.eval(Image.open(os.path.join(ROOT, info["src"])).convert("RGB"), lambda v: round(v * 0.88))
         if info["plain"]:
             im.thumbnail((int(cw * 0.86), int(ch * 0.86)), Image.LANCZOS)
         else:  # a full-bleed photo fills the card

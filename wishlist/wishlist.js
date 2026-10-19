@@ -50,7 +50,7 @@
 
   // ---------- Masthead and footer ----------
   $("#summary").innerHTML =
-    `${live.length} things I’d love, if you’re ever looking for a gift.<br>Can’t decide? ${finePointer ? "Click" : "Tap"} the gift.`;
+    `<span class="glow">${live.length} things</span> I’d love, if you’re ever looking for a gift.<br>Can’t decide? ${finePointer ? "Click" : "Tap"} the gift.`;
   const lastCheck = Object.values(STATUS).map((s) => s.checked).filter(Boolean).sort().pop();
   $("#footer").innerHTML = lastCheck
     ? `<p>Prices are what each shop showed when I added the item. Links are checked once a month, most recently on ${fmtDate(lastCheck)}.</p>`
@@ -144,7 +144,7 @@
         <span class="visually-hidden"> (opens the shop in a new tab)</span></a></li>`).join("");
   }
 
-  // ---------- Filter (stays at the top while you scroll) ----------
+  // ---------- Filter (floats at the bottom, within reach of a thumb) ----------
   const seg = $("#segmented");
   const thumb = $(".segmented-thumb", seg);
   FILTERS.forEach((f) => {
@@ -162,14 +162,14 @@
     thumb.style.width = active.offsetWidth + "px";
     thumb.style.transform = `translateX(${active.offsetLeft - 3}px)`;
   }
-  const bar = $("#filterbar");
   function setFilter(id, speak) {
     state.filter = id;
     seg.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filter === id)));
     placeThumb();
     render();
-    // Keep the start of the results in view when the bar is stuck to the top.
-    if (bar.classList.contains("stuck")) window.scrollTo({ top: bar.offsetTop - 52, behavior: "instant" });
+    // If you were further down the page, the results start from the top of the list.
+    const top = $("#wishes").getBoundingClientRect().top + window.scrollY - 70;
+    if (window.scrollY > top) window.scrollTo({ top, behavior: "instant" });
     if (speak) {
       const n = live.filter((w) => shown(w.cat)).length;
       const f = FILTERS.find((x) => x.id === id);
@@ -184,16 +184,6 @@
     $(`button[data-filter="${next.id}"]`, seg).focus();
     e.preventDefault();
   });
-  // The bar gets its glass background only once it is stuck under the toolbar.
-  const sentinel = document.createElement("div");
-  bar.before(sentinel);
-  new IntersectionObserver(([e]) => {
-    bar.classList.toggle("stuck", !e.isIntersecting);
-    $("#toolbar").classList.toggle("joined", !e.isIntersecting);  // toolbar and bar read as one glass header
-  }, {
-    rootMargin: "-60px 0px 0px 0px",
-  }).observe(sentinel);
-
   // ---------- Layout menu: large tiles, grid or list ----------
   const viewButton = $("#viewButton");
   const viewMenu = $("#viewMenu");
@@ -285,7 +275,7 @@
       ${checked && !w.gone ? `<p class="detail-checked">${checked}</p>` : ""}`;
   }
 
-  const setInert = (on) => [document.getElementById("main"), $("#toolbar")]
+  const setInert = (on) => [document.getElementById("main"), $("#toolbar"), $("#filterbar")]
     .forEach((el) => (on ? el.setAttribute("inert", "") : el.removeAttribute("inert")));
   const instantly = (fn) => {
     sheet.classList.add("instant"); scrim.classList.add("instant");
