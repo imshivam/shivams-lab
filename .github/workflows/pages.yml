@@ -1,0 +1,48 @@
+# Publishes the site to GitHub Pages. Replaces "Deploy from a branch", which can't be re-run, cancelled
+# or given a time limit, and which once left three deployments queued behind each other for 20 minutes.
+#   - One deployment at a time; a newer push replaces any deployment still waiting to start.
+#   - The deploy gives up after 10 minutes instead of hanging, and can be re-run from the Actions tab.
+#   - Each deployment stamps the commit into the wish list's file links (?v=...), so browsers load fresh files.
+# Needs Settings → Pages → Source set to "GitHub Actions".
+name: Publish site
+
+on:
+  push:
+    branches: [main]
+    # A change to the wish list or its photo tool is published by the photo job, once its photos are in.
+    paths-ignore: [wishlist/wishes.js, wishlist/tools/**]
+  workflow_run:
+    workflows: [Wish list photos]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false  # let a deployment that has started finish; only the newest waiting one runs next
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main  # the latest main, including anything the photo job just committed
+      - name: Stamp this version into the wish list's file links
+        run: sed -i -E "s/\?v=[A-Za-z0-9]+/?v=$(git rev-parse --short HEAD)/g" wishlist/index.html
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v5
+        with:
+          timeout: 540000  # 9 minutes, inside the job's 10

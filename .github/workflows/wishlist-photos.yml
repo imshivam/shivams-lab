@@ -2,6 +2,7 @@
 # It never changes prices or marks a wish as gone by itself: the run's summary lists anything that
 # needs a look (a link that may be dead, a price that differs, a photo it couldn't get).
 # Runs on the 1st of each month, when wishlist/wishes.js changes on main, or by hand from the Actions tab.
+# When it finishes, "Publish site" (pages.yml) publishes the result.
 name: Wish list photos
 
 on:
@@ -48,7 +49,9 @@ jobs:
         env:
           WISHLIST_HEADED: "1"
           ONLY: ${{ inputs.only }}
-        run: xvfb-run -a python3 wishlist/tools/fetch_images.py --check ${{ inputs.force && '--force' || '' }} ${ONLY:+--only "$ONLY"}
+        # Links are checked monthly (and on a manual run); a push only fetches photos for new wishes,
+        # so it commits nothing unless there is a new photo.
+        run: xvfb-run -a python3 wishlist/tools/fetch_images.py ${{ github.event_name != 'push' && '--check' || '' }} ${{ inputs.force && '--force' || '' }} ${ONLY:+--only "$ONLY"}
       - name: Commit changes
         run: |
           git add wishlist/img wishlist/images.js wishlist/status.js wishlist/og.jpg
