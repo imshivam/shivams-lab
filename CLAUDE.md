@@ -22,14 +22,26 @@ Keep this file current: when you learn something durable about how Shivam works 
 
 - Shivam has a paid Apple Developer Program membership (since 7 October 2026). Apps reach the phone through **TestFlight**. Never suggest free-account installs that expire after 7 days.
 - Cloud sessions can't reach Shivam's Mac. For apps in a GitHub repository, upload to TestFlight with GitHub Actions: `.github/workflows/testflight.yml` here, which uses the repository secrets `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and `APP_STORE_CONNECT_KEY` (an App Store Connect API key with Admin access).
-- Apple's API can't create a new app record, so each new app is created once by Shivam on the App Store Connect website, with its bundle ID registered first.
 - `.github/workflows/ios.yml` builds the app for the iOS Simulator on every change, as a compile check that needs no account.
 - Apps use SwiftUI, with WidgetKit for widgets and ActivityKit for Live Activities.
+
+### Shipping to TestFlight from the Mac (how Stay Connected, Joint Finances and My Week went up)
+
+Do all of this yourself. Shivam does none of it unless a step below says so.
+
+1. **Check before asking.** Search past sessions (`search_session_transcripts`) for how the last app shipped, and copy it.
+2. **Team:** `QYWDXVK7V9` for every target.
+3. **API key:** an App Store Connect API key (Admin) is already on the Mac in `~/.appstoreconnect/private_keys/`. One key works for every app. Claude Code's safety check blocks using its Issuer ID if you copy it from another session, so ask Shivam to paste it, with this link: [App Store Connect API page](https://appstoreconnect.apple.com/access/integrations/api).
+4. **Register the bundle IDs** (app and widget) through the API (`POST /v1/bundleIds`). Xcode's automatic signing doesn't do it: it falls back to a wildcard profile.
+5. **Create the app record** ("New App") on the App Store Connect website, in the **built-in browser pane** of the Claude app. Shivam is signed in there. If the pane isn't signed in, open it and ask Shivam to sign in. Don't use Chrome, 1Password or Xcode's menus for this. Apple's API can't create app records.
+6. **Archive** with `xcodebuild archive -allowProvisioningUpdates` plus the key flags (`-authenticationKeyPath/-authenticationKeyID/-authenticationKeyIssuerID`). Run it outside the sandbox, or Xcode reports "No Accounts".
+7. **Upload** with `xcodebuild -exportArchive` and **manual** signing: create `IOS_APP_STORE` profiles through the API (`POST /v1/profiles`) with the local "Apple Distribution" certificate, then name them in the export options. Automatic export fails with a cloud-signing error.
+8. **Internal testing:** create an internal group called "Me" with access to all builds, then add Shivam on the group's web page in the built-in browser. The API refuses internal testers (409).
 
 ## Earlier projects
 
 - **Stay Connected** (iPhone app with widgets) and **Joint Finances** (iPhone and Android apps with widgets) live on Shivam's Mac, not on GitHub. Their changelogs are artifacts linked from `data.js`, and record decisions, including the move to TestFlight.
-- **My Week** (`ios/`): the weekly timetable as an iPhone app, with widgets, a Live Activity and the Dynamic Island. Bundle ID `com.imshivam.myweek`. The web version is `timetable/index.html`.
+- **My Week** (`ios/`): the weekly timetable as an iPhone app, with widgets, a Live Activity and the Dynamic Island. Bundle ID `com.imshivam.myweek`. On App Store Connect and TestFlight it's called **In a day**. The web version is `timetable/index.html`.
 - Each app gets a changelog artifact with its changes and decisions.
 
 ## This site
