@@ -95,13 +95,7 @@
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* ---------- Now ---------- */
-  .now {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 16px 32px;
-  }
+  .now { display: grid; justify-items: start; }
   .eyebrow {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -134,18 +128,8 @@
   .now h1 em { font-style: italic; color: var(--muted); }
   .now p { margin: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
   .now p strong { color: var(--fg); font-weight: 500; }
-  .progress {
-    width: min(260px, 100%);
-    display: grid;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .progress .bar { height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; }
-  .progress .bar i { display: block; height: 100%; width: 0; background: var(--fg); border-radius: 3px; transition: width .6s ease; }
-  .progress .ends { display: flex; justify-content: space-between; }
+  .now .bar { width: min(420px, 100%); height: 3px; margin-top: 16px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .now .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 3px; transition: width .6s ease; }
 
   /* ---------- Day picker (phone) ---------- */
   .tabs {
@@ -327,31 +311,6 @@
     background: var(--accent);
   }
 
-  /* ---------- Where the hours go ---------- */
-  .split { display: grid; gap: 20px; padding-top: 8px; border-top: 1px solid var(--line); }
-  .split h3 {
-    margin: 16px 0 0;
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: 28px;
-  }
-  .split-rows { display: grid; gap: 18px; }
-  .split-row { display: grid; gap: 8px; }
-  .split-row .label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
-  .split-row .label b { color: var(--fg); font-weight: 500; }
-  .stack { display: flex; height: 14px; gap: 2px; }
-  .stack span { border-radius: 4px; background: var(--c); min-width: 3px; }
-  .stack span.cat-open { background: transparent; border: 1.5px dashed var(--line-strong); }
-  .legend {
-    list-style: none; margin: 0; padding: 0;
-    display: flex; flex-wrap: wrap; gap: 8px 18px;
-    font-size: 13px; color: var(--muted);
-  }
-  .legend li { display: flex; align-items: center; gap: 7px; }
-  .legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); }
-  .legend i.cat-open { background: transparent; border: 1.5px dashed var(--line-strong); }
-  .legend b { color: var(--fg); font-weight: 500; font-family: var(--font-mono); font-size: 12px; }
-
   /* ---------- Detail sheet ---------- */
   .scrim {
     position: fixed; inset: 0; z-index: 20;
@@ -428,7 +387,6 @@
     }
     .sheet.open { transform: translateY(-50%); opacity: 1; pointer-events: auto; }
     .sheet .grab { display: none; }
-    .split { grid-template-columns: 240px 1fr; align-items: start; gap: 40px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -439,16 +397,11 @@
 <body>
 
 <main class="page">
-  <header class="now">
-    <div>
-      <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span id="now-eyebrow">Now</span></div>
-      <h1 id="now-title">Your day</h1>
-      <p id="now-sub"></p>
-    </div>
-    <div class="progress" id="now-progress" hidden>
-      <div class="ends"><span id="p-start"></span><span id="p-left"></span><span id="p-end"></span></div>
-      <div class="bar"><i id="p-bar"></i></div>
-    </div>
+  <header class="now" aria-label="What I'm doing right now">
+    <div class="eyebrow"><span class="pulse" aria-hidden="true"></span>Right now</div>
+    <h1 id="now-title">My week</h1>
+    <p id="now-sub"></p>
+    <div class="bar" aria-hidden="true"><i id="p-bar"></i></div>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Days of the week" id="tabs"></nav>
@@ -458,10 +411,6 @@
     <div class="days" id="days"></div>
   </section>
 
-  <section class="split" aria-labelledby="split-title">
-    <h3 id="split-title">Where the hours go</h3>
-    <div class="split-rows" id="split"></div>
-  </section>
 </main>
 
 <div class="scrim" id="scrim" hidden></div>
@@ -551,10 +500,6 @@
     const h = Math.floor(min / 60), m = min % 60;
     if (!h) return m + " min";
     return m ? h + " h " + m + " min" : h + (h === 1 ? " hour" : " hours");
-  }
-  function hoursShort(min) {
-    const h = min / 60;
-    return (Number.isInteger(h) ? h : h.toFixed(1).replace(".5", "½")) + " h";
   }
 
   // ---- now ----
@@ -665,19 +610,13 @@
     const act = ACTIVITIES[cur[2]];
     const [a, b] = cur;
     const left = Math.max(0, Math.round(b - info.m));
-    const next = info.blocks[info.i + 1] || plan((info.idx + 1) % 7)[0];
-    const nextAct = ACTIVITIES[next[2]];
+    const done = (info.m - a) / (b - a);
 
-    $("now-eyebrow").textContent = "Now · " + DAYS[info.todayIdx] + " · " + clock(Math.floor(info.m));
     $("now-title").innerHTML = act.cat === "open"
       ? "Open <em>time</em>"
       : act.name.replace(" & ", " <em>&amp;</em> ");
-    $("now-sub").innerHTML = `<strong>${dur(left)}</strong> left. Next: ${nextAct.name} at ${clock(next[0])}.`;
-    $("now-progress").hidden = false;
-    $("p-start").textContent = clock(a);
-    $("p-end").textContent = clock(b);
-    $("p-left").textContent = Math.round(((info.m - a) / (b - a)) * 100) + "%";
-    $("p-bar").style.width = ((info.m - a) / (b - a)) * 100 + "%";
+    $("now-sub").innerHTML = `Until ${clock(b)} · <strong>${dur(left)}</strong> to go`;
+    $("p-bar").style.width = done * 100 + "%";
 
     document.querySelectorAll(".now-line").forEach((n) => n.remove());
     document.querySelectorAll(".block.past, .block.current").forEach((n) => n.classList.remove("past", "current"));
@@ -762,30 +701,6 @@
     y0 = null;
   });
 
-  // ---- where the hours go ----
-  function buildSplit() {
-    const rows = [["Weekday", WEEKDAY], ["Weekend", WEEKEND]];
-    $("split").innerHTML = rows.map(([label, blocks]) => {
-      const totals = {};
-      blocks.forEach(([a, b, key]) => {
-        const c = ACTIVITIES[key].cat;
-        totals[c] = (totals[c] || 0) + (b - a);
-      });
-      const order = Object.keys(CATS).filter((c) => totals[c]);
-      const free = totals.open ? ` · <b>${hoursShort(totals.open)}</b> open` : "";
-      return `
-        <div class="split-row">
-          <div class="label"><b>${label}</b><span>${hoursShort(totals.sleep)} sleep${free}</span></div>
-          <div class="stack" role="img" aria-label="${label}: ${order.map((c) => CATS[c] + " " + hoursShort(totals[c])).join(", ")}">
-            ${order.map((c) => `<span class="cat-${c}" style="flex:${totals[c]}" title="${CATS[c]} · ${hoursShort(totals[c])}"></span>`).join("")}
-          </div>
-          <ul class="legend">
-            ${order.map((c) => `<li><i class="cat-${c}"></i>${CATS[c]} <b>${hoursShort(totals[c])}</b></li>`).join("")}
-          </ul>
-        </div>`;
-    }).join("");
-  }
-
   // ---- go ----
   function render() {
     const info = nowInfo();
@@ -798,7 +713,6 @@
   }
 
   current = nowInfo().idx;
-  buildSplit();
   render();
   setInterval(paintNow, 30 * 1000);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) paintNow(); });
