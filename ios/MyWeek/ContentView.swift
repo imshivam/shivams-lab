@@ -125,16 +125,10 @@ private struct DayPicker: View {
                 Button {
                     withAnimation(.snappy) { selected = index }
                 } label: {
-                    VStack(spacing: 1) {
-                        Text(Schedule.dayNames[index].prefix(3))
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundStyle(isSelected ? Palette.bg : (index == today ? Palette.accent : Palette.muted))
-                        Text(index >= 5 ? "FREE" : "WORK")
-                            .font(.mono(9))
-                            .tracking(0.6)
-                            .foregroundStyle(isSelected ? Palette.bg : Palette.muted)
-                    }
-                    .frame(maxWidth: .infinity, minHeight: 44)
+                    Text(Schedule.dayNames[index].prefix(3))
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(isSelected ? Palette.bg : (index == today ? Palette.accent : Palette.muted))
+                        .frame(maxWidth: .infinity, minHeight: 44)
                     .background(isSelected ? Palette.fg : .clear, in: RoundedRectangle(cornerRadius: 10))
                     .contentShape(Rectangle())
                 }
