@@ -170,9 +170,9 @@
     display: grid;
     grid-template-columns: var(--axis) minmax(0, 1fr);
   }
-  .axis { position: relative; padding-top: var(--head); }
+  .axis { position: relative; z-index: 3; padding-top: var(--head); }
   .axis-track { position: relative; height: calc(var(--hour) * 24); }
-  .axis span {
+  .axis .tick {
     position: absolute;
     right: 8px;
     transform: translateY(-50%);
@@ -182,7 +182,7 @@
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
-  .axis span.dim { opacity: .45; }
+  .axis .tick.dim { opacity: .45; }
 
   .days {
     display: flex;
@@ -294,7 +294,7 @@
 
   .now-line {
     position: absolute;
-    left: 0; right: 0;
+    left: 3px; right: 3px;
     height: 0;
     border-top: 1.5px solid var(--accent);
     z-index: 2;
@@ -304,6 +304,9 @@
     position: absolute;
     left: 50%; top: 0;
     transform: translate(-50%, -50%);
+    z-index: 3;
+    transition: opacity .2s;
+    width: max-content;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -371,6 +374,15 @@
   .swatch { width: 10px; height: 10px; border-radius: 3px; background: var(--c); display: inline-block; }
   .sheet.cat-open .chip { background: var(--bg); }
   .swatch.cat-open { background: transparent; border: 1.5px dashed var(--line-strong); }
+
+  /* One day at a time: the pill sits on the hour axis. All seven days: it sits in the middle of today. */
+  .axis .now-pill { left: 0; transform: translateY(-50%); }
+  .axis .now-pill.away { opacity: 0; }
+  .now-line .now-pill { display: none; }
+  @media (min-width: 960px) {
+    .axis .now-pill { display: none; }
+    .now-line .now-pill { display: flex; }
+  }
 
   /* ---------- Desktop: the whole week ---------- */
   @media (min-width: 960px) {
@@ -539,6 +551,7 @@
     axisEl.innerHTML = "";
     for (let h = 7; h <= 30; h++) {
       const s = document.createElement("span");
+      s.className = "tick";
       s.style.top = (t(h) - DAY_START) * hourPx / 60 + "px";
       s.textContent = clock(t(h)).replace(":00", "");
       if (h >= 24) s.classList.add("dim");
@@ -622,14 +635,20 @@
     $("now-title").innerHTML = `${name} <em>till ${clock(b)}</em>`;
     $("now-sub").textContent = `${dur(left)} until ${ACTIVITIES[next[2]].name}`;
 
-    document.querySelectorAll(".now-line").forEach((n) => n.remove());
+    document.querySelectorAll(".now-line, .axis .now-pill").forEach((n) => n.remove());
     document.querySelectorAll(".block.past, .block.current").forEach((n) => n.classList.remove("past", "current"));
     const day = $("day-" + info.idx);
     if (day) {
       const line = document.createElement("div");
       line.className = "now-line";
       line.style.top = (info.m - DAY_START) * hourPx / 60 + "px";
-      line.innerHTML = `<span class="now-pill"><span class="pulse" aria-hidden="true"></span>${clock(Math.floor(info.m))}</span>`;
+      const pill = `<span class="now-pill"><span class="pulse" aria-hidden="true"></span>${clock(Math.floor(info.m))}</span>`;
+      line.innerHTML = pill;
+      axisEl.insertAdjacentHTML("beforeend", pill);
+      const axisPill = axisEl.lastElementChild;
+      axisPill.style.top = line.style.top;
+      axisPill.dataset.day = info.idx;
+      axisPill.classList.toggle("away", current !== info.idx);
       day.querySelector(".track").appendChild(line);
       day.querySelectorAll(".block").forEach((el) => {
         const j = +el.dataset.index;
@@ -650,6 +669,9 @@
   }
   function markTab(i) {
     tabsEl.querySelectorAll(".tab").forEach((b, k) => b.setAttribute("aria-selected", String(k === i)));
+    // The pill on the axis belongs to today, so hide it while another day is in view
+    const axisPill = axisEl.querySelector(".now-pill");
+    if (axisPill) axisPill.classList.toggle("away", +axisPill.dataset.day !== i);
   }
   let raf = 0;
   daysEl.addEventListener("scroll", () => {
