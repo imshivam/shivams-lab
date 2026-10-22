@@ -12,15 +12,22 @@ The routine is set in `Shared/Schedule.swift`. Change times or names there.
 
 ## Put it on your iPhone
 
-Like Stay Connected and Joint Finances, My Week goes to the phone through **TestFlight**, on Shivam's paid Apple developer account. The upload runs on the Mac:
+Like Stay Connected and Joint Finances, My Week reaches the phone through **TestFlight**, on Shivam's paid Apple developer account. GitHub Actions does the upload (`.github/workflows/testflight.yml`): every change to `ios/` builds the app on one of GitHub's Macs, signs it and sends it to TestFlight. No Mac needed.
 
-1. Open `ios/MyWeek.xcodeproj` in Xcode on the Mac.
-2. Under **Signing & Capabilities**, set **Team** to Shivam's paid team for both targets, **MyWeek** and **MyWeekWidget**.
-3. Create the app in [App Store Connect](https://appstoreconnect.apple.com) (**Apps → + → New App**) with the bundle ID `com.imshivam.myweek`.
-4. Choose **Any iOS Device**, then **Product → Archive**, then **Distribute App → TestFlight & App Store**.
-5. When the build has processed, it appears in the TestFlight app on the iPhone.
+### One-time setup (about 10 minutes, signed in as Shivam)
 
-For a quick test without TestFlight, connect the iPhone and press **⌘R** in Xcode instead.
+1. **Register the app's ID.** At [developer.apple.com → Identifiers](https://developer.apple.com/account/resources/identifiers/list), tap **+**, choose **App IDs → App**, enter the description `My Week` and the explicit Bundle ID `com.imshivam.myweek`, then **Continue → Register**.
+2. **Create the app.** In [App Store Connect → Apps](https://appstoreconnect.apple.com/apps), tap **+ → New App**. Platform **iOS**, name `My Week` (if taken, any unused name), language **English (UK)**, Bundle ID `com.imshivam.myweek`, SKU `myweek`.
+3. **Make an API key.** In App Store Connect, go to **Users and Access → Integrations → App Store Connect API → Team Keys**, tap **+**, name it `GitHub`, and pick **Admin** access. Download the `.p8` file (it can only be downloaded once). Note the **Key ID** and the **Issuer ID** shown above the list.
+4. **Find your Team ID** at [developer.apple.com → Account → Membership details](https://developer.apple.com/account#MembershipDetailsCard).
+5. **Add four secrets** at [GitHub → shivams-lab → Settings → Secrets and variables → Actions](https://github.com/imshivam/shivams-lab/settings/secrets/actions), each with **New repository secret**:
+   - `APPLE_TEAM_ID`: the Team ID
+   - `APP_STORE_CONNECT_KEY_ID`: the Key ID
+   - `APP_STORE_CONNECT_ISSUER_ID`: the Issuer ID
+   - `APP_STORE_CONNECT_KEY`: open the `.p8` file in TextEdit and paste all of it, including the BEGIN and END lines
+6. **Let builds reach the phone.** In App Store Connect, open **My Week → TestFlight**, add an **Internal Testing** group, add yourself, and turn on **automatic distribution**.
+
+After that, run **Actions → TestFlight → Run workflow**, or push any change to `ios/`. Each build shows up in the TestFlight app on the iPhone about 10 to 30 minutes later.
 
 ### Add the widgets
 
@@ -39,4 +46,5 @@ The widgets don't have these limits. The routine is fixed, so their timeline is 
 
 ## Checks
 
-GitHub Actions builds the app for the iOS Simulator whenever anything in `ios/` changes (`.github/workflows/ios.yml`). It doesn't sign the app or need any account.
+- `.github/workflows/ios.yml` builds the app for the iOS Simulator whenever anything in `ios/` changes. It needs no account, so it also catches errors before the TestFlight job runs.
+- `.github/workflows/testflight.yml` uploads to TestFlight. Until the secrets are added, it stops with a note instead of failing.

@@ -1,0 +1,81 @@
+# Sends the iPhone app (ios/) to TestFlight from GitHub's Macs, so new versions reach the phone
+# without Shivam's Mac. Runs when ios/ changes, or by hand from the Actions tab.
+# Signs with Shivam's paid Apple team through an App Store Connect API key (Admin access), which
+# lets Xcode create the certificates and profiles it needs. Repository secrets it needs:
+#   APPLE_TEAM_ID                 Team ID, from developer.apple.com → Account → Membership details
+#   APP_STORE_CONNECT_KEY_ID      Key ID of the API key
+#   APP_STORE_CONNECT_ISSUER_ID   Issuer ID shown above the list of API keys
+#   APP_STORE_CONNECT_KEY         The whole text of the downloaded AuthKey_XXXX.p8 file
+# Until they're added, the job says so and stops without failing.
+name: TestFlight
+
+on:
+  push:
+    branches: [main, claude/determined-ride-f66k6s]
+    paths: [ios/**, .github/workflows/testflight.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: testflight
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: macos-15
+    timeout-minutes: 40
+    env:
+      TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+      ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+      KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY }}
+    steps:
+      - name: Check the Apple secrets are set
+        id: ready
+        shell: bash
+        run: |
+          if [ -z "$TEAM_ID" ] || [ -z "$KEY_ID" ] || [ -z "$ISSUER_ID" ] || [ -z "$KEY_P8" ]; then
+            echo "::notice::TestFlight upload skipped: add the four Apple secrets listed at the top of testflight.yml."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v5
+        if: steps.ready.outputs.ok == 'true'
+
+      - name: Archive, sign and upload to TestFlight
+        if: steps.ready.outputs.ok == 'true'
+        shell: bash
+        run: |
+          KEY_PATH="$RUNNER_TEMP/AuthKey_$KEY_ID.p8"
+          printf '%s\n' "$KEY_P8" > "$KEY_PATH"
+          AUTH=(-allowProvisioningUpdates
+                -authenticationKeyPath "$KEY_PATH"
+                -authenticationKeyID "$KEY_ID"
+                -authenticationKeyIssuerID "$ISSUER_ID")
+          BUILD_NUMBER=$((100 + GITHUB_RUN_NUMBER))
+          echo "Build number $BUILD_NUMBER"
+          xcodebuild -version
+
+          xcodebuild -project ios/MyWeek.xcodeproj -scheme MyWeek -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/MyWeek.xcarchive" \
+            "${AUTH[@]}" \
+            DEVELOPMENT_TEAM="$TEAM_ID" CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            archive -quiet
+
+          plutil -replace teamID -string "$TEAM_ID" ios/ExportOptions.plist
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/MyWeek.xcarchive" \
+            -exportOptionsPlist ios/ExportOptions.plist \
+            -exportPath "$RUNNER_TEMP/export" \
+            "${AUTH[@]}"
+
+          echo "::notice::Build $BUILD_NUMBER sent to App Store Connect. It appears in TestFlight once Apple has processed it."
+
+      - name: Remove the API key from the runner
+        if: always()
+        run: rm -f "$RUNNER_TEMP"/AuthKey_*.p8
