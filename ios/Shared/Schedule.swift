@@ -21,7 +21,7 @@ enum Category: String, Codable, Hashable {
     }
 }
 
-struct Activity: Hashable {
+struct Event: Hashable {
     let key: String
     let name: String
     let category: Category
@@ -29,37 +29,37 @@ struct Activity: Hashable {
     let note: String
     var ideas: [String] = []
 
-    static let rise = Activity(key: "rise", name: "Rise & get ready", category: .rise, symbol: "sunrise.fill",
+    static let rise = Event(key: "rise", name: "Rise & get ready", category: .rise, symbol: "sunrise.fill",
                                note: "Wake up, freshen up and get ready for the day.")
-    static let commute = Activity(key: "commute", name: "Commute", category: .travel, symbol: "signpost.right.fill",
+    static let commute = Event(key: "commute", name: "Commute", category: .travel, symbol: "signpost.right.fill",
                                   note: "On the way to the office.")
-    static let office = Activity(key: "office", name: "Office", category: .work, symbol: "briefcase.fill",
+    static let office = Event(key: "office", name: "Office", category: .work, symbol: "briefcase.fill",
                                  note: "Working at the office.")
-    static let home = Activity(key: "home", name: "Commute home", category: .travel, symbol: "house.fill",
+    static let home = Event(key: "home", name: "Commute home", category: .travel, symbol: "house.fill",
                                note: "Heading back home.")
-    static let workout = Activity(key: "workout", name: "Workout", category: .move, symbol: "figure.run",
+    static let workout = Event(key: "workout", name: "Workout", category: .move, symbol: "figure.run",
                                   note: "An hour of exercise before dinner.")
-    static let cook = Activity(key: "cook", name: "Cook dinner", category: .food, symbol: "frying.pan.fill",
+    static let cook = Event(key: "cook", name: "Cook dinner", category: .food, symbol: "frying.pan.fill",
                                note: "Cooking dinner at home.")
-    static let dinner = Activity(key: "dinner", name: "Dinner", category: .food, symbol: "fork.knife",
+    static let dinner = Event(key: "dinner", name: "Dinner", category: .food, symbol: "fork.knife",
                                  note: "Sitting down to eat dinner.")
-    static let walk = Activity(key: "walk", name: "Walk & wind down", category: .walk, symbol: "figure.walk",
+    static let walk = Event(key: "walk", name: "Walk & wind down", category: .walk, symbol: "figure.walk",
                                note: "A walk with my wife, then getting ready for bed.")
-    static let sleep = Activity(key: "sleep", name: "Sleep", category: .sleep, symbol: "bed.double.fill",
+    static let sleep = Event(key: "sleep", name: "Sleep", category: .sleep, symbol: "bed.double.fill",
                                 note: "Lights out. A full 7 hours 30 minutes before the alarm.")
-    static let open = Activity(key: "open", name: "Open day", category: .open, symbol: "sparkles",
+    static let open = Event(key: "open", name: "Open day", category: .open, symbol: "sparkles",
                                note: "No commute and no office. Ten free hours to spend however we like.",
                                ideas: ["Brunch together", "Breakfast at a café we haven't tried",
                                        "A day out somewhere new", "Or nothing at all"])
 
-    static let all: [Activity] = [rise, commute, office, home, workout, cook, dinner, walk, sleep, open]
-    static func named(_ key: String) -> Activity { all.first { $0.key == key } ?? rise }
+    static let all: [Event] = [rise, commute, office, home, workout, cook, dinner, walk, sleep, open]
+    static func named(_ key: String) -> Event { all.first { $0.key == key } ?? rise }
 }
 
 struct Block: Hashable, Identifiable {
     let start: Int
     let end: Int
-    let activity: Activity
+    let activity: Event
     var id: Int { start }
     var minutes: Int { end - start }
 }
@@ -69,7 +69,7 @@ struct Slot: Hashable, Codable {
     let key: String
     let start: Date
     let end: Date
-    var activity: Activity { Activity.named(key) }
+    var activity: Event { Event.named(key) }
 }
 
 enum Schedule {
