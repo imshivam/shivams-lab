@@ -30,7 +30,20 @@ extension WeekActivityAttributes.ContentState {
 }
 
 enum LiveActivityManager {
-    private static let startedKey = "liveActivityStartedAt"
+    /// Changed when the activity started listening to the push channel, so one started by an older
+    /// build (which can't receive pushes) is replaced the next time the app opens.
+    private static let startedKey = "liveActivityOnChannelStartedAt"
+
+    /// The APNs broadcast channel that ios/push/live-activity-push.mjs sends to every 5 minutes, so the
+    /// strip keeps moving while the app isn't running. Debug builds use the sandbox, which has no
+    /// channel, so they update only from the app.
+    private static var pushType: PushType? {
+        #if DEBUG
+        nil
+        #else
+        .channel("FJQLhc5WEfEAAJIWkPN+Jw==")
+        #endif
+    }
 
     static func content(at date: Date = .now) -> ActivityContent<WeekActivityAttributes.ContentState> {
         let s = Schedule.slots(from: date, count: 3)
@@ -64,7 +77,7 @@ enum LiveActivityManager {
         do {
             _ = try Activity<WeekActivityAttributes>.request(attributes: WeekActivityAttributes(),
                                                              content: content(),
-                                                             pushType: nil)
+                                                             pushType: pushType)
             UserDefaults.standard.set(Date.now, forKey: startedKey)
         } catch {
             // Live Activities are turned off for the app in Settings, or too many are running.
