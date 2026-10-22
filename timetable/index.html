@@ -21,7 +21,8 @@
     --muted: #646B66;
     --line: #E4E7E2;
     --line-strong: #C9CEC8;
-    --accent: #D9472B;
+    --accent: #C23F22;
+    --on-accent: #FFFFFF;
     --shadow: 0 1px 2px rgba(20, 30, 25, .06), 0 12px 40px rgba(20, 30, 25, .12);
 
     /* Activity colours: a soft fill and an ink that reads on it */
@@ -45,7 +46,7 @@
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #111312; --surface: #1A1D1B; --fg: #ECEEEA; --muted: #99A09B;
-      --line: #252926; --line-strong: #3A3F3B; --accent: #FF7357;
+      --line: #252926; --line-strong: #3A3F3B; --accent: #FF7357; --on-accent: #1A0D09;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 48px rgba(0,0,0,.5);
       --sleep: #202236; --sleep-ink: #BDC1F2;
       --rise: #33291A;  --rise-ink: #EBCB8F;
@@ -60,7 +61,7 @@
   }
   :root[data-theme="dark"] {
     --bg: #111312; --surface: #1A1D1B; --fg: #ECEEEA; --muted: #99A09B;
-    --line: #252926; --line-strong: #3A3F3B; --accent: #FF7357;
+    --line: #252926; --line-strong: #3A3F3B; --accent: #FF7357; --on-accent: #1A0D09;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 48px rgba(0,0,0,.5);
     --sleep: #202236; --sleep-ink: #BDC1F2;
     --rise: #33291A;  --rise-ink: #EBCB8F;
@@ -107,14 +108,13 @@
     gap: 8px;
   }
   .pulse {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 0 var(--accent);
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--on-accent);
     animation: pulse 2.4s ease-out infinite;
   }
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
-    70%, 100% { box-shadow: 0 0 0 8px transparent; }
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--on-accent) 70%, transparent); }
+    70%, 100% { box-shadow: 0 0 0 6px transparent; }
   }
   .now h1 {
     font-family: var(--font-display);
@@ -122,14 +122,11 @@
     font-size: clamp(40px, 7vw, 64px);
     line-height: 1;
     letter-spacing: -.01em;
-    margin: 10px 0 8px;
+    margin: 0 0 10px;
     text-wrap: balance;
   }
   .now h1 em { font-style: italic; color: var(--muted); }
   .now p { margin: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .now p strong { color: var(--fg); font-weight: 500; }
-  .now .bar { width: min(420px, 100%); height: 3px; margin-top: 16px; background: var(--line); border-radius: 3px; overflow: hidden; }
-  .now .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 3px; transition: width .6s ease; }
 
   /* ---------- Day picker (phone) ---------- */
   .tabs {
@@ -297,18 +294,29 @@
 
   .now-line {
     position: absolute;
-    left: -4px; right: 0;
+    left: 0; right: 0;
     height: 0;
     border-top: 1.5px solid var(--accent);
     z-index: 2;
     pointer-events: none;
   }
-  .now-line::before {
-    content: "";
+  .now-pill {
     position: absolute;
-    left: -4px; top: -5.5px;
-    width: 9px; height: 9px; border-radius: 50%;
+    left: 50%; top: 0;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px 3px 8px;
+    border-radius: 999px;
     background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 
   /* ---------- Detail sheet ---------- */
@@ -397,11 +405,9 @@
 <body>
 
 <main class="page">
-  <header class="now" aria-label="What I'm doing right now">
-    <div class="eyebrow"><span class="pulse" aria-hidden="true"></span>Right now</div>
+  <header class="now">
     <h1 id="now-title">My week</h1>
     <p id="now-sub"></p>
-    <div class="bar" aria-hidden="true"><i id="p-bar"></i></div>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Days of the week" id="tabs"></nav>
@@ -610,13 +616,11 @@
     const act = ACTIVITIES[cur[2]];
     const [a, b] = cur;
     const left = Math.max(0, Math.round(b - info.m));
-    const done = (info.m - a) / (b - a);
+    const next = info.blocks[info.i + 1] || plan((info.idx + 1) % 7)[0];
+    const name = act.cat === "open" ? "Open time" : act.name;
 
-    $("now-title").innerHTML = act.cat === "open"
-      ? "Open <em>time</em>"
-      : act.name.replace(" & ", " <em>&amp;</em> ");
-    $("now-sub").innerHTML = `Until ${clock(b)} · <strong>${dur(left)}</strong> to go`;
-    $("p-bar").style.width = done * 100 + "%";
+    $("now-title").innerHTML = `${name} <em>till ${clock(b)}</em>`;
+    $("now-sub").textContent = `${dur(left)} until ${ACTIVITIES[next[2]].name}`;
 
     document.querySelectorAll(".now-line").forEach((n) => n.remove());
     document.querySelectorAll(".block.past, .block.current").forEach((n) => n.classList.remove("past", "current"));
@@ -625,6 +629,7 @@
       const line = document.createElement("div");
       line.className = "now-line";
       line.style.top = (info.m - DAY_START) * hourPx / 60 + "px";
+      line.innerHTML = `<span class="now-pill"><span class="pulse" aria-hidden="true"></span>${clock(Math.floor(info.m))}</span>`;
       day.querySelector(".track").appendChild(line);
       day.querySelectorAll(".block").forEach((el) => {
         const j = +el.dataset.index;
