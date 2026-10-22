@@ -71,17 +71,16 @@ private struct NowHeader: View {
         HStack(alignment: compact ? .center : .top) {
             VStack(alignment: .leading, spacing: 6) {
                 (Text(name) + Text(" till \(Format.clock(current.end))").italic().foregroundColor(Palette.muted))
-                    .font(.display(compact ? 21 : 34))
+                    .modifier(DisplaySize(size: compact ? 21 : 34))
                     .foregroundStyle(Palette.fg)
-                    .lineLimit(compact ? 1 : nil)
-                    .minimumScaleFactor(compact ? 0.85 : 1)
-                    .fixedSize(horizontal: false, vertical: !compact)
+                    .lineLimit(compact ? 1 : 3)
+                    .fixedSize(horizontal: false, vertical: true)
                 if !compact {
                     Text("\(Format.duration(from: now, to: current.end)) until \(next.activity.name)")
                         .font(.subheadline)
                         .foregroundStyle(Palette.muted)
                         .monospacedDigit()
-                        .transition(.opacity)
+                        .transition(.opacity.combined(with: .offset(y: -6)))
                 }
             }
             Spacer(minLength: 12)
@@ -96,6 +95,20 @@ private struct NowHeader: View {
             }
             .accessibilityLabel("Settings")
         }
+    }
+}
+
+/// The serif display font at a size that animates frame by frame, so the header shrinks smoothly
+/// instead of jumping between two sizes.
+private struct DisplaySize: ViewModifier, Animatable {
+    var size: CGFloat
+    var animatableData: CGFloat {
+        get { size }
+        set { size = newValue }
+    }
+
+    func body(content: Content) -> some View {
+        content.font(.display(size))
     }
 }
 
@@ -147,10 +160,10 @@ private struct DayPage: View {
     private let hour: CGFloat = 56
     private let axis: CGFloat = 46
 
-    /// Where the last change of direction happened, and when scroll movement starts counting.
-    /// Scrolling the app does itself (centring on now) is ignored.
+    /// Where the last change of direction happened, and whether the person's finger is moving the page.
+    /// Scrolling the app does itself (centring on now) has no scroll phase, so it's ignored.
     @State private var anchorOffset: CGFloat = 0
-    @State private var ignoreUntil = Date.distantPast
+    @State private var userScrolling = false
 
     private var blocks: [Block] { Schedule.blocks(forDay: dayIndex) }
 
@@ -206,16 +219,15 @@ private struct DayPage: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 40)
-                .background {
-                    GeometryReader { geo in
-                        Color.clear.preference(key: ScrollOffsetKey.self, value: -geo.frame(in: .named("day")).minY)
-                    }
-                }
             }
-            .coordinateSpace(name: "day")
             .scrollIndicators(.hidden)
-            .onPreferenceChange(ScrollOffsetKey.self) { offset in
-                guard Date.now > ignoreUntil else { anchorOffset = offset; return }
+            .onScrollPhaseChange { _, phase in
+                userScrolling = phase == .interacting || phase == .decelerating
+            }
+            .onScrollGeometryChange(for: CGFloat.self) { geo in
+                geo.contentOffset.y + geo.contentInsets.top
+            } action: { _, offset in
+                guard userScrolling else { anchorOffset = offset; return }
                 if offset < 12 {
                     onScroll(false)
                     anchorOffset = offset
@@ -236,7 +248,6 @@ private struct DayPage: View {
     /// scroll that far, so the line simply sits nearer the top.
     private func centreOnNow(_ proxy: ScrollViewProxy) {
         guard isToday else { return }
-        ignoreUntil = .now.addingTimeInterval(0.8)
         DispatchQueue.main.async {
             proxy.scrollTo("now", anchor: .center)
         }
@@ -268,11 +279,6 @@ private struct DayPage: View {
         if Double(block.start) <= m { return .current }
         return .normal
     }
-}
-
-private struct ScrollOffsetKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
 }
 
 private struct BlockView: View {
