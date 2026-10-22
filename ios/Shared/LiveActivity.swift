@@ -3,13 +3,16 @@ import AppIntents
 import Foundation
 
 struct WeekActivityAttributes: ActivityAttributes {
-    /// The block happening now and the two after it. When the first one ends, the system marks the
-    /// activity as stale and the views move on to the second, so the Lock Screen stays right even if
-    /// the app doesn't get a chance to update it.
+    /// The block before, the block happening now and the two after it, and when this was worked out
+    /// (where the current-time line sits). When the current block ends, the system marks the activity
+    /// as stale and the views move on by one, so the Lock Screen stays right even if the app doesn't
+    /// get a chance to update it.
     struct ContentState: Codable, Hashable {
+        var previous: Slot
         var current: Slot
         var next: Slot
         var after: Slot
+        var updatedAt: Date
     }
 }
 
@@ -18,6 +21,11 @@ extension WeekActivityAttributes.ContentState {
     func shown(isStale: Bool) -> (now: Slot, next: Slot) {
         isStale ? (next, after) : (current, next)
     }
+
+    /// The same, with the block before and the moment the current-time line marks.
+    func ribbon(isStale: Bool) -> (previous: Slot, now: Slot, next: Slot, at: Date) {
+        isStale ? (current, next, after, next.start) : (previous, current, next, updatedAt)
+    }
 }
 
 enum LiveActivityManager {
@@ -25,7 +33,9 @@ enum LiveActivityManager {
 
     static func content(at date: Date = .now) -> ActivityContent<WeekActivityAttributes.ContentState> {
         let s = Schedule.slots(from: date, count: 3)
-        let state = WeekActivityAttributes.ContentState(current: s[0], next: s[1], after: s[2])
+        let previous = Schedule.slots(from: s[0].start.addingTimeInterval(-1), count: 1)[0]
+        let state = WeekActivityAttributes.ContentState(previous: previous, current: s[0], next: s[1],
+                                                        after: s[2], updatedAt: date)
         return ActivityContent(state: state, staleDate: s[0].end)
     }
 

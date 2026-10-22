@@ -29,6 +29,8 @@ enum Palette {
     static let lineStrong = Color(light: 0xC9CEC8, dark: 0x3A3F3B)
     static let accent = Color(light: 0xC23F22, dark: 0xFF7357)
     static let onAccent = Color(light: 0xFFFFFF, dark: 0x1A0D09)
+    /// The Live Activity's card on the Lock Screen.
+    static let card = Color(light: 0xF6F7F4, dark: 0x1A1D1B)
 }
 
 extension Category {

@@ -49,7 +49,8 @@ enum BackgroundRefresh {
 
     static func schedule() {
         let request = BGAppRefreshTaskRequest(identifier: id)
-        request.earliestBeginDate = Schedule.slots(from: .now, count: 1)[0].end
+        // Every 15 minutes at most, so the current-time line on the Live Activity keeps moving.
+        request.earliestBeginDate = min(Schedule.slots(from: .now, count: 1)[0].end, .now.addingTimeInterval(15 * 60))
         try? BGTaskScheduler.shared.submit(request)
     }
 }
