@@ -9,8 +9,7 @@ struct WeekLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: WeekActivityAttributes.self) { context in
             let r = context.state.ribbon(isStale: context.isStale)
-            LockScreenView(blocks: r.blocks, now: r.now, next: r.next, at: r.at)
-                .activityBackgroundTint(Palette.card)
+            ActivityCard(blocks: r.blocks, now: r.now, next: r.next, at: r.at)
                 .activitySystemActionForegroundColor(Palette.fg)
         } dynamicIsland: { context in
             let shown = context.state.shown(isStale: context.isStale)
@@ -84,6 +83,112 @@ struct WeekLiveActivity: Widget {
             }
             .keylineTint(ink)
         }
+        // .small is the Apple Watch Smart Stack.
+        .supplementalActivityFamilies([.small, .medium])
+    }
+}
+
+/// Picks the iPhone Lock Screen card or the Apple Watch one.
+private struct ActivityCard: View {
+    let blocks: [Slot]
+    let now: Slot
+    let next: Slot
+    let at: Date
+    @Environment(\.activityFamily) private var family
+
+    var body: some View {
+        switch family {
+        case .small:
+            WatchView(blocks: blocks, now: now, next: next, at: at)
+                .activityBackgroundTint(Color(hex: 0x141615))
+        default:
+            LockScreenView(blocks: blocks, now: now, next: next, at: at)
+                .activityBackgroundTint(Palette.card)
+        }
+    }
+}
+
+/// The Apple Watch Smart Stack card: the same zoomed-in strip as the iPhone, but only the current
+/// block is lit; the rest of the day stays dim.
+private struct WatchView: View {
+    let blocks: [Slot]
+    let now: Slot
+    let next: Slot
+    let at: Date
+
+    private let stripHeight: CGFloat = 20
+    private let window: Double = 150
+    private let lineShare: CGFloat = 0.3
+    private let lit = Color(hex: 0xC9CDC9)
+    private let dim = Color(hex: 0x232624)
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(now.activity.name)
+                    .font(.display(17))
+                    .foregroundStyle(Color(hex: 0xECEEEA))
+                    .lineLimit(1)
+                Spacer(minLength: 6)
+                Text(.currentDate, format: .offset(to: now.end, allowedFields: [.hour, .minute],
+                                                   maxFieldCount: 1, sign: .never))
+                    .font(.mono(11))
+                    .foregroundStyle(Color(hex: 0xECEEEA))
+                    .multilineTextAlignment(.trailing)
+                    .lineLimit(1)
+                    .frame(width: 72, alignment: .trailing)
+            }
+
+            GeometryReader { geo in
+                let width = geo.size.width.isFinite && geo.size.width > 0 ? geo.size.width : 170
+                let lineX = (width * lineShare).rounded()
+                let perMinute = width / CGFloat(window)
+                ZStack(alignment: .topLeading) {
+                    ForEach(blocks, id: \.start) { slot in
+                        let x = lineX + CGFloat(slot.start.timeIntervalSince(at) / 60) * perMinute
+                        let w = max(CGFloat(slot.end.timeIntervalSince(slot.start) / 60) * perMinute - 2, 1)
+                        if x < width && x + w > 0 {
+                            let isNow = slot.start == now.start
+                            ZStack(alignment: .leading) {
+                                (isNow ? lit : dim)
+                                if isNow {
+                                    Color.black.opacity(0.18).frame(width: max(min(lineX - x, w), 0))
+                                }
+                            }
+                            .frame(width: w, height: stripHeight)
+                            .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+                            .shadow(color: isNow ? lit.opacity(0.35) : .clear, radius: 5)
+                            .offset(x: x)
+                        }
+                    }
+                    Rectangle()
+                        .fill(Color(hex: 0xFF7357))
+                        .frame(width: 2, height: stripHeight + 6)
+                        .offset(x: lineX - 1)
+                    Text(Format.clock(at).dropLast(3))
+                        .font(.mono(9.5))
+                        .foregroundStyle(Color(hex: 0x1A0D09))
+                        .padding(.horizontal, 6)
+                        .frame(height: 15)
+                        .background(Color(hex: 0xFF7357), in: Capsule())
+                        .frame(width: 60, height: 15)
+                        .offset(x: lineX - 30, y: stripHeight + 6)
+                    Text("\(next.activity.name) \(Format.clock(next.start).dropLast(3))")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(Color(hex: 0x99A09B))
+                        .lineLimit(1)
+                        .frame(width: max(width - lineX - 34, 1), height: 15, alignment: .trailing)
+                        .offset(x: lineX + 34, y: stripHeight + 6)
+                }
+                .frame(width: width, height: stripHeight + 21, alignment: .topLeading)
+                .clipped()
+            }
+            .frame(height: stripHeight + 21)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(now.activity.name) till \(Format.clock(now.end)). Then \(next.activity.name) at \(Format.clock(next.start)).")
     }
 }
 

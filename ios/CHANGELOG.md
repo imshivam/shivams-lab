@@ -2,6 +2,12 @@
 
 On TestFlight the app is called **In a day**. Newest first.
 
+## Build 8 · 22 October 2026
+
+- Apple Watch gets its own Live Activity in the Smart Stack: the same zoomed-in strip as the iPhone, with only the current block lit and the rest of the day dimmed (W7 on the Live Activity canvas). Before, the watch reused the small Dynamic Island pieces.
+
+**Why:** the watch should match the iPhone design rather than be a separate idea. Tried a self-updating clock in the pill; iOS draws self-updating text wider and greyed out, so the pill keeps the time of the line.
+
 ## Build 7 · 22 October 2026
 
 - A new app icon: a frosted strip of the day on a clay-red ground, with the current block in front, the now-line through it and the pill below. It has its own dark and tinted versions.
