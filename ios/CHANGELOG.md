@@ -2,6 +2,13 @@
 
 On TestFlight the app is called **In a day**. Newest first.
 
+## Build 7 · 22 October 2026
+
+- A new app icon: a frosted strip of the day on a clay-red ground, with the current block in front, the now-line through it and the pill below. It has its own dark and tinted versions.
+- The source drawings are in `ios/design/`.
+
+**Why:** picked from eight glass versions of the day ribbon (G3 on the icon canvas), made after studying how Apple's 2025 icons are built: a lit gradient ground, a few thick translucent layers, edge light. The old icon was a tiny copy of the app's screen, which Apple's guidelines advise against.
+
 ## Build 6 · 22 October 2026
 
 - The Live Activity shows again. Build 5's version crashed while iOS drew it on the Lock Screen, so it never appeared.
