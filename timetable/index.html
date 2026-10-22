@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<title>Shivam's Week</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="My weekday and weekend rhythm, hour by hour.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+  /* Layout: one 24-hour track per day, from waking (6:30 am) to waking. Phone: one day per screen, swipe sideways. Desktop: all seven side by side. */
+  :root {
+    --bg: #F6F7F4;
+    --surface: #FFFFFF;
+    --fg: #1B1F1C;
+    --muted: #646B66;
+    --line: #E4E7E2;
+    --line-strong: #C9CEC8;
+    --accent: #D9472B;
+    --shadow: 0 1px 2px rgba(20, 30, 25, .06), 0 12px 40px rgba(20, 30, 25, .12);
+
+    /* Activity colours: a soft fill and an ink that reads on it */
+    --sleep: #E8E9F4;  --sleep-ink: #3A4072;
+    --rise: #F5EBD6;   --rise-ink: #74501A;
+    --travel: #ECEDE9; --travel-ink: #565B57; --hatch: rgba(30, 40, 35, .06);
+    --work: #DEE8EF;   --work-ink: #2A5170;
+    --move: #DCEEE1;   --move-ink: #28603C;
+    --food: #F6E1D6;   --food-ink: #86402A;
+    --walk: #EEE0EC;   --walk-ink: #6A3560;
+    --open-ink: #1B1F1C;
+
+    --font-display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --hour: 56px;      /* set from script to fit the screen on desktop */
+    --head: 64px;      /* height of each day's header, so the hour axis lines up */
+    --axis: 46px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111312; --surface: #1A1D1B; --fg: #ECEEEA; --muted: #99A09B;
+      --line: #252926; --line-strong: #3A3F3B; --accent: #FF7357;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 48px rgba(0,0,0,.5);
+      --sleep: #202236; --sleep-ink: #BDC1F2;
+      --rise: #33291A;  --rise-ink: #EBCB8F;
+      --travel: #202321; --travel-ink: #ABB0AC; --hatch: rgba(255,255,255,.035);
+      --work: #19262F;  --work-ink: #A3C7E2;
+      --move: #18291E;  --move-ink: #A0D7AF;
+      --food: #33211A;  --food-ink: #F0B89E;
+      --walk: #2E1E2B;  --walk-ink: #E2B4D7;
+      --open-ink: #ECEEEA;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #111312; --surface: #1A1D1B; --fg: #ECEEEA; --muted: #99A09B;
+    --line: #252926; --line-strong: #3A3F3B; --accent: #FF7357;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 48px rgba(0,0,0,.5);
+    --sleep: #202236; --sleep-ink: #BDC1F2;
+    --rise: #33291A;  --rise-ink: #EBCB8F;
+    --travel: #202321; --travel-ink: #ABB0AC; --hatch: rgba(255,255,255,.035);
+    --work: #19262F;  --work-ink: #A3C7E2;
+    --move: #18291E;  --move-ink: #A0D7AF;
+    --food: #33211A;  --food-ink: #F0B89E;
+    --walk: #2E1E2B;  --walk-ink: #E2B4D7;
+    --open-ink: #ECEEEA;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-block: 28px 56px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid;
+    gap: 28px;
+  }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- Now ---------- */
+  .now {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px 32px;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pulse {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 var(--accent);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+    70%, 100% { box-shadow: 0 0 0 8px transparent; }
+  }
+  .now h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(40px, 7vw, 64px);
+    line-height: 1;
+    letter-spacing: -.01em;
+    margin: 10px 0 8px;
+    text-wrap: balance;
+  }
+  .now h1 em { font-style: italic; color: var(--muted); }
+  .now p { margin: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .now p strong { color: var(--fg); font-weight: 500; }
+  .progress {
+    width: min(260px, 100%);
+    display: grid;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .progress .bar { height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .progress .bar i { display: block; height: 100%; width: 0; background: var(--fg); border-radius: 3px; transition: width .6s ease; }
+  .progress .ends { display: flex; justify-content: space-between; }
+
+  /* ---------- Day picker (phone) ---------- */
+  .tabs {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 5;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    padding: 6px;
+    margin-inline: -6px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 14px;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0 0 auto;
+    height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg);
+  }
+  .tab {
+    border: 0;
+    background: transparent;
+    border-radius: 10px;
+    min-height: 44px;
+    display: grid;
+    place-items: center;
+    gap: 0;
+    padding: 4px 0;
+    cursor: pointer;
+    color: var(--muted);
+    transition: background .2s, color .2s;
+  }
+  .tab b { font-weight: 500; font-size: 13px; }
+  .tab small { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; }
+  .tab[aria-selected="true"] { background: var(--fg); color: var(--bg); }
+  .tab.is-today:not([aria-selected="true"]) b { color: var(--accent); }
+
+  /* ---------- Board ---------- */
+  .board {
+    display: grid;
+    grid-template-columns: var(--axis) minmax(0, 1fr);
+  }
+  .axis { position: relative; padding-top: var(--head); }
+  .axis-track { position: relative; height: calc(var(--hour) * 24); }
+  .axis span {
+    position: absolute;
+    right: 8px;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .axis span.dim { opacity: .45; }
+
+  .days {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .days::-webkit-scrollbar { display: none; }
+  .day {
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+    padding-inline: 2px;
+  }
+  .day-head {
+    height: var(--head);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 14px 6px 0;
+  }
+  .day-head h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1;
+  }
+  .day-head .kind {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .day.is-today .day-head h2 { color: var(--accent); }
+  .short-name { display: none; }
+
+  .track {
+    position: relative;
+    height: calc(var(--hour) * 24);
+    border-radius: 12px;
+    background-image: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px var(--hour));
+    background-position: 0 calc(var(--hour) / 2);
+  }
+
+  .block {
+    position: absolute;
+    left: 3px; right: 3px;
+    border: 0;
+    border-radius: 10px;
+    padding: 8px 10px;
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--c);
+    color: var(--ink);
+    transition: transform .25s cubic-bezier(.2,.8,.2,1), opacity .3s, box-shadow .25s;
+  }
+  .block:hover { transform: translateY(-1px); box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--ink) 50%, transparent); }
+  .block:active { transform: scale(.985); }
+  .block .name { font-weight: 500; font-size: 14px; line-height: 1.2; }
+  .block .time { font-family: var(--font-mono); font-size: 11px; opacity: .78; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .block .dur { font-family: var(--font-mono); font-size: 11px; opacity: .6; margin-top: auto; }
+  .block.compact { flex-direction: row; align-items: center; gap: 8px; padding-block: 0; }
+  .block.compact .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .block.compact .dur { display: none; }
+  .block.past { opacity: .5; }
+  .block.current:not(.cat-open) { box-shadow: inset 0 0 0 1.5px var(--ink); }
+  .block.cat-open.current { border-color: var(--fg); }
+
+  .cat-sleep  { --c: var(--sleep);  --ink: var(--sleep-ink); }
+  .cat-rise   { --c: var(--rise);   --ink: var(--rise-ink); }
+  .cat-travel { --c: var(--travel); --ink: var(--travel-ink); }
+  .cat-work   { --c: var(--work);   --ink: var(--work-ink); }
+  .cat-move   { --c: var(--move);   --ink: var(--move-ink); }
+  .cat-food   { --c: var(--food);   --ink: var(--food-ink); }
+  .cat-walk   { --c: var(--walk);   --ink: var(--walk-ink); }
+  .cat-open   { --c: transparent;   --ink: var(--open-ink); }
+
+  .block.cat-travel {
+    background-image: repeating-linear-gradient(-45deg, var(--hatch) 0 6px, transparent 6px 12px);
+  }
+  .block.cat-open {
+    border: 1.5px dashed var(--line-strong);
+    background: var(--bg);
+    padding: 14px;
+    gap: 4px;
+  }
+  .block.cat-open .name { font-family: var(--font-display); font-size: 28px; font-weight: 400; line-height: 1.05; }
+  .block.cat-open .name em { font-style: italic; }
+  .ideas {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .ideas li { display: flex; gap: 8px; align-items: baseline; }
+  .ideas li::before { content: ""; flex: 0 0 5px; height: 5px; border-radius: 50%; background: var(--line-strong); transform: translateY(-1px); }
+
+  .now-line {
+    position: absolute;
+    left: -4px; right: 0;
+    height: 0;
+    border-top: 1.5px solid var(--accent);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .now-line::before {
+    content: "";
+    position: absolute;
+    left: -4px; top: -5.5px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* ---------- Where the hours go ---------- */
+  .split { display: grid; gap: 20px; padding-top: 8px; border-top: 1px solid var(--line); }
+  .split h3 {
+    margin: 16px 0 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 28px;
+  }
+  .split-rows { display: grid; gap: 18px; }
+  .split-row { display: grid; gap: 8px; }
+  .split-row .label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+  .split-row .label b { color: var(--fg); font-weight: 500; }
+  .stack { display: flex; height: 14px; gap: 2px; }
+  .stack span { border-radius: 4px; background: var(--c); min-width: 3px; }
+  .stack span.cat-open { background: transparent; border: 1.5px dashed var(--line-strong); }
+  .legend {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    font-size: 13px; color: var(--muted);
+  }
+  .legend li { display: flex; align-items: center; gap: 7px; }
+  .legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); }
+  .legend i.cat-open { background: transparent; border: 1.5px dashed var(--line-strong); }
+  .legend b { color: var(--fg); font-weight: 500; font-family: var(--font-mono); font-size: 12px; }
+
+  /* ---------- Detail sheet ---------- */
+  .scrim {
+    position: fixed; inset: 0; z-index: 20;
+    background: rgba(10, 14, 12, .28);
+    opacity: 0; transition: opacity .25s;
+  }
+  .scrim.open { opacity: 1; }
+  .sheet {
+    position: fixed; z-index: 21;
+    left: 0; right: 0; bottom: 0;
+    margin: 0 auto;
+    width: min(460px, 100%);
+    background: var(--surface);
+    border-radius: 22px 22px 0 0;
+    box-shadow: var(--shadow);
+    padding: 10px max(22px, env(safe-area-inset-right, 0px)) calc(26px + env(safe-area-inset-bottom, 0px)) max(22px, env(safe-area-inset-left, 0px));
+    transform: translateY(105%);
+    transition: transform .38s cubic-bezier(.2,.9,.25,1);
+    display: grid;
+    gap: 14px;
+  }
+  .sheet.open { transform: translateY(0); }
+  .sheet .grab { width: 36px; height: 4px; border-radius: 4px; background: var(--line-strong); margin: 0 auto 4px; }
+  .sheet-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .sheet .close {
+    border: 0; background: var(--bg); border-radius: 50%;
+    width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; flex: 0 0 auto;
+  }
+  .sheet h4 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1;
+    text-wrap: balance;
+  }
+  .sheet .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--c, var(--bg));
+    color: var(--ink, var(--fg));
+    font-variant-numeric: tabular-nums;
+  }
+  .chip.plain { background: var(--bg); color: var(--muted); }
+  .sheet p { margin: 0; color: var(--muted); max-width: 52ch; }
+  .sheet .ideas { margin: 0; font-size: 14px; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; background: var(--c); display: inline-block; }
+  .sheet.cat-open .chip { background: var(--bg); }
+  .swatch.cat-open { background: transparent; border: 1.5px dashed var(--line-strong); }
+
+  /* ---------- Desktop: the whole week ---------- */
+  @media (min-width: 960px) {
+    :root { --head: 58px; --axis: 54px; }
+    .tabs { display: none; }
+    .days { overflow: visible; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+    .day { padding-inline: 0; }
+    .day-head { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 4px; padding: 0 6px 10px; }
+    .day-head h2 { font-size: 26px; }
+    .long-name { display: none; }
+    .short-name { display: inline; }
+    .day.is-today .track { background-color: color-mix(in srgb, var(--accent) 4%, transparent); }
+    .block .name { font-size: 13px; }
+    .block.cat-open .name { font-size: 24px; }
+    .sheet {
+      bottom: auto; top: 50%;
+      border-radius: 22px;
+      transform: translateY(-46%) scale(.97);
+      opacity: 0; pointer-events: none;
+      transition: transform .3s cubic-bezier(.2,.9,.25,1), opacity .2s;
+      padding: 22px 26px 26px;
+    }
+    .sheet.open { transform: translateY(-50%); opacity: 1; pointer-events: auto; }
+    .sheet .grab { display: none; }
+    .split { grid-template-columns: 240px 1fr; align-items: start; gap: 40px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+  <header class="now">
+    <div>
+      <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span id="now-eyebrow">Now</span></div>
+      <h1 id="now-title">Your day</h1>
+      <p id="now-sub"></p>
+    </div>
+    <div class="progress" id="now-progress" hidden>
+      <div class="ends"><span id="p-start"></span><span id="p-left"></span><span id="p-end"></span></div>
+      <div class="bar"><i id="p-bar"></i></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Days of the week" id="tabs"></nav>
+
+  <section class="board" aria-label="Week timetable">
+    <div class="axis" aria-hidden="true"><div class="axis-track" id="axis"></div></div>
+    <div class="days" id="days"></div>
+  </section>
+
+  <section class="split" aria-labelledby="split-title">
+    <h3 id="split-title">Where the hours go</h3>
+    <div class="split-rows" id="split"></div>
+  </section>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1" hidden>
+  <div class="grab" aria-hidden="true"></div>
+  <div class="sheet-top">
+    <div class="eyebrow" id="sheet-eyebrow"></div>
+    <button class="close" id="sheet-close" aria-label="Close">
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+    </button>
+  </div>
+  <h4 id="sheet-title"></h4>
+  <div class="meta" id="sheet-meta"></div>
+  <p id="sheet-note"></p>
+  <ul class="ideas" id="sheet-ideas" hidden></ul>
+</div>
+
+<script>
+(function () {
+  // Times are minutes after midnight. The day runs from waking (6:30 am) to waking the next morning,
+  // so anything after midnight is stored as 24 h + time (6:30 am next day = 1830).
+  const DAY_START = 6 * 60 + 30;
+
+  const CATS = {
+    sleep:  "Sleep",
+    rise:   "Morning",
+    travel: "Commute",
+    work:   "Work",
+    move:   "Workout",
+    food:   "Cooking & dinner",
+    walk:   "Walk & wind down",
+    open:   "Open time",
+  };
+
+  const ACTIVITIES = {
+    rise:   { name: "Rise & get ready", cat: "rise", note: "Wake up, freshen up and get ready for the day." },
+    commute:{ name: "Commute", cat: "travel", note: "On the way to the office." },
+    work:   { name: "Office", cat: "work", note: "Working at the office." },
+    home:   { name: "Commute home", cat: "travel", note: "Heading back home." },
+    workout:{ name: "Workout", cat: "move", note: "An hour of exercise before dinner." },
+    cook:   { name: "Cook dinner", cat: "food", note: "Cooking dinner at home." },
+    dinner: { name: "Dinner", cat: "food", note: "Sitting down to eat dinner." },
+    walk:   { name: "Walk & wind down", cat: "walk", note: "A walk with my wife, then getting ready for bed." },
+    sleep:  { name: "Sleep", cat: "sleep", note: "Lights out. A full 7 hours 30 minutes before the alarm." },
+    open:   {
+      name: "Open day", cat: "open",
+      note: "No commute and no office. Ten free hours to spend however we like.",
+      ideas: ["Brunch together", "Breakfast at a café we haven't tried", "A day out somewhere new", "Or nothing at all"],
+    },
+  };
+
+  const t = (h, m = 0) => h * 60 + m;
+  const WEEKDAY = [
+    [t(6, 30), t(8, 30), "rise"],
+    [t(8, 30), t(9, 30), "commute"],
+    [t(9, 30), t(17, 30), "work"],
+    [t(17, 30), t(18, 30), "home"],
+    [t(18, 30), t(19, 30), "workout"],
+    [t(19, 30), t(20, 30), "cook"],
+    [t(20, 30), t(21, 30), "dinner"],
+    [t(21, 30), t(23), "walk"],
+    [t(23), t(30, 30), "sleep"],
+  ];
+  const WEEKEND = [
+    [t(6, 30), t(8, 30), "rise"],
+    [t(8, 30), t(18, 30), "open"],
+    ...WEEKDAY.slice(4),
+  ];
+
+  const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const plan = (i) => (i >= 5 ? WEEKEND : WEEKDAY);
+
+  // ---- formatting ----
+  function clock(min, withPeriod = true) {
+    const m = ((min % 1440) + 1440) % 1440;
+    const h = Math.floor(m / 60), mm = m % 60;
+    const h12 = h % 12 === 0 ? 12 : h % 12;
+    const s = mm === 0 && !withPeriod ? String(h12) : h12 + ":" + String(mm).padStart(2, "0");
+    return withPeriod ? s + " " + (h < 12 ? "am" : "pm") : s;
+  }
+  function span(a, b) {
+    // Drop the first "am/pm" when both ends share it: 7:30 – 8:30 pm
+    const pa = clock(a), pb = clock(b);
+    return pa.slice(-2) === pb.slice(-2) ? pa.slice(0, -3) + " – " + pb : pa + " – " + pb;
+  }
+  function dur(min) {
+    const h = Math.floor(min / 60), m = min % 60;
+    if (!h) return m + " min";
+    return m ? h + " h " + m + " min" : h + (h === 1 ? " hour" : " hours");
+  }
+  function hoursShort(min) {
+    const h = min / 60;
+    return (Number.isInteger(h) ? h : h.toFixed(1).replace(".5", "½")) + " h";
+  }
+
+  // ---- now ----
+  function nowInfo() {
+    const d = new Date();
+    let m = d.getHours() * 60 + d.getMinutes() + d.getSeconds() / 60;
+    let idx = (d.getDay() + 6) % 7;            // Monday = 0
+    if (m < DAY_START) { m += 1440; idx = (idx + 6) % 7; } // before 6:30 am still belongs to last night
+    const blocks = plan(idx);
+    const i = blocks.findIndex(([a, b]) => m >= a && m < b);
+    return { m, idx, i, blocks, todayIdx: (d.getDay() + 6) % 7 };
+  }
+
+  // ---- layout ----
+  const $ = (id) => document.getElementById(id);
+  const daysEl = $("days"), tabsEl = $("tabs"), axisEl = $("axis");
+  const desktop = window.matchMedia("(min-width: 960px)");
+  let hourPx = 56;
+
+  function sizeHour() {
+    if (desktop.matches) {
+      const avail = window.innerHeight - 120;  // a little header peeks above the fold
+      hourPx = Math.max(30, Math.min(44, Math.floor(avail / 24)));
+    } else {
+      hourPx = 56;
+    }
+    document.documentElement.style.setProperty("--hour", hourPx + "px");
+  }
+
+  function buildAxis() {
+    axisEl.innerHTML = "";
+    for (let h = 7; h <= 30; h++) {
+      const s = document.createElement("span");
+      s.style.top = (t(h) - DAY_START) * hourPx / 60 + "px";
+      s.textContent = clock(t(h)).replace(":00", "");
+      if (h >= 24) s.classList.add("dim");
+      axisEl.appendChild(s);
+    }
+  }
+
+  function buildTabs(info) {
+    tabsEl.innerHTML = "";
+    DAYS.forEach((name, i) => {
+      const b = document.createElement("button");
+      b.className = "tab" + (i === info.todayIdx ? " is-today" : "");
+      b.setAttribute("role", "tab");
+      b.id = "tab-" + i;
+      b.setAttribute("aria-controls", "day-" + i);
+      b.setAttribute("aria-selected", "false");
+      b.innerHTML = `<b>${name.slice(0, 3)}</b><small>${i >= 5 ? "Free" : "Work"}</small>`;
+      b.addEventListener("click", () => goTo(i, true));
+      tabsEl.appendChild(b);
+    });
+  }
+
+  function buildDays(info) {
+    daysEl.innerHTML = "";
+    DAYS.forEach((name, i) => {
+      const day = document.createElement("article");
+      day.className = "day" + (i === info.todayIdx ? " is-today" : "");
+      day.id = "day-" + i;
+      day.setAttribute("role", "tabpanel");
+      day.setAttribute("aria-labelledby", "tab-" + i);
+      const weekend = i >= 5;
+      day.innerHTML = `
+        <div class="day-head">
+          <h2><span class="long-name">${name}</span><span class="short-name">${name.slice(0, 3)}</span></h2>
+          <span class="kind">${weekend ? "Weekend" : "Workday"}</span>
+        </div>
+        <div class="track"></div>`;
+      const track = day.querySelector(".track");
+
+      plan(i).forEach(([a, b, key], j) => {
+        const act = ACTIVITIES[key];
+        const h = (b - a) * hourPx / 60;
+        const el = document.createElement("button");
+        el.className = "block cat-" + act.cat;
+        if (h < 46) el.classList.add("compact");
+        el.style.top = (a - DAY_START) * hourPx / 60 + 1 + "px";
+        el.style.height = h - 2 + "px";
+        el.dataset.day = i;
+        el.dataset.index = j;
+        el.setAttribute("aria-label", `${name}, ${act.name}, ${span(a, b)}`);
+
+        if (key === "open") {
+          el.innerHTML = `
+            <span class="time">${span(a, b)}</span>
+            <span class="name">Open <em>day</em></span>
+            <span class="time">${dur(b - a)} free</span>
+            <ul class="ideas">${act.ideas.map((x) => `<li>${x}</li>`).join("")}</ul>`;
+        } else {
+          el.innerHTML = `
+            <span class="name">${act.name}</span>
+            <span class="time">${h < 46 ? clock(a).slice(0, -3) : span(a, b)}</span>
+            ${h > 120 ? `<span class="dur">${dur(b - a)}</span>` : ""}`;
+        }
+        el.addEventListener("click", () => openSheet(i, j, el));
+        track.appendChild(el);
+      });
+      daysEl.appendChild(day);
+    });
+  }
+
+  // ---- now updates ----
+  function paintNow() {
+    const info = nowInfo();
+    const cur = info.blocks[info.i];
+    const act = ACTIVITIES[cur[2]];
+    const [a, b] = cur;
+    const left = Math.max(0, Math.round(b - info.m));
+    const next = info.blocks[info.i + 1] || plan((info.idx + 1) % 7)[0];
+    const nextAct = ACTIVITIES[next[2]];
+
+    $("now-eyebrow").textContent = "Now · " + DAYS[info.todayIdx] + " · " + clock(Math.floor(info.m));
+    $("now-title").innerHTML = act.cat === "open"
+      ? "Open <em>time</em>"
+      : act.name.replace(" & ", " <em>&amp;</em> ");
+    $("now-sub").innerHTML = `<strong>${dur(left)}</strong> left. Next: ${nextAct.name} at ${clock(next[0])}.`;
+    $("now-progress").hidden = false;
+    $("p-start").textContent = clock(a);
+    $("p-end").textContent = clock(b);
+    $("p-left").textContent = Math.round(((info.m - a) / (b - a)) * 100) + "%";
+    $("p-bar").style.width = ((info.m - a) / (b - a)) * 100 + "%";
+
+    document.querySelectorAll(".now-line").forEach((n) => n.remove());
+    document.querySelectorAll(".block.past, .block.current").forEach((n) => n.classList.remove("past", "current"));
+    const day = $("day-" + info.idx);
+    if (day) {
+      const line = document.createElement("div");
+      line.className = "now-line";
+      line.style.top = (info.m - DAY_START) * hourPx / 60 + "px";
+      day.querySelector(".track").appendChild(line);
+      day.querySelectorAll(".block").forEach((el) => {
+        const j = +el.dataset.index;
+        if (j < info.i) el.classList.add("past");
+        if (j === info.i) el.classList.add("current");
+      });
+    }
+  }
+
+  // ---- phone: swipe between days ----
+  let current = 0;
+  function goTo(i, smooth) {
+    current = i;
+    if (!desktop.matches) {
+      daysEl.scrollTo({ left: daysEl.clientWidth * i, behavior: smooth ? "smooth" : "auto" });
+    }
+    markTab(i);
+  }
+  function markTab(i) {
+    tabsEl.querySelectorAll(".tab").forEach((b, k) => b.setAttribute("aria-selected", String(k === i)));
+  }
+  let raf = 0;
+  daysEl.addEventListener("scroll", () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      if (desktop.matches) return;
+      const i = Math.round(daysEl.scrollLeft / daysEl.clientWidth);
+      if (i !== current) { current = i; markTab(i); }
+    });
+  }, { passive: true });
+  tabsEl.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const i = (current + (e.key === "ArrowRight" ? 1 : 6)) % 7;
+    goTo(i, true);
+    $("tab-" + i).focus();
+  });
+
+  // ---- detail sheet ----
+  const sheet = $("sheet"), scrim = $("scrim");
+  let opener = null;
+  function openSheet(dayIdx, j, from) {
+    opener = from;
+    const [a, b, key] = plan(dayIdx)[j];
+    const act = ACTIVITIES[key];
+    sheet.className = "sheet cat-" + act.cat;
+    $("sheet-eyebrow").innerHTML = `<span class="swatch cat-${act.cat}"></span>${DAYS[dayIdx]} · ${CATS[act.cat]}`;
+    $("sheet-title").textContent = act.name;
+    $("sheet-meta").innerHTML =
+      `<span class="chip">${span(a, b)}</span><span class="chip plain">${dur(b - a)}</span>`;
+    $("sheet-note").textContent = act.note;
+    const ideas = $("sheet-ideas");
+    ideas.hidden = !act.ideas;
+    ideas.innerHTML = act.ideas ? act.ideas.map((x) => `<li>${x}</li>`).join("") : "";
+    scrim.hidden = false; sheet.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      scrim.classList.add("open"); sheet.classList.add("open");
+      sheet.focus({ preventScroll: true });
+    }));
+  }
+  function closeSheet() {
+    if (sheet.hidden) return;
+    scrim.classList.remove("open"); sheet.classList.remove("open");
+    setTimeout(() => { scrim.hidden = true; sheet.hidden = true; }, 320);
+    if (opener) opener.focus({ preventScroll: true });
+  }
+  scrim.addEventListener("click", closeSheet);
+  $("sheet-close").addEventListener("click", closeSheet);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+  // Swipe the sheet down to close it
+  let y0 = null;
+  sheet.addEventListener("touchstart", (e) => { y0 = e.touches[0].clientY; }, { passive: true });
+  sheet.addEventListener("touchend", (e) => {
+    if (y0 !== null && e.changedTouches[0].clientY - y0 > 60) closeSheet();
+    y0 = null;
+  });
+
+  // ---- where the hours go ----
+  function buildSplit() {
+    const rows = [["Weekday", WEEKDAY], ["Weekend", WEEKEND]];
+    $("split").innerHTML = rows.map(([label, blocks]) => {
+      const totals = {};
+      blocks.forEach(([a, b, key]) => {
+        const c = ACTIVITIES[key].cat;
+        totals[c] = (totals[c] || 0) + (b - a);
+      });
+      const order = Object.keys(CATS).filter((c) => totals[c]);
+      const free = totals.open ? ` · <b>${hoursShort(totals.open)}</b> open` : "";
+      return `
+        <div class="split-row">
+          <div class="label"><b>${label}</b><span>${hoursShort(totals.sleep)} sleep${free}</span></div>
+          <div class="stack" role="img" aria-label="${label}: ${order.map((c) => CATS[c] + " " + hoursShort(totals[c])).join(", ")}">
+            ${order.map((c) => `<span class="cat-${c}" style="flex:${totals[c]}" title="${CATS[c]} · ${hoursShort(totals[c])}"></span>`).join("")}
+          </div>
+          <ul class="legend">
+            ${order.map((c) => `<li><i class="cat-${c}"></i>${CATS[c]} <b>${hoursShort(totals[c])}</b></li>`).join("")}
+          </ul>
+        </div>`;
+    }).join("");
+  }
+
+  // ---- go ----
+  function render() {
+    const info = nowInfo();
+    sizeHour();
+    buildAxis();
+    buildTabs(info);
+    buildDays(info);
+    paintNow();
+    goTo(current, false);
+  }
+
+  current = nowInfo().idx;
+  buildSplit();
+  render();
+  setInterval(paintNow, 30 * 1000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) paintNow(); });
+
+  // Rebuild only when the width or layout changes, not when a phone's address bar slides away
+  let rt = 0, lastW = window.innerWidth, lastH = window.innerHeight;
+  window.addEventListener("resize", () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      const w = window.innerWidth, h = window.innerHeight;
+      if (w === lastW && (!desktop.matches || h === lastH)) return;
+      lastW = w; lastH = h;
+      render();
+    }, 150);
+  });
+})();
+</script>
+</body>
+</html>
