@@ -6,21 +6,28 @@ struct ContentView: View {
     @State private var selected = Schedule.dayIndex(of: Schedule.anchorDay(for: .now))
     @State private var detail: BlockDetail.Item?
     @AppStorage(LiveActivitySync.enabledKey) private var liveActivityOn = true
+    @Environment(\.scenePhase) private var scenePhase
+    /// Shrinks the header while reading the day, and grows it back on scrolling down.
+    @State private var compact = false
+    /// Bumped each time the app comes to the front, so today's page centres on the current time again.
+    @State private var recenter = 0
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 30)) { context in
             let now = context.date
             let today = Schedule.dayIndex(of: Schedule.anchorDay(for: now))
             VStack(spacing: 0) {
-                NowHeader(now: now, liveActivityOn: $liveActivityOn)
+                NowHeader(now: now, compact: compact, liveActivityOn: $liveActivityOn)
                     .padding(.horizontal, 20)
                     .padding(.top, 8)
                 DayPicker(selected: $selected, today: today)
                     .padding(.horizontal, 14)
-                    .padding(.top, 18)
+                    .padding(.top, compact ? 10 : 18)
+                    .padding(.bottom, 10)
                 TabView(selection: $selected) {
                     ForEach(0..<7, id: \.self) { index in
-                        DayPage(dayIndex: index, isToday: index == today, now: now) { block in
+                        DayPage(dayIndex: index, isToday: index == today, now: now, recenter: recenter,
+                                onScroll: { compact = $0 }) { block in
                             detail = BlockDetail.Item(day: index, block: block)
                         }
                         .tag(index)
@@ -28,7 +35,14 @@ struct ContentView: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
+            .animation(.snappy(duration: 0.3), value: compact)
             .background(Palette.bg.ignoresSafeArea())
+        }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            selected = Schedule.dayIndex(of: Schedule.anchorDay(for: .now))
+            compact = false
+            recenter += 1
         }
         .sheet(item: $detail) { item in
             BlockDetail(item: item)
@@ -43,25 +57,32 @@ struct ContentView: View {
 
 // MARK: - Now
 
-/// "Office till 5:30 pm", then how long until the next block.
+/// "Office till 5:30 pm", then how long until the next block. Compact: one smaller line, since the
+/// day below already shows what comes next.
 private struct NowHeader: View {
     let now: Date
+    let compact: Bool
     @Binding var liveActivityOn: Bool
 
     var body: some View {
         let slots = Schedule.slots(from: now, count: 2)
         let current = slots[0], next = slots[1]
         let name = current.activity.category == .open ? "Open time" : current.activity.name
-        HStack(alignment: .top) {
+        HStack(alignment: compact ? .center : .top) {
             VStack(alignment: .leading, spacing: 6) {
                 (Text(name) + Text(" till \(Format.clock(current.end))").italic().foregroundColor(Palette.muted))
-                    .font(.display(34))
+                    .font(.display(compact ? 21 : 34))
                     .foregroundStyle(Palette.fg)
-                    .fixedSize(horizontal: false, vertical: true)
-                Text("\(Format.duration(from: now, to: current.end)) until \(next.activity.name)")
-                    .font(.subheadline)
-                    .foregroundStyle(Palette.muted)
-                    .monospacedDigit()
+                    .lineLimit(compact ? 1 : nil)
+                    .minimumScaleFactor(compact ? 0.85 : 1)
+                    .fixedSize(horizontal: false, vertical: !compact)
+                if !compact {
+                    Text("\(Format.duration(from: now, to: current.end)) until \(next.activity.name)")
+                        .font(.subheadline)
+                        .foregroundStyle(Palette.muted)
+                        .monospacedDigit()
+                        .transition(.opacity)
+                }
             }
             Spacer(minLength: 12)
             Menu {
@@ -118,10 +139,18 @@ private struct DayPage: View {
     let dayIndex: Int
     let isToday: Bool
     let now: Date
+    let recenter: Int
+    /// Called with true when the person scrolls further into the day, false when they scroll back.
+    let onScroll: (Bool) -> Void
     let onSelect: (Block) -> Void
 
     private let hour: CGFloat = 56
     private let axis: CGFloat = 46
+
+    /// Where the last change of direction happened, and when scroll movement starts counting.
+    /// Scrolling the app does itself (centring on now) is ignored.
+    @State private var anchorOffset: CGFloat = 0
+    @State private var ignoreUntil = Date.distantPast
 
     private var blocks: [Block] { Schedule.blocks(forDay: dayIndex) }
 
@@ -164,20 +193,52 @@ private struct DayPage: View {
                                 .onTapGesture { onSelect(block) }
                         }
                         if let m = nowMinutes {
-                            NowMarker(time: Format.clock(now), axis: axis)
-                                .padding(.top, y(m) - 12)
-                                .id("now")
+                            // A spacer above the marker, so the id sits on the marker alone and
+                            // scrolling to it lands on the line, not on the middle of the spacer.
+                            VStack(spacing: 0) {
+                                Color.clear.frame(height: max(0, y(m) - 12))
+                                NowMarker(time: Format.clock(now), axis: axis)
+                                    .id("now")
+                            }
                         }
                     }
                     .frame(height: hour * 24, alignment: .topLeading)
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 40)
+                .background {
+                    GeometryReader { geo in
+                        Color.clear.preference(key: ScrollOffsetKey.self, value: -geo.frame(in: .named("day")).minY)
+                    }
+                }
             }
+            .coordinateSpace(name: "day")
             .scrollIndicators(.hidden)
-            .onAppear {
-                if isToday { proxy.scrollTo("now", anchor: UnitPoint(x: 0.5, y: 0.35)) }
+            .onPreferenceChange(ScrollOffsetKey.self) { offset in
+                guard Date.now > ignoreUntil else { anchorOffset = offset; return }
+                if offset < 12 {
+                    onScroll(false)
+                    anchorOffset = offset
+                } else if offset - anchorOffset > 24 {
+                    onScroll(true)
+                    anchorOffset = offset
+                } else if anchorOffset - offset > 24 {
+                    onScroll(false)
+                    anchorOffset = offset
+                }
             }
+            .onAppear { centreOnNow(proxy) }
+            .onChange(of: recenter) { _, _ in centreOnNow(proxy) }
+        }
+    }
+
+    /// Puts the current-time line in the middle of the screen. Early in the day the page can't
+    /// scroll that far, so the line simply sits nearer the top.
+    private func centreOnNow(_ proxy: ScrollViewProxy) {
+        guard isToday else { return }
+        ignoreUntil = .now.addingTimeInterval(0.8)
+        DispatchQueue.main.async {
+            proxy.scrollTo("now", anchor: .center)
         }
     }
 
@@ -207,6 +268,11 @@ private struct DayPage: View {
         if Double(block.start) <= m { return .current }
         return .normal
     }
+}
+
+private struct ScrollOffsetKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
 }
 
 private struct BlockView: View {
