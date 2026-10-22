@@ -12,22 +12,15 @@ The routine is set in `Shared/Schedule.swift`. Change times or names there.
 
 ## Put it on your iPhone
 
-You need a Mac with Xcode 16 or later, and your iPhone with a cable.
+Like Stay Connected and Joint Finances, My Week goes to the phone through **TestFlight**, on Shivam's paid Apple developer account. The upload runs on the Mac:
 
-1. On the Mac, get this folder: `git clone https://github.com/imshivam/shivams-lab.git`, then `git checkout claude/determined-ride-f66k6s` (or `main` once it's merged).
-2. Open `ios/MyWeek.xcodeproj` in Xcode.
-3. Sign in: **Xcode → Settings → Accounts → +**, then add your Apple Account.
-4. Pick who signs the app. Click **MyWeek** at the top of the file list, then **Signing & Capabilities**. Under **Team**, choose your name. Do the same for the **MyWeekWidget** target.
-   - If Xcode says the bundle identifier is taken, change `com.imshivam.myweek` to something unique in both targets. The widget's identifier must start with the app's, for example `com.yourname.myweek` and `com.yourname.myweek.widget`.
-5. Connect the iPhone and unlock it. If asked, tap **Trust This Computer**.
-6. Turn on Developer Mode on the iPhone: **Settings → Privacy & Security → Developer Mode**, then restart when asked. This option appears after you connect the phone to Xcode once.
-7. In Xcode's toolbar, choose your iPhone as the destination and press **⌘R** (Run).
-8. With a free Apple Account, the first launch is blocked until you trust yourself: **Settings → General → VPN & Device Management**, tap your Apple Account, then **Trust**. Open the app again.
+1. Open `ios/MyWeek.xcodeproj` in Xcode on the Mac.
+2. Under **Signing & Capabilities**, set **Team** to Shivam's paid team for both targets, **MyWeek** and **MyWeekWidget**.
+3. Create the app in [App Store Connect](https://appstoreconnect.apple.com) (**Apps → + → New App**) with the bundle ID `com.imshivam.myweek`.
+4. Choose **Any iOS Device**, then **Product → Archive**, then **Distribute App → TestFlight & App Store**.
+5. When the build has processed, it appears in the TestFlight app on the iPhone.
 
-### How long it lasts
-
-- With a **free Apple Account**, the app stops opening after 7 days. Plug in the phone and press ⌘R again to renew it.
-- With a **paid Apple Developer Program membership** ($99 a year), it lasts a year.
+For a quick test without TestFlight, connect the iPhone and press **⌘R** in Xcode instead.
 
 ### Add the widgets
 
