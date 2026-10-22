@@ -22,9 +22,10 @@ extension WeekActivityAttributes.ContentState {
         isStale ? (next, after) : (current, next)
     }
 
-    /// The same, with the block before and the moment the current-time line marks.
-    func ribbon(isStale: Bool) -> (previous: Slot, now: Slot, next: Slot, at: Date) {
-        isStale ? (current, next, after, next.start) : (previous, current, next, updatedAt)
+    /// Every block the strip can show, and the moment the current-time line marks.
+    func ribbon(isStale: Bool) -> (blocks: [Slot], now: Slot, next: Slot, at: Date) {
+        isStale ? ([current, next, after], next, after, next.start)
+                : ([previous, current, next, after], current, next, updatedAt)
     }
 }
 

@@ -46,6 +46,12 @@ Do all of this yourself. Shivam does none of it unless a step below says so.
 - **My Week** (`ios/`): the weekly timetable as an iPhone app, with widgets, a Live Activity and the Dynamic Island. Bundle ID `com.imshivam.myweek`. On App Store Connect and TestFlight it's called **In a day**. The web version is `timetable/index.html`.
 - Each app gets a changelog artifact with its changes and decisions.
 
+## Everything goes into the Lab (a standing rule from Shivam, 22 October 2026)
+
+- Anything made in Claude Code (an app, a site, an artifact, a tool) is pushed to this repository, `imshivam/shivams-lab`, in its own folder, and listed in `data.js`.
+- Every project keeps a changelog: a `CHANGELOG.md` in its folder, newest first. Each entry has what changed and why (the decisions), and is added in the same commit as the work. My Week's is `ios/CHANGELOG.md`.
+- Work that lives elsewhere (a folder on the Mac, a Claude artifact) still gets a folder or an entry here, plus its changelog.
+
 ## This site
 
 - Add projects in `data.js` and log site changes in `changelog.js` (see `README.md`).

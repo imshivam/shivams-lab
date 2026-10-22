@@ -9,7 +9,7 @@ struct WeekLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: WeekActivityAttributes.self) { context in
             let r = context.state.ribbon(isStale: context.isStale)
-            LockScreenView(previous: r.previous, now: r.now, next: r.next, at: r.at)
+            LockScreenView(blocks: r.blocks, now: r.now, next: r.next, at: r.at)
                 .activityBackgroundTint(Palette.card)
                 .activitySystemActionForegroundColor(Palette.fg)
         } dynamicIsland: { context in
@@ -88,26 +88,22 @@ struct WeekLiveActivity: Widget {
 }
 
 
-/// The Lock Screen card: the current block's name and time left, then a zoomed-in strip of the day
-/// with a peek of the block before and after, the current-time line, and what's next.
+/// The Lock Screen card: the current block's name and time left, then a zoomed-in strip of the day.
+/// The current-time line and its pill stay put a third of the way across; the strip sits so that
+/// now is under the line, with the block before peeking in on the left and what's next on the right.
 private struct LockScreenView: View {
-    let previous: Slot
+    let blocks: [Slot]
     let now: Slot
     let next: Slot
-    /// The moment the line marks. iOS can't move it continuously, so it moves when the app updates.
+    /// The moment under the line. iOS can't move the strip continuously, so it moves when the app updates.
     let at: Date
 
     private let ribbonHeight: CGFloat = 44
     private let gap: CGFloat = 3
-
-    /// A long block fills the strip on its own, with no peek of the one before.
-    private var showsPrevious: Bool { now.end.timeIntervalSince(now.start) <= 3 * 3600 }
-
-    private var progress: CGFloat {
-        let total = now.end.timeIntervalSince(now.start)
-        guard total > 0 else { return 0 }
-        return CGFloat(min(max(at.timeIntervalSince(now.start) / total, 0), 1))
-    }
+    /// How much of the day the strip shows, in minutes.
+    private let window: Double = 150
+    /// Where the line sits, as a share of the width.
+    private let lineShare: CGFloat = 0.3
 
     var body: some View {
         VStack(spacing: 10) {
@@ -117,56 +113,47 @@ private struct LockScreenView: View {
                     .foregroundStyle(Palette.fg)
                     .lineLimit(1)
                 Spacer(minLength: 12)
-                // Minutes only, counting down by itself. A seconds timer shows "29:--" on the Lock Screen.
+                // Counts down by itself, in whole minutes (or hours for a long block).
+                // The live text claims as much width as it might ever need, so it's right-aligned
+                // inside a fixed space.
                 HStack(spacing: 5) {
-                    Text(now.end, style: .relative)
+                    Text(.currentDate, format: .offset(to: now.end, allowedFields: [.hour, .minute],
+                                                       maxFieldCount: 1, sign: .never))
                         .multilineTextAlignment(.trailing)
                     Text("left")
                 }
                 .font(.mono(13))
-                .monospacedDigit()
                 .foregroundStyle(Palette.fg)
                 .lineLimit(1)
-                .fixedSize()
+                .frame(width: 140, alignment: .trailing)
             }
             .padding(.horizontal, 20)
 
             GeometryReader { geo in
-                let width = geo.size.width
-                let previousWidth: CGFloat = showsPrevious ? 56 : 0
-                let nextWidth = (110 / 380) * width
-                let currentWidth = width - previousWidth - nextWidth - gap * (showsPrevious ? 2 : 1)
-                let lineX = previousWidth + (showsPrevious ? gap : 0) + progress * currentWidth
-                let label = "\(next.activity.name) \(Format.clock(next.start).dropLast(3)) →"
-                let labelWidth = CGFloat(label.count) * 7.4
-                let pillHalf: CGFloat = 28
-                let pillX = min(max(lineX, pillHalf + 8), width - 20 - labelWidth - 8 - pillHalf)
+                // iOS sometimes measures the card before it knows the width; fall back to a phone's width.
+                let width = geo.size.width.isFinite && geo.size.width > 0 ? geo.size.width : 360
+                let lineX = (width * lineShare).rounded()
+                let perMinute = width / CGFloat(window)
 
                 ZStack(alignment: .topLeading) {
-                    HStack(spacing: gap) {
-                        if showsPrevious {
-                            Rectangle()
-                                .fill(previous.activity.category.fill)
-                                .frame(width: previousWidth)
-                                .clipShape(UnevenRoundedRectangle(bottomTrailingRadius: 8, topTrailingRadius: 8))
+                    ForEach(blocks, id: \.start) { slot in
+                        let x = lineX + CGFloat(slot.start.timeIntervalSince(at) / 60) * perMinute
+                        let w = max(CGFloat(slot.end.timeIntervalSince(slot.start) / 60) * perMinute - gap, 1)
+                        if x < width && x + w > 0 {
+                            block(slot, width: w, elapsed: max(min(lineX - x, w), 0), perMinute: perMinute)
+                                .offset(x: x)
                         }
-                        currentBlock
-                            .frame(width: currentWidth)
-                        Rectangle()
-                            .fill(next.activity.category.fill)
-                            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 8))
                     }
-                    .frame(height: ribbonHeight)
 
                     // Fades at both ends, so the day reads as carrying on past the card.
-                    HStack {
+                    HStack(spacing: 0) {
                         LinearGradient(colors: [Palette.card, Palette.card.opacity(0)], startPoint: .leading, endPoint: .trailing)
-                            .frame(width: 48)
-                        Spacer()
+                            .frame(width: 44)
+                        Spacer(minLength: 0)
                         LinearGradient(colors: [Palette.card.opacity(0), Palette.card], startPoint: .leading, endPoint: .trailing)
-                            .frame(width: 48)
+                            .frame(width: 44)
                     }
-                    .frame(height: ribbonHeight)
+                    .frame(width: width, height: ribbonHeight)
 
                     Rectangle()
                         .fill(Palette.accent)
@@ -184,19 +171,20 @@ private struct LockScreenView: View {
                     .padding(.trailing, 9)
                     .frame(height: 22)
                     .background(Palette.accent, in: Capsule())
-                    .fixedSize()
-                    .frame(width: pillHalf * 2)
-                    .offset(x: pillX - pillHalf, y: ribbonHeight + 10)
+                    .frame(width: 80, height: 22)
+                    .offset(x: lineX - 40, y: ribbonHeight + 10)
 
-                    Text(label)
+                    Text("\(next.activity.name) \(Format.clock(next.start).dropLast(3)) →")
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(next.activity.category.ink)
                         .lineLimit(1)
-                        .frame(width: width - 20, height: 22, alignment: .trailing)
-                        .offset(y: ribbonHeight + 10)
+                        .frame(width: max(width - lineX - 60, 1), height: 22, alignment: .trailing)
+                        .offset(x: lineX + 40, y: ribbonHeight + 10)
                 }
+                .frame(width: width, height: ribbonHeight + 32, alignment: .topLeading)
+                .clipped()
             }
-            .frame(height: ribbonHeight + 10 + 22)
+            .frame(height: ribbonHeight + 32)
         }
         .padding(.top, 18)
         .padding(.bottom, 14)
@@ -204,28 +192,31 @@ private struct LockScreenView: View {
         .accessibilityLabel("\(now.activity.name) till \(Format.clock(now.end)). Then \(next.activity.name) at \(Format.clock(next.start)).")
     }
 
-    /// The current block: its colour with a tick every 10 minutes (every hour for a long block), the
-    /// part already gone a little darker, and a border like the current block in the app.
-    private var currentBlock: some View {
-        let cat = now.activity.category
-        let minutes = now.end.timeIntervalSince(now.start) / 60
-        let step = minutes > 180 ? 60.0 : 10.0
+    /// One block of the strip. The current one gets a tick every 10 minutes, the part already gone
+    /// a little darker, and a border like the current block in the app.
+    @ViewBuilder
+    private func block(_ slot: Slot, width: CGFloat, elapsed: CGFloat, perMinute: CGFloat) -> some View {
+        let cat = slot.activity.category
         let shape = RoundedRectangle(cornerRadius: 8, style: .continuous)
-        return ZStack(alignment: .leading) {
-            cat.fill
-            Canvas { context, size in
-                var m = step
-                while m < minutes {
-                    let x = size.width * CGFloat(m / minutes)
-                    context.fill(Path(CGRect(x: x, y: 0, width: 1, height: size.height)), with: .color(cat.ink.opacity(0.18)))
-                    m += step
+        if slot.start == now.start {
+            let tickSpacing = 10 * perMinute
+            let ticks = max(Int(width / tickSpacing), 0)
+            ZStack(alignment: .leading) {
+                cat.fill
+                HStack(spacing: 0) {
+                    ForEach(0..<ticks, id: \.self) { _ in
+                        Spacer(minLength: 0).frame(width: tickSpacing - 1)
+                        cat.ink.opacity(0.18).frame(width: 1)
+                    }
+                    Spacer(minLength: 0)
                 }
+                cat.ink.opacity(0.14).frame(width: elapsed)
             }
-            GeometryReader { geo in
-                cat.ink.opacity(0.14).frame(width: geo.size.width * progress)
-            }
+            .frame(width: width, height: ribbonHeight)
+            .clipShape(shape)
+            .overlay(shape.strokeBorder(cat.ink, lineWidth: 1.5))
+        } else {
+            shape.fill(cat.fill).frame(width: width, height: ribbonHeight)
         }
-        .clipShape(shape)
-        .overlay(shape.strokeBorder(cat.ink, lineWidth: 1.5))
     }
 }
