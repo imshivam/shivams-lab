@@ -12,74 +12,23 @@ struct WeekLiveActivity: Widget {
             ActivityCard(blocks: r.blocks, now: r.now, next: r.next, at: r.at)
                 .activitySystemActionForegroundColor(Palette.fg)
         } dynamicIsland: { context in
-            let shown = context.state.shown(isStale: context.isStale)
-            let now = shown.now, next = shown.next
+            // Kept as small as iOS allows: a dot in the current block's colour. Shivam uses the
+            // Lock Screen and Notification Centre card; the island can't be switched off.
+            let now = context.state.shown(isStale: context.isStale).now
             let ink = now.activity.category.islandInk
             return DynamicIsland {
-                DynamicIslandExpandedRegion(.leading) {
-                    Image(systemName: now.activity.symbol)
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(ink)
-                        .frame(width: 44, height: 44)
-                        .background(ink.opacity(0.16), in: Circle())
-                }
                 DynamicIslandExpandedRegion(.center) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text(now.activity.name)
-                            .font(.display(21))
-                            .foregroundStyle(.white)
-                            .lineLimit(1)
-                        Text("till \(Format.clock(now.end))")
-                            .font(.display(16).italic())
-                            .foregroundStyle(.white.opacity(0.6))
-                            .lineLimit(1)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    Text(timerInterval: now.start...now.end, countsDown: true)
-                        .font(.mono(15, weight: .semibold))
-                        .foregroundStyle(ink)
-                        .multilineTextAlignment(.trailing)
-                        .frame(maxWidth: 76, alignment: .trailing)
-                        .padding(.top, 6)
-                }
-                DynamicIslandExpandedRegion(.bottom) {
-                    HStack {
-                        Text("Then \(next.activity.name) at \(Format.clock(next.start))")
-                            .font(.footnote)
-                            .foregroundStyle(.white.opacity(0.6))
-                            .lineLimit(1)
-                        Spacer()
-                        Button(intent: RefreshLiveActivityIntent()) {
-                            Image(systemName: "arrow.clockwise")
-                                .font(.footnote.weight(.semibold))
-                        }
-                        .buttonStyle(.plain)
-                        .foregroundStyle(.white.opacity(0.6))
-                        .accessibilityLabel("Refresh")
-                    }
-                    .padding(.top, 4)
+                    (Text(now.activity.name) + Text(" till \(Format.clock(now.end))").foregroundColor(.white.opacity(0.6)))
+                        .font(.display(17))
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
                 }
             } compactLeading: {
-                Image(systemName: now.activity.symbol)
-                    .foregroundStyle(ink)
+                Circle().fill(ink).frame(width: 8, height: 8)
             } compactTrailing: {
-                Text(timerInterval: now.start...now.end, countsDown: true)
-                    .font(.system(size: 14, weight: .semibold).monospacedDigit())
-                    .foregroundStyle(ink)
-                    .multilineTextAlignment(.trailing)
-                    .frame(maxWidth: 58)
+                EmptyView()
             } minimal: {
-                ProgressView(timerInterval: now.start...now.end, countsDown: true) {
-                    EmptyView()
-                } currentValueLabel: {
-                    Image(systemName: now.activity.symbol)
-                        .font(.system(size: 10, weight: .bold))
-                }
-                .progressViewStyle(.circular)
-                .tint(ink)
-                .foregroundStyle(ink)
+                Circle().fill(ink).frame(width: 8, height: 8)
             }
             .keylineTint(ink)
         }

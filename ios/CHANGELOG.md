@@ -2,6 +2,13 @@
 
 On TestFlight the app is called **In a day**. Newest first.
 
+## Build 9 · 24 October 2026
+
+- The Dynamic Island shows only a small dot in the current block's colour. Touch and hold it for one line: the block and when it ends.
+- The Live Activity can now receive pushed updates on an APNs broadcast channel (`ios/push/`). Nothing sends them yet: the 5-minute GitHub job still needs the push key stored as a repository secret.
+
+**Why:** Shivam uses the Live Activity on the Lock Screen and in Notification Centre only. iOS doesn't let an app hide its Live Activity from the Dynamic Island, so it's kept as small as possible. The watch layout stays; it can be turned off in the Watch app.
+
 ## Build 8 · 22 October 2026
 
 - Apple Watch gets its own Live Activity in the Smart Stack: the same zoomed-in strip as the iPhone, with only the current block lit and the rest of the day dimmed (W7 on the Live Activity canvas). Before, the watch reused the small Dynamic Island pieces.
