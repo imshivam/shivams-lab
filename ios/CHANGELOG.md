@@ -2,6 +2,13 @@
 
 On TestFlight the app is called **In a day**. Newest first.
 
+## Build 10 · 29 October 2026
+
+- A new medium Home Screen widget, **Day strip**: the same card as the Live Activity (the block, the time left, the zoomed-in strip with the pill, what's next).
+- Unlike the Live Activity, it moves on its own: the widget's timeline is worked out in advance, with an entry every 5 minutes and one at every block change.
+
+**Why:** Shivam wants the Live Activity's look on the Home Screen. The Live Activity stays.
+
 ## Build 9 · 24 October 2026
 
 - The Dynamic Island shows only a small dot in the current block's colour. Touch and hold it for one line: the block and when it ends.

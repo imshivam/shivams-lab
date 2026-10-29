@@ -145,7 +145,7 @@ private struct WatchView: View {
 /// The Lock Screen card: the current block's name and time left, then a zoomed-in strip of the day.
 /// The current-time line and its pill stay put a third of the way across; the strip sits so that
 /// now is under the line, with the block before peeking in on the left and what's next on the right.
-private struct LockScreenView: View {
+struct LockScreenView: View {
     let blocks: [Slot]
     let now: Slot
     let next: Slot

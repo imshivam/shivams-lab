@@ -5,6 +5,7 @@ import WidgetKit
 struct MyWeekWidgets: WidgetBundle {
     var body: some Widget {
         NowWidget()
+        DayStripWidget()
         WeekLiveActivity()
     }
 }

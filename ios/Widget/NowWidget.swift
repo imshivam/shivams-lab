@@ -258,3 +258,52 @@ private struct CircularView: View {
         .containerBackground(.clear, for: .widget)
     }
 }
+
+// MARK: - Day strip
+
+/// The Live Activity's Lock Screen card as a Home Screen widget. A widget's timeline is worked out in
+/// advance, so unlike the Live Activity the strip keeps sliding without the app: there's an entry
+/// every 5 minutes.
+struct DayStripEntry: TimelineEntry {
+    let date: Date
+    let blocks: [Slot]
+    var now: Slot { blocks[1] }
+    var next: Slot { blocks[2] }
+}
+
+struct DayStripProvider: TimelineProvider {
+    func placeholder(in context: Context) -> DayStripEntry { entry(at: .now) }
+
+    func getSnapshot(in context: Context, completion: @escaping (DayStripEntry) -> Void) {
+        completion(entry(at: .now))
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<DayStripEntry>) -> Void) {
+        let now = Date.now
+        let step: TimeInterval = 5 * 60
+        let first = Date(timeIntervalSinceReferenceDate: (now.timeIntervalSinceReferenceDate / step).rounded(.down) * step)
+        var times = [now] + (1...144).map { first.addingTimeInterval(Double($0) * step) }   // 12 hours
+        times += Schedule.slots(from: now, count: 8).map(\.start).filter { $0 > now }    // every block change
+        let entries = Set(times).sorted().map { entry(at: $0) }
+        completion(Timeline(entries: entries, policy: .atEnd))
+    }
+
+    private func entry(at date: Date) -> DayStripEntry {
+        let s = Schedule.slots(from: date, count: 3)
+        let previous = Schedule.slots(from: s[0].start.addingTimeInterval(-1), count: 1)[0]
+        return DayStripEntry(date: date, blocks: [previous] + s)
+    }
+}
+
+struct DayStripWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "DayStripWidget", provider: DayStripProvider()) { entry in
+            LockScreenView(blocks: entry.blocks, now: entry.now, next: entry.next, at: entry.date)
+                .containerBackground(Palette.card, for: .widget)
+        }
+        .configurationDisplayName("Day strip")
+        .description("The block you're in, how long is left, and a zoomed-in strip of the day.")
+        .supportedFamilies([.systemMedium])
+        .contentMarginsDisabled()
+    }
+}
