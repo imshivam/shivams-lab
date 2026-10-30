@@ -2,6 +2,12 @@
 
 Newest first.
 
+## 0.2 · 30 October 2026 · Visual references
+
+- Every mechanic, app, principle and sensor in the playroom now has a small animated diagram: the phone shaking, the card swiping off, the pack tearing in TCG Pocket, the Heads Up nod, depth as steps going down, and so on. Sensors get an icon each.
+- Mechanics and apps get a "Watch examples" or "See it" link to real footage or the official page.
+- Why: Shivam asked for visuals beside each item. The diagrams are drawn in the page rather than taken from the apps, because the page is public and artifacts can't load outside images. They animate only while on screen and stop with Reduce Motion.
+
 ## 0.1 · 30 October 2026 · Research and playroom
 
 - Researched the original game (Gamely's *A Little More Conversation*), other conversation games and apps, games that use the phone's body (Heads Up, Ocarina, TCG Pocket, Balatro), remote icebreakers, and what each iPhone sensor can do in a native app versus the web. Written up in `RESEARCH.md` with sources.

@@ -221,6 +221,109 @@ footer { padding-block: 40px; color: var(--muted); font-size: .88rem; }
 .sources { font-size: .84rem; color: var(--muted); }
 .sources a { color: var(--muted); }
 
+/* ---------- Visual references: small animated diagrams, drawn for this page ---------- */
+.vis { height: 124px; border-radius: 14px; background: var(--bg); overflow: hidden; flex: none; }
+.vis svg { width: 100%; height: 100%; display: block; }
+.app .vis { margin-bottom: 10px; }
+.principles li .vis { margin-bottom: 4px; }
+.sv { display: inline-block; width: 30px; height: 30px; vertical-align: middle; margin-right: 10px; background: var(--bg); border-radius: 8px; }
+.sv svg { width: 100%; height: 100%; display: block; }
+.watch { font-size: .86rem; font-weight: 700; text-decoration: none; align-self: flex-start; }
+.watch::after { content: " ↗"; }
+.app .watch { display: block; margin-top: 2px; }
+.vis *, .sv * { transform-box: fill-box; transform-origin: center; }
+.vis text { font: 700 11px var(--mono); fill: var(--ink); }
+.vis .ph, .sv .ph { fill: var(--surface); stroke: var(--ink); stroke-width: 2.5; }
+.vis .scr { fill: var(--felt); }
+.vis .cd { stroke: var(--card-paper); stroke-width: 2; }
+.vis .w { fill: var(--warm); } .vis .v { fill: var(--whatif); } .vis .r { fill: var(--wayback); } .vis .t { fill: var(--deep); }
+.vis .pp { fill: var(--card-paper); stroke: var(--line); stroke-width: 1.5; }
+.vis .ln { fill: var(--wayback); opacity: .65; }
+.vis .ink, .sv .ink { fill: var(--ink); } .vis .mut { fill: var(--muted); } .vis .acc { fill: var(--accent); } .vis .felt { fill: var(--felt); }
+.vis .str, .sv .str { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.vis .smut { fill: none; stroke: var(--muted); stroke-width: 2.2; stroke-linecap: round; }
+.vis .sacc, .sv .sacc { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; }
+.vis .dash { stroke-dasharray: 5 6; }
+.vis .glow { fill: var(--warm); opacity: 0; }
+
+.vis.play .a-shake { animation: v-shake 2.6s infinite; }
+.vis.play .a-blink { animation: v-blink 2.6s infinite; }
+.vis.play .a-swipe { animation: v-swipe 3s infinite var(--spring); }
+.vis.play .a-flipA { animation: v-flipA 3.4s infinite; }
+.vis.play .a-flipB { animation: v-flipB 3.4s infinite; }
+.vis.play .a-tilt { animation: v-tilt 3s infinite ease-in-out; }
+.vis.play .a-sheen { animation: v-sheen 3s infinite ease-in-out; }
+.vis.play .a-spin { animation: v-spin 4s infinite var(--spring); }
+.vis.play .a-down { animation: v-down 4s infinite ease-in-out; }
+.vis.play .a-talk { animation: v-talk 4s infinite; }
+.vis.play .a-talk2 { animation: v-talk 4s .5s infinite; }
+.vis.play .a-wind { animation: v-wind .8s infinite linear; }
+.vis.play .a-lift { animation: v-lift 2.6s infinite var(--spring); }
+.vis.play .a-pulse { animation: v-pulse 1.3s infinite ease-out; }
+.vis.play .a-pulse2 { animation: v-pulse 1.3s .45s infinite ease-out; }
+.vis.play .a-bars { animation: v-bars .7s infinite ease-in-out; }
+.vis.play .a-dashmove { animation: v-wind 1s infinite linear; }
+.vis.play .a-travel { animation: v-travel 3s infinite ease-in-out; }
+.vis.play .a-pop { animation: v-pop 3.4s infinite var(--spring); }
+.vis.play .a-pop2 { animation: v-pop 3.4s .25s infinite var(--spring); }
+.vis.play .a-pop3 { animation: v-pop 3.4s .5s infinite var(--spring); }
+.vis.play .a-rise { animation: v-rise 3.4s infinite var(--spring); }
+.vis.play .a-rise2 { animation: v-rise 3.4s .25s infinite var(--spring); }
+.vis.play .a-rise3 { animation: v-rise 3.4s .5s infinite var(--spring); }
+.vis.play .a-roll { animation: v-roll 3s infinite var(--spring); }
+.vis.play .a-scroll { animation: v-scroll 4s infinite ease-in-out; }
+.vis.play .a-nod { animation: v-nod 3s infinite var(--spring); }
+.vis.play .a-hole { animation: v-hole 1.2s infinite steps(1); }
+.vis.play .a-hole2 { animation: v-hole 1.2s .3s infinite steps(1); }
+.vis.play .a-hole3 { animation: v-hole 1.2s .6s infinite steps(1); }
+.vis.play .a-tear { animation: v-tear 3s infinite ease-out; }
+.vis.play .a-glow { animation: v-glow 3s infinite ease-out; }
+.vis.play .a-float { animation: v-float 1.8s infinite ease-in-out; }
+.vis.play .a-float2 { animation: v-float 1.8s .3s infinite ease-in-out; }
+.vis.play .a-float3 { animation: v-float 1.8s .6s infinite ease-in-out; }
+.vis.play .a-float4 { animation: v-float 1.8s .9s infinite ease-in-out; }
+.vis.play .a-float5 { animation: v-float 1.8s 1.2s infinite ease-in-out; }
+.vis.play .a-steps { animation: v-steps 3.6s infinite var(--spring); }
+.vis.play .a-alt { animation: v-alt 3s infinite; }
+.vis.play .a-alt2 { animation: v-alt 3s 1.5s infinite; opacity: .15; }
+.vis.play .a-swapA { animation: v-swapA 3.2s infinite var(--spring); }
+.vis.play .a-swapB { animation: v-swapB 3.2s infinite var(--spring); }
+.vis.play .a-grow { transform-origin: left center; animation: v-grow 3s infinite var(--spring); }
+.vis.play .a-grow2 { transform-origin: left center; animation: v-grow 3s .2s infinite var(--spring); }
+.vis.play .a-twinkle { animation: v-twinkle 1.6s infinite ease-in-out; }
+
+@keyframes v-shake { 0%, 8% { transform: none; } 12% { transform: translateX(-8px) rotate(-7deg); } 20% { transform: translateX(8px) rotate(7deg); } 28% { transform: translateX(-7px) rotate(-5deg); } 36% { transform: translateX(5px) rotate(4deg); } 44%, 100% { transform: none; } }
+@keyframes v-blink { 0%, 8% { opacity: 0; } 12%, 40% { opacity: 1; } 48%, 100% { opacity: 0; } }
+@keyframes v-swipe { 0%, 15% { transform: none; opacity: 1; } 50% { transform: translate(78px, -4px) rotate(16deg); opacity: 1; } 58% { transform: translate(90px, -4px) rotate(18deg); opacity: 0; } 60% { transform: none; opacity: 0; } 80%, 100% { transform: none; opacity: 1; } }
+@keyframes v-flipA { 0%, 20% { transform: scaleX(1); } 32%, 78% { transform: scaleX(0); } 90%, 100% { transform: scaleX(1); } }
+@keyframes v-flipB { 0%, 32% { transform: scaleX(0); } 44%, 70% { transform: scaleX(1); } 78%, 100% { transform: scaleX(0); } }
+@keyframes v-tilt { 0%, 100% { transform: skewY(-7deg) rotate(-5deg); } 50% { transform: skewY(7deg) rotate(5deg); } }
+@keyframes v-sheen { 0%, 100% { transform: translateX(-26px); } 50% { transform: translateX(26px); } }
+@keyframes v-spin { 0%, 22% { transform: rotate(0); } 40%, 70% { transform: rotate(180deg); } 88%, 100% { transform: rotate(360deg); } }
+@keyframes v-down { 0%, 22% { transform: none; } 34%, 80% { transform: scaleY(.14); } 92%, 100% { transform: none; } }
+@keyframes v-talk { 0%, 38% { opacity: 0; transform: scale(.6); } 46%, 76% { opacity: 1; transform: none; } 84%, 100% { opacity: 0; transform: scale(.8); } }
+@keyframes v-wind { to { stroke-dashoffset: -22; } }
+@keyframes v-lift { 0%, 30% { transform: none; } 55% { transform: translate(14px, -16px) rotate(14deg); } 72%, 100% { transform: none; } }
+@keyframes v-pulse { 0% { opacity: 0; transform: scale(.7); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1.35); } }
+@keyframes v-bars { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+@keyframes v-travel { 0% { transform: none; opacity: 0; } 10%, 20% { transform: none; opacity: 1; } 60%, 80% { transform: translateX(98px); opacity: 1; } 92%, 100% { transform: translateX(98px); opacity: 0; } }
+@keyframes v-pop { 0%, 18% { opacity: 0; transform: scale(.5); } 32%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: scale(.9); } }
+@keyframes v-rise { 0%, 12% { transform: translateY(14px); opacity: 0; } 36%, 84% { transform: none; opacity: 1; } 100% { transform: translateY(-4px); opacity: 0; } }
+@keyframes v-roll { 0%, 20% { transform: rotate(0); } 55%, 100% { transform: rotate(360deg); } }
+@keyframes v-scroll { 0%, 15%, 100% { transform: translateY(0); } 50%, 65% { transform: translateY(-26px); } }
+@keyframes v-nod { 0%, 20%, 100% { transform: rotate(0); } 35% { transform: rotate(16deg); } 55% { transform: rotate(-16deg); } 72% { transform: rotate(0); } }
+@keyframes v-hole { 0% { fill: var(--ink); } 50% { fill: var(--felt); } }
+@keyframes v-tear { 0%, 25% { transform: none; opacity: 1; } 50% { transform: translate(34px, -18px) rotate(22deg); opacity: 1; } 62%, 100% { transform: translate(40px, -22px) rotate(26deg); opacity: 0; } }
+@keyframes v-glow { 0%, 40% { opacity: 0; transform: scale(.4); } 62% { opacity: .85; transform: scale(1.1); } 100% { opacity: 0; transform: scale(1.4); } }
+@keyframes v-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes v-steps { 0%, 16% { transform: none; } 30%, 46% { transform: translate(44px, 22px); } 60%, 92% { transform: translate(88px, 44px); } 100% { transform: translate(88px, 44px); opacity: 0; } }
+@keyframes v-alt { 0%, 45% { opacity: 1; transform: none; } 50%, 95% { opacity: .15; transform: scale(.92); } 100% { opacity: 1; } }
+@keyframes v-swapA { 0%, 28% { transform: none; opacity: 1; } 48%, 84% { transform: translateX(-30px) rotate(-12deg); opacity: .25; } 100% { transform: none; opacity: 1; } }
+@keyframes v-swapB { 0%, 28% { transform: translateX(30px); opacity: 0; } 48%, 84% { transform: none; opacity: 1; } 100% { transform: translateX(30px); opacity: 0; } }
+@keyframes v-grow { 0%, 10% { transform: scaleX(0); } 45%, 100% { transform: scaleX(1); } }
+@keyframes v-twinkle { 0%, 100% { transform: scale(.8) rotate(0); } 50% { transform: scale(1.15) rotate(20deg); } }
+@media (prefers-reduced-motion: reduce) { .vis.play * { animation: none !important; } }
+
 @media (prefers-reduced-motion: reduce) {
   .card, .flip, .tilt, .deck-chip, .btn, .q { transition-duration: .01s !important; }
   .log li:first-child { animation: none; }
@@ -286,45 +389,45 @@ footer { padding-block: 40px; color: var(--muted); font-size: .88rem; }
   <section class="guide" id="mechanics">
     <span class="eyebrow">Mechanics</span>
     <h2>Gestures worth building</h2>
-    <p class="lede">Each one below works in the deck above. The dot lights up when you trigger it. Verdicts are my recommendation; the prototype on your phone decides.</p>
+    <p class="lede">Each one below works in the deck above, with a diagram of the gesture and a link to real examples. The dot lights up when you trigger it. Verdicts are my recommendation; the prototype on your phone decides.</p>
     <div class="grid">
-      <article class="tile"><div class="tile-head"><h3>Shake to shuffle</h3><span class="lit" data-lit="shake"></span></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="shake"></div><div class="tile-head"><h3>Shake to shuffle</h3><span class="lit" data-lit="shake"></span></div>
         <p>A sharp spike in acceleration shuffles the deck. Cards jostle, a riffle sound plays, light haptic ticks follow.</p>
         <p class="from">Seen in: Shake to Undo on iOS, every dice app. Web threshold ~15 m/s², 1 s cooldown.</p>
         <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
-      <article class="tile"><div class="tile-head"><h3>Swipe to draw</h3><span class="lit" data-lit="swipe"></span></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="swipe"></div><div class="tile-head"><h3>Swipe to draw</h3><span class="lit" data-lit="swipe"></span></div>
         <p>Drag the top card off the stack. It follows your finger one to one, then springs into place.</p>
         <p class="from">Seen in: Pokémon TCG Pocket's swipe to tear a pack. Apple's "follows you frame by frame" principle.</p>
         <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
-      <article class="tile"><div class="tile-head"><h3>Tap to flip</h3><span class="lit" data-lit="flip"></span></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="flip"></div><div class="tile-head"><h3>Tap to flip</h3><span class="lit" data-lit="flip"></span></div>
         <p>The card turns over with a spring and a soft thud. Three questions are revealed together.</p>
         <p class="from">Seen in: Balatro's springy card flips.</p>
         <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
-      <article class="tile"><div class="tile-head"><h3>Tilt for shine</h3><span class="lit" data-lit="tilt"></span></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="tilt"></div><div class="tile-head"><h3>Tilt for shine</h3><span class="lit" data-lit="tilt"></span></div>
         <p>The card leans as you tilt the phone and a highlight slides across it, like a foil card or a Wallet pass.</p>
         <p class="from">Seen in: Apple Wallet, TCG Pocket foils, Balatro's parallax. Native: Core Motion + a Metal shader.</p>
         <span class="verdict v-keep" style="align-self:flex-start">Keep, subtle</span></article>
-      <article class="tile"><div class="tile-head"><h3>Pass across the table</h3><span class="lit" data-lit="pass"></span></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="pass"></div><div class="tile-head"><h3>Pass across the table</h3><span class="lit" data-lit="pass"></span></div>
         <p>"Pass it on" spins the card 180° so the person opposite can read it, and counts who has answered.</p>
         <p class="from">The heart of the original game: both people answer the same question.</p>
         <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
-      <article class="tile"><div class="tile-head"><h3>Face down to talk</h3><span class="lit" data-lit="facedown"></span></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="facedown"></div><div class="tile-head"><h3>Face down to talk</h3><span class="lit" data-lit="facedown"></span></div>
         <p>Put the phone face down and the screen goes dark: you're talking now. Pick it up for the next card.</p>
         <p class="from">Seen in: Heads Up's "phone is part of the group". Native: <code>UIDevice.orientation.isFlat</code>.</p>
         <span class="verdict v-try" style="align-self:flex-start">Try</span></article>
-      <article class="tile"><div class="tile-head"><h3>Blow to draw</h3><span class="lit" data-lit="blow"></span></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="blow"></div><div class="tile-head"><h3>Blow to draw</h3><span class="lit" data-lit="blow"></span></div>
         <p>Blow on the phone and the top card lifts off. Uses the microphone level, nothing is recorded.</p>
         <p class="from">Seen in: Smule Ocarina (blow into the mic to play).</p>
         <span class="verdict v-try" style="align-self:flex-start">Try</span></article>
-      <article class="tile"><div class="tile-head"><h3>Sound and haptics together</h3><span class="lit" data-lit="haptic"></span></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="haptic"></div><div class="tile-head"><h3>Sound and haptics together</h3><span class="lit" data-lit="haptic"></span></div>
         <p>Riffle, thud, click: each moment gets a matched sound and tap. Haptics are weak on the web; the app gets Core Haptics.</p>
         <p class="from">Seen in: Apple's HapticRicochet sample, TCG Pocket's sound-led pack opening.</p>
         <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
-      <article class="tile"><div class="tile-head"><h3>Point to pass</h3></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="point"></div><div class="tile-head"><h3>Point to pass</h3></div>
         <p>Point your iPhone at someone's iPhone to hand them the card. Ultra Wideband gives direction and distance.</p>
         <p class="from">Seen in: NameDrop, AirTag Precision Finding. Native only (Nearby Interaction).</p>
         <span class="verdict v-later" style="align-self:flex-start">Later, app only</span></article>
-      <article class="tile"><div class="tile-head"><h3>Room code for remote</h3></div>
+      <article class="tile"><div class="vis" aria-hidden="true" data-vis="room"></div><div class="tile-head"><h3>Room code for remote</h3></div>
         <p>One person starts a room, everyone joins with a code on their own screen and sees the same card.</p>
         <p class="from">Seen in: Jackbox (jackbox.tv), SharePlay on FaceTime.</p>
         <span class="verdict v-later" style="align-self:flex-start">Later, phase 5</span></article>
@@ -337,34 +440,34 @@ footer { padding-block: 40px; color: var(--muted); font-size: .88rem; }
     <h2>What good looks like out there</h2>
     <p class="lede">Conversation apps today are lists of questions behind a swipe. The games people love make the phone a physical object. Nobody has put the two together.</p>
     <div class="apps">
-      <div class="app"><div><h3>A Little More Conversation</h3><span class="kind">Gamely · card box · £12.99</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="almc"></div><h3>A Little More Conversation</h3><span class="kind">Gamely · card box · £12.99</span></div>
         <div><p>Retailers list five themed rounds and three questions per card, 300+ questions. Rounds I could confirm: Warm Up, What If, Back In The Day.</p>
         <p class="steal"><b>Steal:</b> three questions per card, so the holder picks how deep to go.</p></div></div>
-      <div class="app"><div><h3>We're Not Really Strangers</h3><span class="kind">Card game + apps</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="wnrs"></div><h3>We're Not Really Strangers</h3><span class="kind">Card game + apps</span></div>
         <div><p>Three levels that deepen: Perception, Connection, Reflection. Wildcards are quick fun tasks between heavy questions. A final card to close.</p>
         <p class="steal"><b>Steal:</b> levels that escalate, wildcards as breathers, a closing ritual.</p></div></div>
-      <div class="app"><div><h3>Where Should We Begin?</h3><span class="kind">Esther Perel · story cards</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="perel"></div><h3>Where Should We Begin?</h3><span class="kind">Esther Perel · story cards</span></div>
         <div><p>Prompts ask for stories, not answers. Perel's tip: keep each story to a few minutes. Reviewers say some cards go too intense too soon.</p>
         <p class="steal"><b>Steal:</b> "tell a story about…" prompts. <b>Avoid:</b> depth before trust.</p></div></div>
-      <div class="app"><div><h3>TableTopics: The App</h3><span class="kind">iPhone · freemium</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="tabletopics"></div><h3>TableTopics: The App</h3><span class="kind">iPhone · freemium</span></div>
         <div><p>The obvious version: 50+ free questions, 400+ paid, save favourites.</p>
         <p class="steal"><b>Lesson:</b> correct but no feel. This is the baseline to beat.</p></div></div>
-      <div class="app"><div><h3>Heads Up!</h3><span class="kind">Ellen · 2013 · iPhone</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="headsup"></div><h3>Heads Up!</h3><span class="kind">Ellen · 2013 · iPhone</span></div>
         <div><p>Phone on your forehead, tilt down for correct, up to pass. The camera records the room. Played over a billion times.</p>
         <p class="steal"><b>Steal:</b> one clear physical gesture that turns the phone toward the group.</p></div></div>
-      <div class="app"><div><h3>Smule Ocarina</h3><span class="kind">iPhone · 2008</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="ocarina"></div><h3>Smule Ocarina</h3><span class="kind">iPhone · 2008</span></div>
         <div><p>Blow into the mic, cover holes on screen, tilt for vibrato. The phone becomes the instrument.</p>
         <p class="steal"><b>Steal:</b> the phone becomes the object, not a picture of it.</p></div></div>
-      <div class="app"><div><h3>Pokémon TCG Pocket</h3><span class="kind">iPhone, Android · 2024</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="tcg"></div><h3>Pokémon TCG Pocket</h3><span class="kind">iPhone, Android · 2024</span></div>
         <div><p>Swipe to tear a pack, cards revealed one by one, rare cards glow and crack. Sound design is called the key. Players complain they can't skip it.</p>
         <p class="steal"><b>Steal:</b> ceremony on the draw. <b>Avoid:</b> ceremony you can't speed past.</p></div></div>
-      <div class="app"><div><h3>Balatro</h3><span class="kind">Mac, iPhone, consoles · 2024</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="balatro"></div><h3>Balatro</h3><span class="kind">Mac, iPhone, consoles · 2024</span></div>
         <div><p>Cards float, tilt toward you, flip with a spring; foil has parallax; shake scales with the score. Many small feedback layers stacked.</p>
         <p class="steal"><b>Steal:</b> stacked feedback on a short loop.</p></div></div>
-      <div class="app"><div><h3>Jackbox Party Pack</h3><span class="kind">TV + phones</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="jackbox"></div><h3>Jackbox Party Pack</h3><span class="kind">TV + phones</span></div>
         <div><p>Everyone joins at jackbox.tv with a room code. No controllers. Spectators can join as an audience.</p>
         <p class="steal"><b>Steal:</b> the room-code join for the remote and team version.</p></div></div>
-      <div class="app"><div><h3>Donut</h3><span class="kind">Slack, Zoom</span></div>
+      <div class="app"><div><div class="vis" aria-hidden="true" data-vis="donut"></div><h3>Donut</h3><span class="kind">Slack, Zoom</span></div>
         <div><p>Pairs teammates for short chats and posts icebreaker questions, including mid-call on Zoom.</p>
         <p class="steal"><b>Lesson:</b> teams already want icebreakers; theirs are plain text prompts.</p></div></div>
     </div>
@@ -376,14 +479,14 @@ footer { padding-block: 40px; color: var(--muted); font-size: .88rem; }
     <span class="eyebrow">Principles</span>
     <h2>Rules for a conversation game</h2>
     <ol class="principles">
-      <li><h3>Go deeper slowly, and let people choose</h3><p>Aron's 1997 "36 questions" study built closeness between strangers with three sets that get more personal. His advice: don't share too much, too fast. Decks go light to deep; three questions per card let the holder choose.</p></li>
-      <li><h3>Both people answer</h3><p>Closeness comes from taking turns to share, and from responding to what the other person said. Passing the same question on is the default, not an option.</p></li>
-      <li><h3>Always a way out</h3><p>The main complaint about Perel's game is cards that get intense too early. Offer another of the three, a skip, or a pass.</p></li>
-      <li><h3>Breathers</h3><p>WNRS wildcards break heavy questions with a quick, fun task. One every six cards or so keeps the energy up.</p></li>
-      <li><h3>Eyes up, not down</h3><p>Heads Up works because the phone faces the group. Show the question large, then get out of the way: dim, or go face down.</p></li>
-      <li><h3>Ceremony, but fast</h3><p>Shuffle and draw should feel great the first time and still be quick the fiftieth. TCG Pocket players resent animations they can't skip.</p></li>
-      <li><h3>Picture, sound and touch together</h3><p>Every important moment gets all three at once. Routine actions stay quiet; too much "juice" tires people out.</p></li>
-      <li><h3>No sensor is required</h3><p>Every gesture has a tap twin. Reduce Motion turns off shake and tilt. VoiceOver reads the card.</p></li>
+      <li><div class="vis" aria-hidden="true" data-vis="p1"></div><h3>Go deeper slowly, and let people choose</h3><p>Aron's 1997 "36 questions" study built closeness between strangers with three sets that get more personal. His advice: don't share too much, too fast. Decks go light to deep; three questions per card let the holder choose.</p></li>
+      <li><div class="vis" aria-hidden="true" data-vis="p2"></div><h3>Both people answer</h3><p>Closeness comes from taking turns to share, and from responding to what the other person said. Passing the same question on is the default, not an option.</p></li>
+      <li><div class="vis" aria-hidden="true" data-vis="p3"></div><h3>Always a way out</h3><p>The main complaint about Perel's game is cards that get intense too early. Offer another of the three, a skip, or a pass.</p></li>
+      <li><div class="vis" aria-hidden="true" data-vis="p4"></div><h3>Breathers</h3><p>WNRS wildcards break heavy questions with a quick, fun task. One every six cards or so keeps the energy up.</p></li>
+      <li><div class="vis" aria-hidden="true" data-vis="p5"></div><h3>Eyes up, not down</h3><p>Heads Up works because the phone faces the group. Show the question large, then get out of the way: dim, or go face down.</p></li>
+      <li><div class="vis" aria-hidden="true" data-vis="p6"></div><h3>Ceremony, but fast</h3><p>Shuffle and draw should feel great the first time and still be quick the fiftieth. TCG Pocket players resent animations they can't skip.</p></li>
+      <li><div class="vis" aria-hidden="true" data-vis="p7"></div><h3>Picture, sound and touch together</h3><p>Every important moment gets all three at once. Routine actions stay quiet; too much "juice" tires people out.</p></li>
+      <li><div class="vis" aria-hidden="true" data-vis="p8"></div><h3>No sensor is required</h3><p>Every gesture has a tap twin. Reduce Motion turns off shake and tilt. VoiceOver reads the card.</p></li>
     </ol>
     <p class="sources">Sources: <a href="https://www.psychologytoday.com/us/blog/the-highly-sensitive-person/201501/36-questions-for-intimacy-back-story">Elaine Aron in Psychology Today</a>, <a href="https://amorebeautifulquestion.com/36-questions/">A More Beautiful Question</a>, <a href="https://en.wikipedia.org/wiki/Game_feel">Game feel</a>, Jonasson &amp; Purho, <i>Juice it or lose it</i> (2012), <a href="https://developer.apple.com/videos/play/wwdc2021/10278">WWDC21 audio-haptic design</a>.</p>
   </section>
@@ -396,17 +499,17 @@ footer { padding-block: 40px; color: var(--muted); font-size: .88rem; }
     <div class="tablewrap"><table>
       <thead><tr><th>Sensor</th><th>Use in the game</th><th>iPhone app</th><th>Web on iPhone</th></tr></thead>
       <tbody>
-        <tr><td>Accelerometer</td><td>Shake to shuffle</td><td class="yes">Yes · Core Motion, shake event</td><td class="yes">Yes · after permission</td></tr>
-        <tr><td>Gyroscope</td><td>Tilt shine, parallax, tilt to choose a question</td><td class="yes">Yes · attitude</td><td class="yes">Yes · after permission</td></tr>
-        <tr><td>Face up / down</td><td>Face down = talking; flip the phone to flip the card</td><td class="yes">Yes · orientation.isFlat</td><td class="yes">Yes · from tilt angle</td></tr>
-        <tr><td>Proximity</td><td>Covered or in a pocket</td><td class="some">Some devices</td><td class="no">No</td></tr>
-        <tr><td>Haptics</td><td>Riffle, thud, click, a heartbeat while someone answers</td><td class="yes">Yes · Core Haptics</td><td class="no">Almost none · one tick via a switch trick, reportedly patched in iOS 26.5</td></tr>
-        <tr><td>Microphone</td><td>Blow to draw; notice when the room goes quiet</td><td class="yes">Yes · with permission</td><td class="yes">Yes · with permission</td></tr>
-        <tr><td>Touch</td><td>Drag, flick, long-press to peek, swipe to pass</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-        <tr><td>Camera</td><td>Record reactions, Heads Up style</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-        <tr><td>Ultra Wideband</td><td>Point at someone to pass the card</td><td class="yes">iPhone 11 and later</td><td class="no">No</td></tr>
-        <tr><td>Nearby devices</td><td>Everyone on their own phone, same room</td><td class="yes">MultipeerConnectivity</td><td class="some">Via a web room</td></tr>
-        <tr><td>SharePlay</td><td>Same card for everyone on a FaceTime call</td><td class="yes">GroupActivities</td><td class="no">No · use a room code</td></tr>
+        <tr><td><span class="sv" data-vis="s-accel" aria-hidden="true"></span>Accelerometer</td><td>Shake to shuffle</td><td class="yes">Yes · Core Motion, shake event</td><td class="yes">Yes · after permission</td></tr>
+        <tr><td><span class="sv" data-vis="s-gyro" aria-hidden="true"></span>Gyroscope</td><td>Tilt shine, parallax, tilt to choose a question</td><td class="yes">Yes · attitude</td><td class="yes">Yes · after permission</td></tr>
+        <tr><td><span class="sv" data-vis="s-face" aria-hidden="true"></span>Face up / down</td><td>Face down = talking; flip the phone to flip the card</td><td class="yes">Yes · orientation.isFlat</td><td class="yes">Yes · from tilt angle</td></tr>
+        <tr><td><span class="sv" data-vis="s-prox" aria-hidden="true"></span>Proximity</td><td>Covered or in a pocket</td><td class="some">Some devices</td><td class="no">No</td></tr>
+        <tr><td><span class="sv" data-vis="s-haptic" aria-hidden="true"></span>Haptics</td><td>Riffle, thud, click, a heartbeat while someone answers</td><td class="yes">Yes · Core Haptics</td><td class="no">Almost none · one tick via a switch trick, reportedly patched in iOS 26.5</td></tr>
+        <tr><td><span class="sv" data-vis="s-mic" aria-hidden="true"></span>Microphone</td><td>Blow to draw; notice when the room goes quiet</td><td class="yes">Yes · with permission</td><td class="yes">Yes · with permission</td></tr>
+        <tr><td><span class="sv" data-vis="s-touch" aria-hidden="true"></span>Touch</td><td>Drag, flick, long-press to peek, swipe to pass</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+        <tr><td><span class="sv" data-vis="s-camera" aria-hidden="true"></span>Camera</td><td>Record reactions, Heads Up style</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+        <tr><td><span class="sv" data-vis="s-uwb" aria-hidden="true"></span>Ultra Wideband</td><td>Point at someone to pass the card</td><td class="yes">iPhone 11 and later</td><td class="no">No</td></tr>
+        <tr><td><span class="sv" data-vis="s-nearby" aria-hidden="true"></span>Nearby devices</td><td>Everyone on their own phone, same room</td><td class="yes">MultipeerConnectivity</td><td class="some">Via a web room</td></tr>
+        <tr><td><span class="sv" data-vis="s-shareplay" aria-hidden="true"></span>SharePlay</td><td>Same card for everyone on a FaceTime call</td><td class="yes">GroupActivities</td><td class="no">No · use a room code</td></tr>
       </tbody>
     </table></div>
     <p class="sources">Motion sensors don't work in the iOS Simulator, so testing needs a real phone. Apps must explain motion use in <code>NSMotionUsageDescription</code>. Sources: <a href="https://wwdcnotes.com/notes/wwdc19/520">Core Haptics</a>, <a href="https://slicker.me/javascript/shake/shake.htm">web shake detection</a>, <a href="https://npmjs.com/package/ios-haptics">ios-haptics</a>, <a href="https://bugs.webkit.org/show_bug.cgi?id=285120">WebKit 285120</a>, <a href="https://developer.apple.com/documentation/uikit/uidevice/isproximitymonitoringenabled.md">UIDevice</a>, <a href="https://developer.apple.com/documentation/nearbyinteraction.md">Nearby Interaction</a>, <a href="https://developer.apple.com/documentation/groupactivities/defining-your-apps-shareplay-activities.md">GroupActivities</a>, <a href="https://developer.apple.com/documentation/technotes/tn3128-starting-shareplay-without-an-existing-facetime-call.md">TN3128</a>, <a href="https://zenn.dev/touyou/articles/flip_tilt_card_swiftui">SwiftUI tilt card</a>.</p>
@@ -780,6 +883,107 @@ footer { padding-block: 40px; color: var(--muted); font-size: .88rem; }
   $("bMic").onclick = toggleMic;
   addEventListener("keydown", (e) => { if (e.target.closest && e.target.closest("input,button,[role=button]")) return; if (e.key === "s") shuffle(); if (e.key === "d") draw(); });
   chips(); build(true); log("Deck ready: Warm up");
+})();
+</script>
+<script>
+// Visual references: each diagram is drawn here (no outside images), and "Watch" links go to real examples.
+(() => {
+  const P = (x, y, w = 46, h = 84, inner = "") => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" class="ph"/><rect x="${x + 4}" y="${y + 7}" width="${w - 8}" height="${h - 14}" rx="5" class="scr"/>${inner}`;
+  const C = (x, y, w = 30, h = 42, cls = "w") => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" class="cd ${cls}"/>`;
+  const F = (x, y, w = 30, h = 42, n = 3) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" class="pp"/>` +
+    Array.from({ length: n }, (_, i) => `<rect x="${x + 5}" y="${y + 8 + i * (h - 14) / n}" width="${(w - 10) * (i ? .72 : 1)}" height="3.5" rx="1.75" class="ln"/>`).join("");
+  const head = (x, y, r = 9, cls = "mut") => `<circle cx="${x}" cy="${y}" r="${r}" class="${cls}"/>`;
+  const bubble = (x, y, w, cls = "", fill = "acc") => `<g class="${cls}"><rect x="${x}" y="${y}" width="${w}" height="16" rx="8" class="${fill}"/><path d="M${x + 8} ${y + 15}l-4 6 9-5z" class="${fill}"/></g>`;
+
+  const VIS = {
+    // ---- mechanics ----
+    shake: `<g class="a-shake">${P(77, 18)}${C(86, 38, 28, 40, "v")}${C(87, 35, 28, 40, "w")}</g><path class="smut a-blink" d="M60 42v36M52 50v20M140 42v36M148 50v20"/>`,
+    swipe: `${C(70, 42, 34, 48, "t")}${C(72, 39, 34, 48, "v")}<g class="a-swipe">${C(74, 36, 34, 48, "w")}<circle cx="94" cy="64" r="7" class="acc" opacity=".55"/></g><path class="smut dash" d="M118 60h50"/>`,
+    flip: `<g class="a-flipA">${C(80, 26, 40, 66, "r")}</g><g class="a-flipB">${F(80, 26, 40, 66)}</g>`,
+    tilt: `<defs><clipPath id="vcTilt"><rect x="82" y="30" width="36" height="58" rx="5"/></clipPath></defs><g class="a-tilt">${P(73, 18, 54, 84)}${C(82, 30, 36, 58, "v")}<g clip-path="url(#vcTilt)"><rect class="a-sheen" x="94" y="20" width="12" height="80" fill="#fff" opacity=".55"/></g></g>`,
+    pass: `<ellipse cx="100" cy="60" rx="70" ry="38" class="felt"/>${head(100, 12)}${head(100, 108)}<g class="a-spin">${P(85, 34, 30, 52)}${F(91, 43, 18, 26, 2)}</g>`,
+    facedown: `${head(28, 56, 11)}${head(172, 56, 11)}<g class="a-down">${P(82, 26, 36, 66)}${C(90, 38, 20, 30, "t")}</g>${bubble(40, 24, 34, "a-talk")}${bubble(128, 24, 30, "a-talk2", "mut")}<rect x="60" y="92" width="80" height="4" rx="2" class="mut" opacity=".4"/>`,
+    blow: `${head(36, 60, 16)}<circle cx="52" cy="62" r="3.2" class="ink"/><path class="sacc dash a-wind" d="M60 54h40M60 62h46M60 70h40"/>${P(116, 18)}<g class="a-lift">${C(124, 38, 30, 42, "w")}</g>`,
+    haptic: `${P(77, 18)}${C(86, 36, 28, 40, "r")}<path class="sacc a-pulse" d="M64 44q-8 16 0 32M136 44q8 16 0 32"/><path class="sacc a-pulse2" d="M54 36q-12 24 0 48M146 36q12 24 0 48"/>`,
+    point: `${P(22, 18)}${P(132, 18)}<path class="sacc dash a-dashmove" d="M70 50q30 -30 60 0"/><g class="a-travel">${C(32, 40, 26, 36, "v")}</g>`,
+    room: `<rect x="14" y="20" width="96" height="62" rx="6" class="ink"/><rect x="20" y="26" width="84" height="50" rx="3" class="felt"/><text x="42" y="56">KQ7F</text><rect x="54" y="82" width="16" height="10" class="ink"/>` +
+      [0, 1, 2].map((i) => `<g class="a-pop${i ? i + 1 : ""}">${P(122 + i * 24, 38 + (i % 2) * 8, 20, 36)}<rect x="${127 + i * 24}" y="${48 + (i % 2) * 8}" width="10" height="14" rx="2" class="${["w", "v", "t"][i]}"/></g>`).join(""),
+
+    // ---- in the wild ----
+    almc: `<rect x="56" y="54" width="88" height="48" rx="6" class="r"/><rect x="56" y="54" width="88" height="10" rx="3" class="ink" opacity=".25"/><g class="a-rise">${F(80, 14, 40, 58)}</g>`,
+    wnrs: `<g class="a-rise">${C(40, 30, 36, 54, "pp")}<text x="54" y="62" style="fill:#1B1F2A">1</text></g><g class="a-rise2">${C(82, 30, 36, 54, "r")}<text x="96" y="62" style="fill:#fff">2</text></g><g class="a-rise3">${C(124, 30, 36, 54, "t")}<text x="138" y="62" style="fill:#fff">3</text></g>`,
+    perel: `${F(48, 24, 50, 72, 4)}<g class="a-roll"><rect x="118" y="44" width="34" height="34" rx="7" class="pp"/><circle cx="127" cy="53" r="3" class="ink"/><circle cx="135" cy="61" r="3" class="ink"/><circle cx="143" cy="69" r="3" class="ink"/></g>`,
+    tabletopics: `<defs><clipPath id="vcTT"><rect x="81" y="25" width="38" height="70" rx="5"/></clipPath></defs>${P(77, 18)}<g clip-path="url(#vcTT)"><g class="a-scroll">` +
+      Array.from({ length: 8 }, (_, i) => `<rect x="85" y="${30 + i * 12}" width="30" height="8" rx="3" class="pp"/>`).join("") + `</g></g>`,
+    headsup: `<g class="a-nod">${head(100, 74, 26)}<rect x="80" y="16" width="40" height="40" rx="6" class="ph"/><rect x="85" y="21" width="30" height="30" rx="3" class="w"/><text x="89" y="40" style="fill:#1B1F2A">CAT</text></g><path class="smut" d="M40 40v30l-6-6M40 70l6-6M160 70V40l-6 6M160 40l6 6"/>`,
+    ocarina: `${P(100, 18)}<circle cx="113" cy="45" r="6" class="ink a-hole"/><circle cx="133" cy="45" r="6" class="ink a-hole2"/><circle cx="113" cy="70" r="6" class="ink a-hole3"/><circle cx="133" cy="70" r="6" class="ink"/>${head(40, 60, 14)}<path class="sacc dash a-wind" d="M60 56h32M60 64h32"/>`,
+    tcg: `<circle cx="100" cy="58" r="34" class="glow a-glow"/><rect x="74" y="30" width="52" height="74" rx="4" class="v"/><g class="a-tear"><path d="M74 20h52v12l-6.5 4-6.5-4-6.5 4-6.5-4-6.5 4-6.5-4-6.5 4-6.5-4z" class="v"/></g><circle cx="100" cy="66" r="11" class="w"/>`,
+    balatro: [-24, -12, 0, 12, 24].map((a, i) => `<g class="a-float${i ? i + 1 : ""}"><rect x="${88 + a * 1.6}" y="${34 + Math.abs(a) * .5}" width="26" height="38" rx="4" class="cd ${["r", "w", "v", "t", "r"][i]}" transform="rotate(${a} ${101 + a * 1.6} ${53 + Math.abs(a) * .5})"/></g>`).join(""),
+    jackbox: `<rect x="40" y="12" width="120" height="58" rx="6" class="ink"/><rect x="46" y="18" width="108" height="46" rx="3" class="w"/><text x="64" y="45" style="fill:#1B1F2A">jackbox.tv</text>` +
+      [0, 1, 2, 3].map((i) => `<g class="a-pop${i % 3 ? (i % 3) + 1 : ""}">${P(52 + i * 26, 80, 18, 32)}</g>`).join(""),
+    donut: `${head(50, 66, 14)}${head(150, 66, 14, "acc")}${bubble(26, 22, 44, "a-alt")}${bubble(118, 22, 44, "a-alt2", "mut")}<circle cx="100" cy="66" r="12" class="w"/><circle cx="100" cy="66" r="5" style="fill:var(--bg)"/>`,
+
+    // ---- principles ----
+    p1: `<rect x="30" y="44" width="50" height="10" rx="3" class="w"/><rect x="74" y="66" width="50" height="10" rx="3" class="r"/><rect x="118" y="88" width="50" height="10" rx="3" class="t"/><g class="a-steps"><circle cx="54" cy="34" r="8" class="acc"/></g>`,
+    p2: `${head(46, 78, 15)}${head(154, 78, 15)}${bubble(22, 30, 54, "a-alt")}${bubble(124, 30, 54, "a-alt2", "acc")}<path class="smut dash" d="M70 92h60"/>`,
+    p3: `<g class="a-swapA">${F(78, 22, 44, 66)}</g><g class="a-swapB">${F(78, 22, 44, 66, 2)}</g><path class="sacc" d="M140 40q24 20 0 40M140 80l-2-9M140 80l9-2"/>`,
+    p4: `<path class="str" d="M14 90q14-60 28 0t28 0t28 0"/><path class="sacc" d="M98 90q14 -18 28 0t28 0"/><path class="str" d="M154 90q10-60 30 0"/><path d="M126 58l3.5 7 7.5 1-5.5 5 1.5 7.5-7-3.6-7 3.6 1.5-7.5-5.5-5 7.5-1z" class="w a-twinkle"/>`,
+    p5: `<ellipse cx="100" cy="64" rx="74" ry="38" class="felt"/>${head(40, 46, 11)}${head(160, 46, 11)}${head(100, 104, 11)}<path class="sacc dash a-dashmove" d="M52 48h96M46 56l46 42M154 56l-46 42"/><rect x="88" y="54" width="24" height="16" rx="3" class="ink"/>`,
+    p6: `<text x="18" y="46">1st</text><rect x="50" y="36" width="130" height="12" rx="6" class="v a-grow"/><text x="18" y="84">50th</text><rect x="50" y="74" width="34" height="12" rx="6" class="t a-grow2"/>`,
+    p7: `<circle cx="80" cy="52" r="26" class="acc a-pulse" opacity=".55"/><circle cx="120" cy="52" r="26" class="w a-pulse" opacity=".7"/><circle cx="100" cy="82" r="26" class="t a-pulse" opacity=".55"/><circle cx="80" cy="52" r="26" class="acc" opacity=".35"/><circle cx="120" cy="52" r="26" class="w" opacity=".45"/><circle cx="100" cy="82" r="26" class="t" opacity=".35"/>`,
+    p8: `<g class="a-shake">${P(30, 18)}</g><text x="92" y="66">=</text><rect x="118" y="44" width="56" height="30" rx="10" class="ink"/><text x="132" y="63" style="fill:var(--bg)">Tap</text>`,
+  };
+
+  const S = { // small sensor icons, 40 × 40
+    accel: `<rect x="13" y="7" width="14" height="26" rx="3" class="ph"/><path class="str" d="M6 14v12M34 14v12"/>`,
+    gyro: `<path class="str" d="M20 6a14 14 0 1 1 -12 7"/><path class="str" d="M8 6v7h7"/>`,
+    face: `<rect x="8" y="22" width="24" height="8" rx="3" class="ink"/><path class="str" d="M14 16q6-10 12 0M26 16l-1-5M26 16l-5-1"/>`,
+    prox: `<rect x="20" y="8" width="13" height="24" rx="3" class="ph"/><path class="str" d="M6 12v16M10 10v20M14 13v14"/>`,
+    haptic: `<rect x="14" y="8" width="12" height="24" rx="3" class="ph"/><path class="str" d="M9 14q-3 6 0 12M31 14q3 6 0 12"/>`,
+    mic: `<rect x="15" y="6" width="10" height="18" rx="5" class="ink"/><path class="str" d="M10 20a10 10 0 0 0 20 0M20 30v5"/>`,
+    touch: `<circle cx="20" cy="20" r="6" class="ink"/><circle cx="20" cy="20" r="12" class="sacc"/>`,
+    camera: `<rect x="6" y="12" width="28" height="20" rx="4" class="ink"/><circle cx="20" cy="22" r="6" style="fill:var(--bg)"/><rect x="14" y="8" width="12" height="5" rx="2" class="ink"/>`,
+    uwb: `<rect x="5" y="14" width="9" height="16" rx="2" class="ph"/><rect x="26" y="14" width="9" height="16" rx="2" class="ph"/><path class="sacc" d="M12 12q8-8 16 0" stroke-dasharray="3 3"/>`,
+    nearby: `<rect x="5" y="12" width="10" height="18" rx="2" class="ph"/><rect x="15" y="8" width="10" height="18" rx="2" class="ph"/><rect x="25" y="12" width="10" height="18" rx="2" class="ph"/>`,
+    shareplay: `<circle cx="13" cy="15" r="5" class="ink"/><circle cx="27" cy="15" r="5" class="ink"/><path class="str" d="M5 32q8-10 16 0M19 32q8-10 16 0"/>`,
+  };
+
+  const WATCH = {
+    shake: "https://www.youtube.com/results?search_query=iphone+shake+to+shuffle+app",
+    swipe: "https://www.youtube.com/results?search_query=pokemon+tcg+pocket+pack+opening",
+    flip: "https://www.youtube.com/results?search_query=balatro+card+animation",
+    tilt: "https://www.youtube.com/results?search_query=holographic+card+tilt+effect+iphone",
+    point: "https://www.youtube.com/results?search_query=namedrop+iphone+animation",
+    room: "https://www.youtube.com/results?search_query=how+to+play+jackbox+jackbox.tv",
+    blow: "https://www.youtube.com/results?search_query=smule+ocarina+iphone+2008",
+    haptic: "https://developer.apple.com/videos/play/wwdc2021/10278",
+    facedown: "https://www.youtube.com/results?search_query=heads+up+app+gameplay",
+    almc: "https://gamelygames.com/products/a-little-more-conversation",
+    wnrs: "https://www.youtube.com/results?search_query=we%27re+not+really+strangers+how+to+play",
+    perel: "https://estherperel.com/how-to-play-where-should-we-begin",
+    tabletopics: "https://apps.apple.com/us/app/id1454481833",
+    headsup: "https://www.youtube.com/results?search_query=heads+up+app+ellen+show",
+    ocarina: "https://www.youtube.com/results?search_query=smule+ocarina+iphone",
+    tcg: "https://www.youtube.com/results?search_query=pokemon+tcg+pocket+pack+opening",
+    balatro: "https://www.youtube.com/results?search_query=balatro+gameplay",
+    jackbox: "https://www.youtube.com/results?search_query=jackbox+party+pack+phone+controller",
+    donut: "https://www.donut.com/platform/zoom/",
+  };
+
+  document.querySelectorAll("[data-vis]").forEach((el) => {
+    const k = el.dataset.vis;
+    if (k.startsWith("s-")) { el.innerHTML = `<svg viewBox="0 0 40 40" aria-hidden="true">${S[k.slice(2)] || ""}</svg>`; return; }
+    el.innerHTML = `<svg viewBox="0 0 200 120" aria-hidden="true">${VIS[k] || ""}</svg>`;
+    if (WATCH[k]) {
+      const a = document.createElement("a"); a.className = "watch"; a.href = WATCH[k]; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = WATCH[k].includes("youtube.com") ? "Watch examples" : "See it";
+      const host = el.closest(".tile, .app > div");
+      (host.querySelector(".from") || host.querySelector(".kind") || host).insertAdjacentElement("afterend", a);
+    }
+  });
+  // Animate only the diagrams on screen.
+  const io = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("play", e.isIntersecting)), { rootMargin: "60px" }) : null;
+  document.querySelectorAll(".vis").forEach((v) => io ? io.observe(v) : v.classList.add("play"));
 })();
 </script>
 <!--ARTIFACT-END-->
