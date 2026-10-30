@@ -1,9 +1,36 @@
 // Everything in the Lab. To add a project, copy one entry, change it, and keep the list newest first.
 // kind: "app" | "web" | "artifact". icon: a key in ICONS (icons.js). shot: optional image in assets/shots.
 
-window.LAB_UPDATED = "2026-10-14";
+window.LAB_UPDATED = "2026-10-30";
 
 window.PROJECTS = [
+  {
+    id: "card-game",
+    tint: ["#FFE7B8", "#F7B9A2"],
+    tintDark: ["#3D2F1E", "#2E1F1A"],
+    name: "Card Game",
+    kind: "web",
+    platform: "Research playroom, iPhone app to come",
+    tagline: "A conversation deck you shake, draw and pass.",
+    about:
+      "A playful take on conversation cards like A Little More Conversation: pick a card, choose one of three questions, answer, and pass it on so the next person answers too. This first step is research into conversation games and the phone's sensors, with a live deck to try shake to shuffle, swipe to draw, flip, tilt and face down.",
+    highlights: [
+      "Shake to shuffle, swipe to draw, tap to flip",
+      "Pass the card across the table",
+      "Tilt shine and face-down talking mode",
+      "Research on apps, sensors and conversation design",
+    ],
+    made: "October 2026",
+    updated: "2026-10-30",
+    version: "0.1",
+    stack: "HTML, CSS, JavaScript, device motion",
+    where: "~/Documents/card game",
+    icon: "cardGame",
+    links: [
+      { label: "Open Playroom", url: "https://imshivam.github.io/shivams-lab/card-game/", primary: true },
+      { label: "Playroom Artifact", url: "https://claude.ai/artifact/1d5PF4Jm4JCXPV5a8K77n2" },
+    ],
+  },
   {
     id: "stay-connected",
     tint: ["#F7F0DF", "#E8DABB"],

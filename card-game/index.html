@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Card Game Playroom</title>
+</head>
+<body>
+<!--ARTIFACT-START-->
+<title>Card Game Playroom</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: a card table first (the live deck), then the research as a field guide: mechanics, apps, principles, sensors, searches, plan. */
+:root {
+  --bg: #EDF0F4;
+  --surface: #FFFFFF;
+  --ink: #1B1F2A;
+  --muted: #5B6372;
+  --line: #D5DAE2;
+  --felt: #D9E1E9;
+  --accent: #3550D4;
+  --card-ink: #1B1F2A;
+  --card-paper: #FFFDF8;
+  --keep: #1E7A4C; --try: #A15C00; --skip: #7A7F8A;
+  --warm: #F0AE33; --whatif: #7466F2; --wayback: #E35D3A; --deep: #1E7A73;
+  --display: "Bricolage Grotesque", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --spring: cubic-bezier(.34, 1.45, .64, 1);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11141A; --surface: #1A1F28; --ink: #EDF0F5; --muted: #9CA5B4; --line: #2B3240; --felt: #182029;
+    --accent: #93A5FF; --card-paper: #FBF8F1; --keep: #5FD39A; --try: #F2B45A; --skip: #8D94A1;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11141A; --surface: #1A1F28; --ink: #EDF0F5; --muted: #9CA5B4; --line: #2B3240; --felt: #182029;
+  --accent: #93A5FF; --card-paper: #FBF8F1; --keep: #5FD39A; --try: #F2B45A; --skip: #8D94A1;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body {
+  margin: 0; font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-text-size-adjust: 100%;
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: 1040px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.1; margin: 0; }
+h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; letter-spacing: -.02em; }
+h2 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; letter-spacing: -.01em; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.eyebrow { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+
+header.top { padding-block: 28px 8px; display: grid; gap: 10px; }
+header.top p { max-width: 62ch; color: var(--muted); }
+
+nav.jump {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+  display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; margin-top: 8px;
+  scrollbar-width: none; border-bottom: 1px solid var(--line);
+}
+nav.jump::-webkit-scrollbar { display: none; }
+nav.jump a {
+  flex: none; text-decoration: none; color: var(--ink); font-weight: 700; font-size: .9rem;
+  padding: 7px 13px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line);
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+
+/* ---------- The table ---------- */
+.playroom { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; padding-block: 20px; align-items: start; }
+@media (max-width: 820px) { .playroom { grid-template-columns: minmax(0, 1fr); } }
+
+.decks { display: flex; gap: 8px; flex-wrap: wrap; }
+.deck-chip {
+  font: 700 .92rem var(--body); border: 2px solid transparent; cursor: pointer;
+  padding: 8px 14px; border-radius: 999px; color: #fff; background: var(--c);
+  transition: transform .25s var(--spring);
+}
+.deck-chip[aria-pressed="false"] { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.deck-chip[aria-pressed="false"]::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--c); margin-right: 7px; }
+.deck-chip:active { transform: scale(.94); }
+
+.table {
+  position: relative; margin-top: 14px; border-radius: 28px; background: var(--felt);
+  height: 500px; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none;
+  perspective: 1100px;
+}
+.table-hint { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font-size: .9rem; color: var(--muted); pointer-events: none; padding-inline: 16px; }
+
+.card {
+  --x: 0px; --y: 0px; --r: 0deg; --s: 1;
+  position: absolute; left: 50%; top: 50%; width: 230px; height: 322px; margin: -170px 0 0 -115px;
+  transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(var(--s));
+  transition: transform .55s var(--spring), opacity .3s;
+  transform-style: preserve-3d; cursor: grab;
+}
+.card.dragging { transition: none; cursor: grabbing; }
+.tilt { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .12s linear;
+  transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg)); }
+.flip { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .7s var(--spring); }
+.card.up .flip { transform: rotateY(180deg); }
+.face {
+  position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 10px 24px -10px rgba(10,20,40,.35); overflow: hidden;
+}
+.back {
+  background: var(--c);
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.22) 0 22%, transparent 23%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.13) 0 8px, transparent 8px 16px);
+  display: grid; place-items: center; color: #fff; border: 8px solid var(--card-paper);
+}
+.back span { font-family: var(--display); font-weight: 800; font-size: 1.5rem; letter-spacing: -.01em; text-shadow: 0 1px 0 rgba(0,0,0,.15); }
+.front {
+  transform: rotateY(180deg); background: var(--card-paper); color: var(--card-ink);
+  display: flex; flex-direction: column; padding: 14px 14px 12px; gap: 8px; border-top: 10px solid var(--c);
+}
+.front .tag { font: 700 .72rem var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--c); filter: brightness(.8); }
+.q {
+  all: unset; box-sizing: border-box; cursor: pointer; display: block; padding: 8px 10px; border-radius: 12px;
+  font: 700 .95rem/1.25 var(--display); color: var(--card-ink); background: rgba(20,30,50,.05);
+  transition: opacity .3s, transform .4s var(--spring), background .2s;
+}
+.q:focus-visible { outline: 3px solid var(--c); }
+.q:hover { background: rgba(20,30,50,.09); }
+.front.picked .q { opacity: .18; transform: scale(.96); }
+.front.picked .q.on { opacity: 1; transform: scale(1.04); background: color-mix(in srgb, var(--c) 18%, transparent); }
+.front .turns { margin-top: auto; font: 400 .78rem var(--body); color: #5B6372; display: flex; justify-content: space-between; }
+.sheen { position: absolute; inset: 0; border-radius: 20px; pointer-events: none; mix-blend-mode: soft-light;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 30%), rgba(255,255,255,.75), transparent 45%); opacity: .0; transition: opacity .3s; }
+.card.top .sheen, .card.drawn .sheen { opacity: 1; }
+
+.talking {
+  position: absolute; inset: 0; background: #0B0D12; color: #E9ECF2; display: grid; place-items: center; text-align: center;
+  padding: 24px; border-radius: 28px; z-index: 50;
+}
+.talking p { max-width: 26ch; font: 700 1.25rem/1.3 var(--display); }
+.talking small { display: block; margin-top: 10px; font: 400 .9rem var(--body); color: #9CA5B4; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.btn {
+  font: 700 .95rem var(--body); padding: 10px 16px; border-radius: 14px; cursor: pointer;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); min-height: 44px;
+  transition: transform .2s var(--spring);
+}
+.btn:active { transform: scale(.95); }
+.btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn[disabled] { opacity: .4; cursor: default; }
+
+/* Sensor panel */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: grid; gap: 14px; }
+.panel h3 { font-size: 1rem; }
+.status { font-size: .88rem; color: var(--muted); }
+.status b { color: var(--ink); }
+.meter { display: grid; grid-template-columns: 84px 1fr 52px; gap: 8px; align-items: center; font-size: .85rem; }
+.bar { position: relative; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.bar i { position: absolute; top: 0; bottom: 0; left: 50%; width: 0; background: var(--accent); border-radius: 4px; transition: all .08s linear; }
+.bar.from0 i { left: 0; }
+.num { font-family: var(--mono); font-size: .78rem; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: .84rem; min-height: 120px; }
+.log li { padding: 5px 8px; border-radius: 8px; background: var(--bg); }
+.log li:first-child { animation: pop .4s var(--spring); }
+@keyframes pop { from { transform: scale(.9); opacity: 0; } }
+.toggles { display: grid; gap: 8px; }
+.toggle { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: .9rem; }
+
+/* ---------- Field guide ---------- */
+section.guide { padding-block: 40px 8px; display: grid; gap: 18px; scroll-margin-top: 64px; }
+section.guide > p.lede { max-width: 66ch; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.tile p { font-size: .95rem; }
+.tile .from { font-size: .86rem; color: var(--muted); }
+.tile-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.verdict { font: 700 .72rem var(--body); letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1.5px solid currentColor; flex: none; }
+.v-keep { color: var(--keep); } .v-try { color: var(--try); } .v-later { color: var(--skip); }
+.lit { width: 10px; height: 10px; border-radius: 50%; background: var(--line); flex: none; transition: background .2s, box-shadow .2s; }
+.lit.on { background: var(--keep); box-shadow: 0 0 0 4px color-mix(in srgb, var(--keep) 25%, transparent); }
+.tile .how { font-size: .86rem; background: var(--bg); border-radius: 10px; padding: 8px 10px; }
+
+.principles { counter-reset: p; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); list-style: none; margin: 0; padding: 0; }
+.principles li { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: grid; gap: 6px; }
+.principles li h3::before { counter-increment: p; content: counter(p) ". "; color: var(--muted); }
+
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: .9rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 700; white-space: nowrap; }
+.yes { color: var(--keep); font-weight: 700; } .no { color: var(--skip); font-weight: 700; } .some { color: var(--try); font-weight: 700; }
+
+.apps { display: grid; gap: 10px; }
+.app { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+@media (max-width: 620px) { .app { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+.app h3 { font-size: 1.02rem; }
+.app .kind { font-size: .8rem; color: var(--muted); }
+.app .steal { font-size: .9rem; margin-top: 4px; }
+.app .steal b { color: var(--accent); }
+
+.searches { columns: 2 280px; gap: 24px; padding-left: 1.3em; margin: 0; }
+.searches li { break-inside: avoid; margin-bottom: 6px; }
+.phases { display: grid; gap: 10px; }
+.phase { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+.phase .n { font: 800 1.3rem var(--display); color: var(--muted); }
+.phase.now { border-color: var(--accent); }
+.phase.now .n { color: var(--accent); }
+footer { padding-block: 40px; color: var(--muted); font-size: .88rem; }
+.sources { font-size: .84rem; color: var(--muted); }
+.sources a { color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .flip, .tilt, .deck-chip, .btn, .q { transition-duration: .01s !important; }
+  .log li:first-child { animation: none; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Card game · research playroom · 30 Oct 2026</span>
+    <h1>A deck that feels real in your hand</h1>
+    <p>Play with the deck first, then read what I found. On an iPhone, tap <b>Turn on motion</b> and try shaking, tilting, and putting the phone face down. On a computer, every gesture has a button.</p>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <a href="#play">Play</a>
+    <a href="#mechanics">Mechanics</a>
+    <a href="#wild">In the wild</a>
+    <a href="#principles">Principles</a>
+    <a href="#sensors">Sensors</a>
+    <a href="#searched">What I searched</a>
+    <a href="#plan">Plan</a>
+  </nav>
+
+  <!-- ===== PLAY ===== -->
+  <section class="playroom" id="play">
+    <div style="min-width:0">
+      <div class="decks" role="group" aria-label="Decks" id="decks"></div>
+      <div class="table" id="table" aria-label="Card table">
+        <div class="table-hint" id="hint">Tap the deck or swipe the top card to draw</div>
+      </div>
+      <div class="controls">
+        <button class="btn primary" id="bShuffle">Shuffle</button>
+        <button class="btn" id="bDraw">Draw</button>
+        <button class="btn" id="bPass" disabled>Pass it on</button>
+        <button class="btn" id="bNext" disabled>Next card</button>
+        <button class="btn" id="bTalk">Phone face down</button>
+      </div>
+    </div>
+
+    <aside class="panel" aria-label="Sensors">
+      <div class="toggles">
+        <button class="btn primary" id="bMotion">Turn on motion</button>
+        <button class="btn" id="bMic">Blow to draw (microphone)</button>
+        <div class="toggle"><label for="tSound">Sound</label><input type="checkbox" id="tSound" checked></div>
+        <div class="toggle"><label for="tHaptic">Haptics</label><input type="checkbox" id="tHaptic" checked></div>
+      </div>
+      <p class="status" id="status">Motion is off. Buttons and mouse still work.</p>
+      <div>
+        <h3>Live readout</h3>
+        <div class="meter"><span>Tilt left/right</span><div class="bar"><i id="mGamma"></i></div><span class="num" id="nGamma">0°</span></div>
+        <div class="meter"><span>Tilt fwd/back</span><div class="bar"><i id="mBeta"></i></div><span class="num" id="nBeta">0°</span></div>
+        <div class="meter"><span>Shake force</span><div class="bar from0"><i id="mShake"></i></div><span class="num" id="nShake">0</span></div>
+        <div class="meter"><span>Breath</span><div class="bar from0"><i id="mMic"></i></div><span class="num" id="nMic">off</span></div>
+      </div>
+      <div>
+        <h3>What just happened</h3>
+        <ul class="log" id="log" aria-live="polite"></ul>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ===== MECHANICS ===== -->
+  <section class="guide" id="mechanics">
+    <span class="eyebrow">Mechanics</span>
+    <h2>Gestures worth building</h2>
+    <p class="lede">Each one below works in the deck above. The dot lights up when you trigger it. Verdicts are my recommendation; the prototype on your phone decides.</p>
+    <div class="grid">
+      <article class="tile"><div class="tile-head"><h3>Shake to shuffle</h3><span class="lit" data-lit="shake"></span></div>
+        <p>A sharp spike in acceleration shuffles the deck. Cards jostle, a riffle sound plays, light haptic ticks follow.</p>
+        <p class="from">Seen in: Shake to Undo on iOS, every dice app. Web threshold ~15 m/s², 1 s cooldown.</p>
+        <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
+      <article class="tile"><div class="tile-head"><h3>Swipe to draw</h3><span class="lit" data-lit="swipe"></span></div>
+        <p>Drag the top card off the stack. It follows your finger one to one, then springs into place.</p>
+        <p class="from">Seen in: Pokémon TCG Pocket's swipe to tear a pack. Apple's "follows you frame by frame" principle.</p>
+        <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
+      <article class="tile"><div class="tile-head"><h3>Tap to flip</h3><span class="lit" data-lit="flip"></span></div>
+        <p>The card turns over with a spring and a soft thud. Three questions are revealed together.</p>
+        <p class="from">Seen in: Balatro's springy card flips.</p>
+        <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
+      <article class="tile"><div class="tile-head"><h3>Tilt for shine</h3><span class="lit" data-lit="tilt"></span></div>
+        <p>The card leans as you tilt the phone and a highlight slides across it, like a foil card or a Wallet pass.</p>
+        <p class="from">Seen in: Apple Wallet, TCG Pocket foils, Balatro's parallax. Native: Core Motion + a Metal shader.</p>
+        <span class="verdict v-keep" style="align-self:flex-start">Keep, subtle</span></article>
+      <article class="tile"><div class="tile-head"><h3>Pass across the table</h3><span class="lit" data-lit="pass"></span></div>
+        <p>"Pass it on" spins the card 180° so the person opposite can read it, and counts who has answered.</p>
+        <p class="from">The heart of the original game: both people answer the same question.</p>
+        <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
+      <article class="tile"><div class="tile-head"><h3>Face down to talk</h3><span class="lit" data-lit="facedown"></span></div>
+        <p>Put the phone face down and the screen goes dark: you're talking now. Pick it up for the next card.</p>
+        <p class="from">Seen in: Heads Up's "phone is part of the group". Native: <code>UIDevice.orientation.isFlat</code>.</p>
+        <span class="verdict v-try" style="align-self:flex-start">Try</span></article>
+      <article class="tile"><div class="tile-head"><h3>Blow to draw</h3><span class="lit" data-lit="blow"></span></div>
+        <p>Blow on the phone and the top card lifts off. Uses the microphone level, nothing is recorded.</p>
+        <p class="from">Seen in: Smule Ocarina (blow into the mic to play).</p>
+        <span class="verdict v-try" style="align-self:flex-start">Try</span></article>
+      <article class="tile"><div class="tile-head"><h3>Sound and haptics together</h3><span class="lit" data-lit="haptic"></span></div>
+        <p>Riffle, thud, click: each moment gets a matched sound and tap. Haptics are weak on the web; the app gets Core Haptics.</p>
+        <p class="from">Seen in: Apple's HapticRicochet sample, TCG Pocket's sound-led pack opening.</p>
+        <span class="verdict v-keep" style="align-self:flex-start">Keep</span></article>
+      <article class="tile"><div class="tile-head"><h3>Point to pass</h3></div>
+        <p>Point your iPhone at someone's iPhone to hand them the card. Ultra Wideband gives direction and distance.</p>
+        <p class="from">Seen in: NameDrop, AirTag Precision Finding. Native only (Nearby Interaction).</p>
+        <span class="verdict v-later" style="align-self:flex-start">Later, app only</span></article>
+      <article class="tile"><div class="tile-head"><h3>Room code for remote</h3></div>
+        <p>One person starts a room, everyone joins with a code on their own screen and sees the same card.</p>
+        <p class="from">Seen in: Jackbox (jackbox.tv), SharePlay on FaceTime.</p>
+        <span class="verdict v-later" style="align-self:flex-start">Later, phase 5</span></article>
+    </div>
+  </section>
+
+  <!-- ===== IN THE WILD ===== -->
+  <section class="guide" id="wild">
+    <span class="eyebrow">In the wild</span>
+    <h2>What good looks like out there</h2>
+    <p class="lede">Conversation apps today are lists of questions behind a swipe. The games people love make the phone a physical object. Nobody has put the two together.</p>
+    <div class="apps">
+      <div class="app"><div><h3>A Little More Conversation</h3><span class="kind">Gamely · card box · £12.99</span></div>
+        <div><p>Retailers list five themed rounds and three questions per card, 300+ questions. Rounds I could confirm: Warm Up, What If, Back In The Day.</p>
+        <p class="steal"><b>Steal:</b> three questions per card, so the holder picks how deep to go.</p></div></div>
+      <div class="app"><div><h3>We're Not Really Strangers</h3><span class="kind">Card game + apps</span></div>
+        <div><p>Three levels that deepen: Perception, Connection, Reflection. Wildcards are quick fun tasks between heavy questions. A final card to close.</p>
+        <p class="steal"><b>Steal:</b> levels that escalate, wildcards as breathers, a closing ritual.</p></div></div>
+      <div class="app"><div><h3>Where Should We Begin?</h3><span class="kind">Esther Perel · story cards</span></div>
+        <div><p>Prompts ask for stories, not answers. Perel's tip: keep each story to a few minutes. Reviewers say some cards go too intense too soon.</p>
+        <p class="steal"><b>Steal:</b> "tell a story about…" prompts. <b>Avoid:</b> depth before trust.</p></div></div>
+      <div class="app"><div><h3>TableTopics: The App</h3><span class="kind">iPhone · freemium</span></div>
+        <div><p>The obvious version: 50+ free questions, 400+ paid, save favourites.</p>
+        <p class="steal"><b>Lesson:</b> correct but no feel. This is the baseline to beat.</p></div></div>
+      <div class="app"><div><h3>Heads Up!</h3><span class="kind">Ellen · 2013 · iPhone</span></div>
+        <div><p>Phone on your forehead, tilt down for correct, up to pass. The camera records the room. Played over a billion times.</p>
+        <p class="steal"><b>Steal:</b> one clear physical gesture that turns the phone toward the group.</p></div></div>
+      <div class="app"><div><h3>Smule Ocarina</h3><span class="kind">iPhone · 2008</span></div>
+        <div><p>Blow into the mic, cover holes on screen, tilt for vibrato. The phone becomes the instrument.</p>
+        <p class="steal"><b>Steal:</b> the phone becomes the object, not a picture of it.</p></div></div>
+      <div class="app"><div><h3>Pokémon TCG Pocket</h3><span class="kind">iPhone, Android · 2024</span></div>
+        <div><p>Swipe to tear a pack, cards revealed one by one, rare cards glow and crack. Sound design is called the key. Players complain they can't skip it.</p>
+        <p class="steal"><b>Steal:</b> ceremony on the draw. <b>Avoid:</b> ceremony you can't speed past.</p></div></div>
+      <div class="app"><div><h3>Balatro</h3><span class="kind">Mac, iPhone, consoles · 2024</span></div>
+        <div><p>Cards float, tilt toward you, flip with a spring; foil has parallax; shake scales with the score. Many small feedback layers stacked.</p>
+        <p class="steal"><b>Steal:</b> stacked feedback on a short loop.</p></div></div>
+      <div class="app"><div><h3>Jackbox Party Pack</h3><span class="kind">TV + phones</span></div>
+        <div><p>Everyone joins at jackbox.tv with a room code. No controllers. Spectators can join as an audience.</p>
+        <p class="steal"><b>Steal:</b> the room-code join for the remote and team version.</p></div></div>
+      <div class="app"><div><h3>Donut</h3><span class="kind">Slack, Zoom</span></div>
+        <div><p>Pairs teammates for short chats and posts icebreaker questions, including mid-call on Zoom.</p>
+        <p class="steal"><b>Lesson:</b> teams already want icebreakers; theirs are plain text prompts.</p></div></div>
+    </div>
+    <p class="sources">Sources: <a href="https://gamelygames.com/products/a-little-more-conversation">Gamely</a>, <a href="https://booknookuk.com/product/gamely-a-little-more-conversation/">The Book Nook</a>, <a href="https://werenotreallystrangers.com/pages/core-landing-page">WNRS</a>, <a href="https://mechanicsofmagic.com/?p=719">Mechanics of Magic</a>, <a href="https://estherperel.com/how-to-play-where-should-we-begin">Esther Perel</a>, <a href="https://apps.apple.com/us/app/id1454481833">TableTopics</a>, <a href="https://www.macrumors.com/2013/05/02/new-party-game-heads-up-featured-on-the-ellen-show/">MacRumors</a>, <a href="https://www.macworld.com/article/193669/ocarinaiphone.html">Macworld</a>, <a href="https://gonintendo.com/contents/40485-pokemon-trading-card-game-pocket-dev-on-why-sound-design-is-key-to-a-satisfying">GoNintendo</a>, <a href="https://www.sportskeeda.com/pokemon/are-pokemon-tcg-pocket-animations-long">Sportskeeda</a>, <a href="https://blakecrosley.com/guides/design/balatro">Balatro guide</a> (secondary), <a href="https://apps.apple.com/us/app/-/id971879034">Jackbox</a>, <a href="https://www.donut.com/platform/zoom/">Donut</a>.</p>
+  </section>
+
+  <!-- ===== PRINCIPLES ===== -->
+  <section class="guide" id="principles">
+    <span class="eyebrow">Principles</span>
+    <h2>Rules for a conversation game</h2>
+    <ol class="principles">
+      <li><h3>Go deeper slowly, and let people choose</h3><p>Aron's 1997 "36 questions" study built closeness between strangers with three sets that get more personal. His advice: don't share too much, too fast. Decks go light to deep; three questions per card let the holder choose.</p></li>
+      <li><h3>Both people answer</h3><p>Closeness comes from taking turns to share, and from responding to what the other person said. Passing the same question on is the default, not an option.</p></li>
+      <li><h3>Always a way out</h3><p>The main complaint about Perel's game is cards that get intense too early. Offer another of the three, a skip, or a pass.</p></li>
+      <li><h3>Breathers</h3><p>WNRS wildcards break heavy questions with a quick, fun task. One every six cards or so keeps the energy up.</p></li>
+      <li><h3>Eyes up, not down</h3><p>Heads Up works because the phone faces the group. Show the question large, then get out of the way: dim, or go face down.</p></li>
+      <li><h3>Ceremony, but fast</h3><p>Shuffle and draw should feel great the first time and still be quick the fiftieth. TCG Pocket players resent animations they can't skip.</p></li>
+      <li><h3>Picture, sound and touch together</h3><p>Every important moment gets all three at once. Routine actions stay quiet; too much "juice" tires people out.</p></li>
+      <li><h3>No sensor is required</h3><p>Every gesture has a tap twin. Reduce Motion turns off shake and tilt. VoiceOver reads the card.</p></li>
+    </ol>
+    <p class="sources">Sources: <a href="https://www.psychologytoday.com/us/blog/the-highly-sensitive-person/201501/36-questions-for-intimacy-back-story">Elaine Aron in Psychology Today</a>, <a href="https://amorebeautifulquestion.com/36-questions/">A More Beautiful Question</a>, <a href="https://en.wikipedia.org/wiki/Game_feel">Game feel</a>, Jonasson &amp; Purho, <i>Juice it or lose it</i> (2012), <a href="https://developer.apple.com/videos/play/wwdc2021/10278">WWDC21 audio-haptic design</a>.</p>
+  </section>
+
+  <!-- ===== SENSORS ===== -->
+  <section class="guide" id="sensors">
+    <span class="eyebrow">Sensors</span>
+    <h2>What the phone can feel</h2>
+    <p class="lede">The iPhone app can use all of these. The web version gets fewer, and iPhone Safari only allows motion after a tap and over HTTPS.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Sensor</th><th>Use in the game</th><th>iPhone app</th><th>Web on iPhone</th></tr></thead>
+      <tbody>
+        <tr><td>Accelerometer</td><td>Shake to shuffle</td><td class="yes">Yes · Core Motion, shake event</td><td class="yes">Yes · after permission</td></tr>
+        <tr><td>Gyroscope</td><td>Tilt shine, parallax, tilt to choose a question</td><td class="yes">Yes · attitude</td><td class="yes">Yes · after permission</td></tr>
+        <tr><td>Face up / down</td><td>Face down = talking; flip the phone to flip the card</td><td class="yes">Yes · orientation.isFlat</td><td class="yes">Yes · from tilt angle</td></tr>
+        <tr><td>Proximity</td><td>Covered or in a pocket</td><td class="some">Some devices</td><td class="no">No</td></tr>
+        <tr><td>Haptics</td><td>Riffle, thud, click, a heartbeat while someone answers</td><td class="yes">Yes · Core Haptics</td><td class="no">Almost none · one tick via a switch trick, reportedly patched in iOS 26.5</td></tr>
+        <tr><td>Microphone</td><td>Blow to draw; notice when the room goes quiet</td><td class="yes">Yes · with permission</td><td class="yes">Yes · with permission</td></tr>
+        <tr><td>Touch</td><td>Drag, flick, long-press to peek, swipe to pass</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+        <tr><td>Camera</td><td>Record reactions, Heads Up style</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+        <tr><td>Ultra Wideband</td><td>Point at someone to pass the card</td><td class="yes">iPhone 11 and later</td><td class="no">No</td></tr>
+        <tr><td>Nearby devices</td><td>Everyone on their own phone, same room</td><td class="yes">MultipeerConnectivity</td><td class="some">Via a web room</td></tr>
+        <tr><td>SharePlay</td><td>Same card for everyone on a FaceTime call</td><td class="yes">GroupActivities</td><td class="no">No · use a room code</td></tr>
+      </tbody>
+    </table></div>
+    <p class="sources">Motion sensors don't work in the iOS Simulator, so testing needs a real phone. Apps must explain motion use in <code>NSMotionUsageDescription</code>. Sources: <a href="https://wwdcnotes.com/notes/wwdc19/520">Core Haptics</a>, <a href="https://slicker.me/javascript/shake/shake.htm">web shake detection</a>, <a href="https://npmjs.com/package/ios-haptics">ios-haptics</a>, <a href="https://bugs.webkit.org/show_bug.cgi?id=285120">WebKit 285120</a>, <a href="https://developer.apple.com/documentation/uikit/uidevice/isproximitymonitoringenabled.md">UIDevice</a>, <a href="https://developer.apple.com/documentation/nearbyinteraction.md">Nearby Interaction</a>, <a href="https://developer.apple.com/documentation/groupactivities/defining-your-apps-shareplay-activities.md">GroupActivities</a>, <a href="https://developer.apple.com/documentation/technotes/tn3128-starting-shareplay-without-an-existing-facetime-call.md">TN3128</a>, <a href="https://zenn.dev/touyou/articles/flip_tilt_card_swiftui">SwiftUI tilt card</a>.</p>
+  </section>
+
+  <!-- ===== SEARCHED ===== -->
+  <section class="guide" id="searched">
+    <span class="eyebrow">Method</span>
+    <h2>What I searched</h2>
+    <ol class="searches">
+      <li>A Little More Conversation: categories, three questions per card</li>
+      <li>Conversation card apps: WNRS, TableTopics</li>
+      <li>iOS Core Motion, shake, tilt, Core Haptics examples</li>
+      <li>Heads Up: tilt design and why it took off</li>
+      <li>Pokémon TCG Pocket pack opening</li>
+      <li>Balatro card feel: wobble, tilt, juice</li>
+      <li>Aron's 36 questions and escalating self-disclosure</li>
+      <li>Motion permission on iPhone Safari, shake detection</li>
+      <li>Jackbox: phones as controllers</li>
+      <li>Esther Perel's Where Should We Begin</li>
+      <li>Nearby Interaction, MultipeerConnectivity, SharePlay</li>
+      <li>Game feel (Swink), Juice it or lose it</li>
+      <li>Haptics in Safari, the switch trick</li>
+      <li>Smule Ocarina, blowing into the mic</li>
+      <li>Remote team icebreakers: Donut, Slack apps</li>
+      <li>Proximity sensor, face-down detection</li>
+      <li>SharePlay card games</li>
+      <li>Wallet-style tilt shimmer in SwiftUI</li>
+      <li>WNRS levels and wildcards</li>
+    </ol>
+    <p class="muted"><b>Not found:</b> the other two Gamely round names (worth checking your box); how Apple builds the Wallet shimmer; a developer write-up of TCG Pocket's foil effect.</p>
+  </section>
+
+  <!-- ===== PLAN ===== -->
+  <section class="guide" id="plan">
+    <span class="eyebrow">Plan</span>
+    <h2>How we get there</h2>
+    <div class="phases">
+      <div class="phase now"><span class="n">0</span><div><h3>Research and playroom</h3><p class="muted">This page. Decides which mechanics are worth it.</p></div></div>
+      <div class="phase"><span class="n">1</span><div><h3>Feel prototype on the web</h3><p class="muted">Deck, shake, draw, flip, choose, pass. Tested on your iPhone. Does the physical feel work?</p></div></div>
+      <div class="phase"><span class="n">2</span><div><h3>Our own questions</h3><p class="muted">Decks, about 40 cards × 3 questions, a tone guide. The questions above are placeholders I wrote; we can't reuse Gamely's.</p></div></div>
+      <div class="phase"><span class="n">3</span><div><h3>Design direction and name</h3><p class="muted">Card art, deck look, sound and haptic palette.</p></div></div>
+      <div class="phase"><span class="n">4</span><div><h3>iPhone app</h3><p class="muted">SwiftUI, Core Motion, Core Haptics. TestFlight through the Lab's workflow.</p></div></div>
+      <div class="phase"><span class="n">5</span><div><h3>Remote mode</h3><p class="muted">Room code on the web for team icebreakers and remote one-on-ones; SharePlay on FaceTime.</p></div></div>
+      <div class="phase"><span class="n">6</span><div><h3>iPad</h3><p class="muted">A bigger table for groups.</p></div></div>
+    </div>
+  </section>
+
+  <footer>Made with Claude for Shivam's Lab. Motion and microphone need a phone and an HTTPS page; in previews that block them, use the buttons.</footer>
+</div>
+
+<script>
+(() => {
+  const DECKS = [
+    { id: "warm", name: "Warm up", color: "var(--warm)", cards: [
+      ["What did you have for breakfast, and would you have it again?", "What small thing made this week better?", "What's your usual order at a café?"],
+      ["What's a song you'd never skip?", "What's the last thing that made you laugh properly?", "What on your home screen says the most about you?"],
+      ["Which season suits you best?", "What's a skill you're quietly proud of?", "What's the best thing you've bought for under £10?"],
+      ["Who would you call to help move a sofa?", "What's a word you use too much?", "What does a perfect slow Sunday look like?"],
+    ]},
+    { id: "whatif", name: "What if", color: "var(--whatif)", cards: [
+      ["What if you could master one instrument overnight?", "What if you had to live in one film's world for a year?", "What if you could add one subject to every school?"],
+      ["What if you could ask your future self one question?", "What if you swapped jobs with someone here for a week?", "What if your city had one rule you invented?"],
+      ["What if you could relive one ordinary day?", "What if you could only eat one cuisine from now on?", "What if you got a year off, starting Monday?"],
+      ["What if you were fluent in any language you liked?", "What if your life had a theme tune?", "What if you could keep one thing from childhood forever?"],
+    ]},
+    { id: "wayback", name: "Way back", color: "var(--wayback)", cards: [
+      ["What did you want to be when you were eight?", "What smell takes you straight back?", "Which teacher do you remember most, and why?"],
+      ["What was on your bedroom wall as a teenager?", "What's a family saying you grew up with?", "What's the first thing you saved up for?"],
+      ["What game did you play most as a kid?", "Where did you go when you wanted to be alone?", "Which childhood trip do you still think about?"],
+      ["Which rule at home only made sense later?", "What was the first concert or show you went to?", "Who was your first best friend?"],
+    ]},
+    { id: "deep", name: "Deep end", color: "var(--deep)", cards: [
+      ["What have you changed your mind about recently?", "When do you feel most like yourself?", "What's a compliment you still remember?"],
+      ["What are you learning to let go of?", "What do you wish more people asked you about?", "What's a fear you've grown out of?"],
+      ["Who has shaped you without knowing it?", "What does a good friend do that you try to do too?", "What would you tell yourself from five years ago?"],
+      ["What are you proud of that nobody sees?", "What does home mean to you now?", "What's a question you'd like someone to ask you?"],
+    ]},
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const table = $("table"), hint = $("hint"), logEl = $("log"), statusEl = $("status");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let deck = DECKS[0], order = [], els = [], drawn = null, picked = null, turns = 0, talking = false, talkEl = null;
+  const rand = (a, b) => a + Math.random() * (b - a);
+
+  // ---------- feedback ----------
+  let ac = null;
+  const audio = () => { if (!$("tSound").checked) return null; try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); if (ac.state === "suspended") ac.resume(); return ac; } catch (e) { return null; } };
+  function noise(ctx, t, dur, freq, gain) {
+    const len = Math.max(1, Math.floor(ctx.sampleRate * dur)), buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len) ** 2;
+    const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    src.buffer = buf; f.type = "bandpass"; f.frequency.value = freq; f.Q.value = .9; g.gain.value = gain;
+    src.connect(f).connect(g).connect(ctx.destination); src.start(t);
+  }
+  const sound = {
+    riffle() { const c = audio(); if (!c) return; for (let k = 0; k < 16; k++) noise(c, c.currentTime + k * .028 + rand(0, .01), .018, rand(2200, 4200), .5); },
+    thud() { const c = audio(); if (!c) return; const o = c.createOscillator(), g = c.createGain(); o.frequency.setValueAtTime(150, c.currentTime); o.frequency.exponentialRampToValueAtTime(55, c.currentTime + .14); g.gain.setValueAtTime(.35, c.currentTime); g.gain.exponentialRampToValueAtTime(.001, c.currentTime + .18); o.connect(g).connect(c.destination); o.start(); o.stop(c.currentTime + .2); noise(c, c.currentTime, .05, 900, .25); },
+    swish() { const c = audio(); if (!c) return; noise(c, c.currentTime, .16, 1400, .35); },
+    click() { const c = audio(); if (!c) return; noise(c, c.currentTime, .012, 5000, .6); },
+  };
+  function haptic(pattern = 12) {
+    if (!$("tHaptic").checked) return;
+    lightUp("haptic");
+    if (navigator.vibrate) { try { navigator.vibrate(pattern); } catch (e) {} return; }
+    try { // iOS Safari: toggling a switch gives one system tick (only inside a tap)
+      const l = document.createElement("label"), i = document.createElement("input");
+      i.type = "checkbox"; i.setAttribute("switch", ""); l.appendChild(i); l.style.display = "none"; l.setAttribute("aria-hidden", "true");
+      document.body.appendChild(l); l.click(); l.remove();
+    } catch (e) {}
+  }
+  function log(msg) {
+    const li = document.createElement("li"); li.textContent = msg; logEl.prepend(li);
+    while (logEl.children.length > 6) logEl.lastChild.remove();
+  }
+  function lightUp(key) {
+    document.querySelectorAll(`[data-lit="${key}"]`).forEach((d) => { d.classList.add("on"); clearTimeout(d._t); d._t = setTimeout(() => d.classList.remove("on"), 2200); });
+  }
+
+  // ---------- deck ----------
+  function chips() {
+    const box = $("decks"); box.innerHTML = "";
+    DECKS.forEach((d) => {
+      const b = document.createElement("button"); b.className = "deck-chip"; b.textContent = d.name; b.style.setProperty("--c", d.color);
+      b.setAttribute("aria-pressed", d === deck ? "true" : "false");
+      b.onclick = () => { if (d !== deck) { deck = d; chips(); build(true); log(`Switched to ${d.name}`); haptic(8); sound.swish(); } };
+      box.appendChild(b);
+    });
+  }
+  function makeCard(qs, idx) {
+    const c = document.createElement("div"); c.className = "card"; c.style.setProperty("--c", deck.color); c.dataset.idx = idx;
+    c.innerHTML = `<div class="tilt"><div class="flip">
+      <div class="face back"><span>${deck.name}</span></div>
+      <div class="face front"><span class="tag">${deck.name}</span>${qs.map((q, i) => `<button class="q" data-q="${i}" tabindex="-1">${q}</button>`).join("")}
+        <div class="turns"><span class="who">Pick one to answer</span><span>Card ${idx + 1}</span></div></div>
+      </div><div class="sheen"></div></div>`;
+    c.setAttribute("role", "button"); c.setAttribute("tabindex", "0");
+    return c;
+  }
+  function build(deal) {
+    els.forEach((e) => e.remove()); drawn = null; picked = null; turns = 0;
+    order = deck.cards.map((_, i) => i).sort(() => Math.random() - .5);
+    els = order.map((i) => makeCard(deck.cards[i], i));
+    els.forEach((e) => table.appendChild(e));
+    if (deal && !reduce) els.forEach((e, k) => { e.style.setProperty("--y", "420px"); e.style.setProperty("--r", `${rand(-30, 30)}deg`); });
+    requestAnimationFrame(() => requestAnimationFrame(() => restack(deal ? 70 : 0)));
+    wireCards(); updateButtons();
+  }
+  function restack(stagger = 0) {
+    const stack = els.filter((e) => e !== drawn);
+    stack.forEach((e, k) => {
+      const go = () => {
+        e.classList.remove("up", "drawn", "top"); e.style.zIndex = k + 1;
+        e.style.setProperty("--x", `${(k % 2 ? 1 : -1) * rand(0, 4)}px`);
+        e.style.setProperty("--y", `${-k * 3 - (drawn ? 100 : 0)}px`);
+        e.style.setProperty("--r", `${rand(-3.5, 3.5)}deg`);
+        e.style.setProperty("--s", drawn ? .62 : 1);
+        if (k === stack.length - 1 && !drawn) e.classList.add("top");
+      };
+      stagger ? setTimeout(go, k * stagger) : go();
+    });
+    hint.textContent = drawn ? "" : "Tap the deck or swipe the top card to draw";
+  }
+  const top = () => els.filter((e) => e !== drawn).at(-1);
+
+  function shuffle(source = "button") {
+    if (talking) return;
+    if (drawn) putBack();
+    lightUp("shake"); sound.riffle(); haptic([10, 30, 10, 30, 10, 30, 10]);
+    log(source === "shake" ? "Shake detected: shuffling" : "Shuffled");
+    const rounds = reduce ? 0 : 3;
+    let r = 0;
+    const tick = () => {
+      if (r < rounds) {
+        els.forEach((e) => { e.style.setProperty("--x", `${rand(-110, 110)}px`); e.style.setProperty("--y", `${rand(-60, 50)}px`); e.style.setProperty("--r", `${rand(-28, 28)}deg`); });
+        r++; setTimeout(tick, 150);
+      } else {
+        els.sort(() => Math.random() - .5); els.forEach((e) => table.appendChild(e)); restack();
+      }
+    };
+    tick();
+  }
+  function draw(source = "tap") {
+    if (talking) return;
+    if (drawn) { if (!drawn.classList.contains("up")) return flip(); return; }
+    const c = top(); if (!c) return;
+    drawn = c; picked = null; turns = 0; c.classList.remove("top"); c.classList.add("drawn"); c.style.zIndex = 40;
+    c.style.setProperty("--x", "0px"); c.style.setProperty("--y", "70px"); c.style.setProperty("--r", `${rand(-2, 2)}deg`); c.style.setProperty("--s", 1.12);
+    restack(); sound.swish(); haptic(15);
+    lightUp(source === "swipe" ? "swipe" : source === "blow" ? "blow" : "swipe");
+    log(source === "swipe" ? "Card swiped off the deck" : source === "blow" ? "Blown off the deck" : "Card drawn");
+    hint.textContent = "Tap the card to flip it";
+    updateButtons();
+  }
+  function flip() {
+    if (!drawn || drawn.classList.contains("up")) return;
+    drawn.classList.add("up"); sound.thud(); haptic(20); lightUp("flip"); log("Flipped: choose one of three");
+    drawn.querySelectorAll(".q").forEach((b) => b.tabIndex = 0);
+    hint.textContent = "";
+    updateButtons();
+  }
+  function pick(i) {
+    if (!drawn) return;
+    picked = i; const f = drawn.querySelector(".front"); f.classList.add("picked");
+    f.querySelectorAll(".q").forEach((b) => b.classList.toggle("on", +b.dataset.q === i));
+    drawn.querySelector(".who").textContent = "Answer, then pass it on";
+    sound.click(); haptic(10); log(`Picked question ${i + 1}`); updateButtons();
+  }
+  function pass() {
+    if (!drawn || picked === null) return;
+    turns++;
+    const r = parseFloat(drawn.style.getPropertyValue("--r")) || 0;
+    drawn.style.setProperty("--r", `${r + 180}deg`);
+    drawn.querySelector(".who").textContent = `${turns} answered · your turn`;
+    sound.swish(); haptic([12, 40, 12]); lightUp("pass"); log(`Passed on: ${turns} answered`);
+  }
+  function putBack() {
+    if (!drawn) return;
+    const c = drawn; drawn = null; c.classList.remove("up", "drawn");
+    c.querySelector(".front").classList.remove("picked"); c.querySelectorAll(".q").forEach((b) => { b.classList.remove("on"); b.tabIndex = -1; });
+    c.querySelector(".who").textContent = "Pick one to answer";
+    els = els.filter((e) => e !== c); els.unshift(c); table.insertBefore(c, table.firstChild.nextSibling);
+    restack(); updateButtons();
+  }
+  function next() { if (!drawn) return; log("Card to the bottom of the deck"); sound.swish(); haptic(8); putBack(); }
+  function setTalking(on, source = "button") {
+    if (on === talking) return;
+    talking = on;
+    if (on) {
+      talkEl = document.createElement("div"); talkEl.className = "talking";
+      talkEl.innerHTML = `<div><p>${drawn && picked !== null ? "Talking about: " + drawn.querySelectorAll(".q")[picked].textContent : "Talking time"}</p><small>${source === "sensor" ? "Turn the phone back over when you're ready" : "Tap to come back"}</small></div>`;
+      talkEl.onclick = () => setTalking(false);
+      table.appendChild(talkEl); lightUp("facedown"); log(source === "sensor" ? "Phone face down: screen dimmed" : "Talking mode");
+    } else { talkEl?.remove(); talkEl = null; log("Back to the deck"); haptic(10); }
+    $("bTalk").textContent = on ? "Pick phone up" : "Phone face down";
+  }
+  function updateButtons() {
+    $("bPass").disabled = !(drawn && picked !== null);
+    $("bNext").disabled = !drawn;
+    $("bDraw").textContent = drawn && !drawn.classList.contains("up") ? "Flip" : "Draw";
+    $("bDraw").disabled = !!(drawn && drawn.classList.contains("up"));
+  }
+
+  // ---------- pointer: tap, swipe, mouse tilt ----------
+  function wireCards() {
+    els.forEach((c) => {
+      let sx = 0, sy = 0, moved = false, dragging = false;
+      c.addEventListener("pointerdown", (e) => {
+        if (e.target.closest(".q")) return;
+        sx = e.clientX; sy = e.clientY; moved = false;
+        if (c === top() && !drawn) { dragging = true; c.classList.add("dragging"); c.setPointerCapture(e.pointerId); }
+      });
+      c.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - sx, dy = e.clientY - sy;
+        if (Math.hypot(dx, dy) > 6) moved = true;
+        c.style.setProperty("--x", `${dx}px`); c.style.setProperty("--y", `${dy}px`); c.style.setProperty("--r", `${dx / 12}deg`);
+      });
+      const end = (e) => {
+        if (dragging) {
+          dragging = false; c.classList.remove("dragging");
+          const dist = Math.hypot(e.clientX - sx, e.clientY - sy);
+          if (moved && dist > 60) return draw("swipe");
+          if (moved) return restack();
+        }
+        if (moved) return;
+        if (e.target.closest(".q")) return;
+        if (c === drawn) flip(); else if (!drawn) draw("tap");
+      };
+      c.addEventListener("pointerup", end);
+      c.addEventListener("pointercancel", () => { dragging = false; c.classList.remove("dragging"); restack(); });
+      c.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { if (e.target !== c) return; e.preventDefault(); c === drawn ? flip() : draw("tap"); } });
+      c.querySelectorAll(".q").forEach((b) => b.addEventListener("click", (e) => { e.stopPropagation(); if (c === drawn && c.classList.contains("up")) pick(+b.dataset.q); }));
+    });
+  }
+  function applyTilt(gx, gy) { // gx, gy in -1..1
+    if (reduce) return;
+    const target = drawn || top(); if (!target) return;
+    els.forEach((e) => { if (e !== target) { e.style.removeProperty("--tx"); e.style.removeProperty("--ty"); } });
+    const t = target.querySelector(".tilt");
+    const flipSign = target.classList.contains("up") ? -1 : 1;
+    t.style.setProperty("--tx", `${(-gy * 14).toFixed(2)}deg`);
+    t.style.setProperty("--ty", `${(gx * 14 * flipSign).toFixed(2)}deg`);
+    t.style.setProperty("--gx", `${50 + gx * 45}%`); t.style.setProperty("--gy", `${40 + gy * 45}%`);
+  }
+  let tiltLogged = 0;
+  table.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse" || motionOn) return;
+    const r = table.getBoundingClientRect();
+    applyTilt(((e.clientX - r.left) / r.width - .5) * 2, ((e.clientY - r.top) / r.height - .5) * 2);
+    if (Date.now() - tiltLogged > 4000) { tiltLogged = Date.now(); lightUp("tilt"); }
+  });
+
+  // ---------- motion ----------
+  let motionOn = false, lastShake = 0, baseBeta = null, downSince = 0;
+  const meter = (bar, num, v, max, txt, from0) => {
+    const p = Math.max(-1, Math.min(1, v / max));
+    const i = $(bar);
+    if (from0) { i.style.left = "0"; i.style.width = `${Math.abs(p) * 100}%`; }
+    else { i.style.left = p < 0 ? `${50 + p * 50}%` : "50%"; i.style.width = `${Math.abs(p) * 50}%`; }
+    $(num).textContent = txt;
+  };
+  async function enableMotion() {
+    try {
+      if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
+        const a = await DeviceMotionEvent.requestPermission();
+        if (a !== "granted") throw new Error("denied");
+        if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") await DeviceOrientationEvent.requestPermission();
+      }
+    } catch (e) {
+      statusEl.innerHTML = "<b>Motion was blocked.</b> This page needs to be opened on a phone over HTTPS. The buttons still work.";
+      return;
+    }
+    if (motionOn) return;
+    motionOn = true; $("bMotion").textContent = "Motion is on"; $("bMotion").disabled = true;
+    statusEl.innerHTML = "<b>Motion is on.</b> Shake, tilt, or put the phone face down.";
+    let gotEvent = false;
+    setTimeout(() => { if (!gotEvent) statusEl.innerHTML = "<b>No motion data.</b> This device or preview doesn't report sensors. Try it on your iPhone."; }, 1500);
+    addEventListener("devicemotion", (e) => {
+      const a = e.accelerationIncludingGravity; if (!a || a.x === null) return; gotEvent = true;
+      const lin = e.acceleration && e.acceleration.x !== null ? Math.hypot(e.acceleration.x, e.acceleration.y, e.acceleration.z) : Math.abs(Math.hypot(a.x, a.y, a.z) - 9.81);
+      meter("mShake", "nShake", lin, 25, lin.toFixed(0), true);
+      if (lin > 15 && Date.now() - lastShake > 1000) { lastShake = Date.now(); shuffle("shake"); }
+    });
+    addEventListener("deviceorientation", (e) => {
+      if (e.beta === null) return; gotEvent = true;
+      if (baseBeta === null) baseBeta = Math.max(10, Math.min(60, e.beta));
+      meter("mGamma", "nGamma", e.gamma, 45, `${e.gamma.toFixed(0)}°`);
+      meter("mBeta", "nBeta", e.beta - baseBeta, 45, `${(e.beta - baseBeta).toFixed(0)}°`);
+      applyTilt(Math.max(-1, Math.min(1, e.gamma / 30)), Math.max(-1, Math.min(1, (e.beta - baseBeta) / 30)));
+      if (Math.abs(e.gamma) > 8 || Math.abs(e.beta - baseBeta) > 8) { if (Date.now() - tiltLogged > 4000) { tiltLogged = Date.now(); lightUp("tilt"); } }
+      const faceDown = Math.abs(e.beta) > 150;
+      if (faceDown) { if (!downSince) downSince = Date.now(); if (Date.now() - downSince > 400) setTalking(true, "sensor"); }
+      else { downSince = 0; if (talking && Math.abs(e.beta) < 120) setTalking(false); }
+    });
+  }
+
+  // ---------- microphone ----------
+  let mic = null;
+  async function toggleMic() {
+    if (mic) { mic.stop(); return; }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false } });
+      const c = new (window.AudioContext || window.webkitAudioContext)(), src = c.createMediaStreamSource(stream), an = c.createAnalyser();
+      an.fftSize = 1024; src.connect(an); const buf = new Float32Array(an.fftSize);
+      let loud = 0, raf, lastBlow = 0;
+      const loop = () => {
+        an.getFloatTimeDomainData(buf); let s = 0; for (const v of buf) s += v * v; const rms = Math.sqrt(s / buf.length);
+        meter("mMic", "nMic", rms, .3, rms.toFixed(2), true);
+        loud = rms > .12 ? loud + 1 : 0;
+        if (loud > 8 && Date.now() - lastBlow > 1500) { lastBlow = Date.now(); loud = 0; draw("blow"); }
+        raf = requestAnimationFrame(loop);
+      };
+      loop();
+      const timer = setTimeout(() => mic && mic.stop(), 60000);
+      mic = { stop() { cancelAnimationFrame(raf); clearTimeout(timer); stream.getTracks().forEach((t) => t.stop()); c.close(); mic = null; $("bMic").textContent = "Blow to draw (microphone)"; $("nMic").textContent = "off"; log("Microphone off"); } };
+      $("bMic").textContent = "Stop listening"; log("Listening for a blow (1 min)");
+    } catch (e) {
+      statusEl.innerHTML = "<b>Microphone was blocked.</b> Open this page on a phone over HTTPS to try it.";
+    }
+  }
+
+  // ---------- wire up ----------
+  $("bShuffle").onclick = () => shuffle();
+  $("bDraw").onclick = () => draw("tap");
+  $("bPass").onclick = pass;
+  $("bNext").onclick = next;
+  $("bTalk").onclick = () => setTalking(!talking);
+  $("bMotion").onclick = enableMotion;
+  $("bMic").onclick = toggleMic;
+  addEventListener("keydown", (e) => { if (e.target.closest && e.target.closest("input,button,[role=button]")) return; if (e.key === "s") shuffle(); if (e.key === "d") draw(); });
+  chips(); build(true); log("Deck ready: Warm up");
+})();
+</script>
+<!--ARTIFACT-END-->
+</body>
+</html>

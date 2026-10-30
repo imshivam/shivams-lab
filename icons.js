@@ -22,6 +22,17 @@
     `<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
 
   const ICONS = {
+    cardGame: (u) => `
+      <defs>${lg(u + "b", "#FFC75A", "#F2704E", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect class="cg-back cg-b1" x="31" y="22" width="38" height="54" rx="6" fill="#7466F2" stroke="#FFFDF8" stroke-width="3" transform="rotate(-14 50 49)"/>
+      <rect class="cg-back cg-b2" x="31" y="22" width="38" height="54" rx="6" fill="#1E7A73" stroke="#FFFDF8" stroke-width="3" transform="rotate(10 50 49)"/>
+      <g class="cg-top">
+        <rect x="31" y="22" width="38" height="54" rx="6" fill="#FFFDF8"/>
+        <rect x="37" y="33" width="26" height="4.5" rx="2.25" fill="#F2704E"/>
+        <rect x="37" y="44" width="20" height="4.5" rx="2.25" fill="#F2704E" opacity=".45"/>
+        <rect x="37" y="55" width="23" height="4.5" rx="2.25" fill="#F2704E" opacity=".45"/>
+      </g>`,
     lab: (u) => `
       <defs>${lg(u + "b", "#2E9BFF", "#5E5CE6", 1, 1)}</defs>
       <rect width="100" height="100" fill="url(#${u}b)"/>
