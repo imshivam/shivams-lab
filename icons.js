@@ -22,6 +22,16 @@
     `<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
 
   const ICONS = {
+    packed: (u) => `
+      <defs>${lg(u + "b", "#2FC7B4", "#0A6E68", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <g class="pk-case">
+        <path d="M40 30v-6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6" fill="none" stroke="#FFFDF8" stroke-width="5"/>
+        <rect x="22" y="30" width="56" height="44" rx="8" fill="#FFFDF8"/>
+        <rect x="34" y="30" width="5" height="44" fill="#0A6E68" opacity=".18"/>
+        <rect x="61" y="30" width="5" height="44" fill="#0A6E68" opacity=".18"/>
+      </g>
+      <g class="pk-tick"><circle cx="72" cy="72" r="11" fill="#FFC75A"/><path d="M66.5 72.2l3.6 3.6 7-7.4" fill="none" stroke="#3B2A08" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>`,
     referenceKit: (u) => `
       <defs>${lg(u + "b", "#3D7BFF", "#1E2F6B", 1, 1)}</defs>
       <rect width="100" height="100" fill="url(#${u}b)"/>

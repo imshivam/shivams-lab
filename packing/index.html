@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Packed</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Tell it about your trip and it makes your packing list. Tick things off as they go in the bag.">
+<style>
+/* Layout: one calm column of iOS-style grouped lists. Trip details on top, a sticky packed count, then the list by category. */
+:root {
+  --bg: #F2F3F5;
+  --card: #FFFFFF;
+  --fg: #1D1D1F;
+  --muted: #6C6F75;
+  --sep: rgba(60, 64, 72, 0.16);
+  --fill: rgba(118, 122, 132, 0.12);
+  --ring: rgba(60, 64, 72, 0.34);
+  --bar: rgba(242, 243, 245, 0.84);
+  --seg-on: #FFFFFF;
+  --accent: #0A7A72;
+  --accent-soft: rgba(10, 122, 114, 0.12);
+  --on-accent: #FFFFFF;
+  --danger: #D70015;
+  --toast: #1D1D1F;
+  --on-toast: #F5F5F7;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --r: 14px;
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000; --card: #1C1C1E; --fg: #F5F5F7; --muted: #98989F;
+    --sep: rgba(84, 84, 88, 0.55); --fill: rgba(118, 118, 128, 0.24); --ring: rgba(235, 235, 245, 0.36);
+    --bar: rgba(0, 0, 0, 0.8); --seg-on: #636366; --accent: #3CCBBE; --accent-soft: rgba(60, 203, 190, 0.16); --on-accent: #00201D;
+    --danger: #FF453A; --toast: #F5F5F7; --on-toast: #1D1D1F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --card: #1C1C1E; --fg: #F5F5F7; --muted: #98989F;
+  --sep: rgba(84, 84, 88, 0.55); --fill: rgba(118, 118, 128, 0.24); --ring: rgba(235, 235, 245, 0.36);
+  --bar: rgba(0, 0, 0, 0.8); --seg-on: #636366; --accent: #3CCBBE; --accent-soft: rgba(60, 203, 190, 0.16); --on-accent: #00201D;
+  --danger: #FF453A; --toast: #F5F5F7; --on-toast: #1D1D1F;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 17px/1.35 var(--font);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bar);
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+
+.wrap {
+  max-width: 680px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 64px;
+  display: grid; gap: 22px;
+}
+
+/* Title */
+.head { display: grid; gap: 2px; }
+.where {
+  width: 100%; border: 0; background: transparent; padding: 0;
+  font: 700 34px/1.15 var(--font-round); letter-spacing: -0.01em;
+}
+.where::placeholder { color: var(--muted); opacity: 0.6; }
+.where:focus-visible { outline-offset: 4px; }
+.sub { color: var(--muted); font-size: 15px; font-variant-numeric: tabular-nums; }
+
+/* Cards and rows */
+.card { background: var(--card); border-radius: var(--r); overflow: hidden; }
+.field {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 10px 16px; min-height: 48px; position: relative;
+}
+.field + .field::before, .row + .row::before, .row + .add::before, .field + .hint::before {
+  content: ""; position: absolute; top: 0; left: 16px; right: 0; height: 0.5px; background: var(--sep);
+}
+.row + .row::before, .row + .add::before { left: 54px; }
+.field-label { flex: 0 0 auto; }
+.field.stack { display: grid; gap: 8px; justify-content: stretch; }
+.hint { padding: 12px 16px; font-size: 15px; color: var(--muted); background: var(--accent-soft); position: relative; }
+.hint strong { color: var(--fg); font-weight: 600; }
+
+.trip-toggle {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px; min-height: 48px; border: 0; background: transparent; text-align: left; font-weight: 600;
+}
+.trip-toggle .chev { color: var(--muted); transition: transform 0.3s var(--spring); }
+.trip-toggle[aria-expanded="true"] .chev { transform: rotate(90deg); }
+.trip-body { border-top: 0.5px solid var(--sep); }
+
+/* Stepper */
+.stepper { display: inline-flex; align-items: center; background: var(--fill); border-radius: 9px; }
+.stepper button { width: 44px; height: 32px; border: 0; background: transparent; font-size: 20px; line-height: 1; color: var(--fg); }
+.stepper button:disabled { opacity: 0.3; cursor: default; }
+.stepper output { min-width: 3.2ch; text-align: center; font: 600 17px var(--font-round); font-variant-numeric: tabular-nums; }
+
+input[type="date"] {
+  border: 0; background: var(--fill); border-radius: 8px; padding: 6px 10px; font-size: 16px; min-height: 34px;
+}
+
+/* Chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 0; border-radius: 999px; padding: 7px 14px; min-height: 36px;
+  background: var(--fill); font-size: 15px; font-weight: 500;
+  transition: background-color 0.2s, color 0.2s, transform 0.25s var(--spring);
+}
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.chip:active { transform: scale(0.94); }
+
+/* iOS switch */
+.switch {
+  appearance: none; -webkit-appearance: none; margin: 0; flex: 0 0 auto;
+  width: 51px; height: 31px; border-radius: 999px; background: var(--fill); position: relative; cursor: pointer;
+  transition: background-color 0.25s;
+}
+.switch::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%;
+  background: #FFFFFF; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 1px 1px rgba(0, 0, 0, 0.16);
+  transition: transform 0.3s var(--spring);
+}
+.switch:checked { background: var(--accent); }
+.switch:checked::after { transform: translateX(20px); }
+.switch:focus-visible { outline-offset: 3px; border-radius: 999px; }
+
+/* Sticky toolbar */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))) calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+  background: var(--bar); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.count { font: 600 17px var(--font-round); font-variant-numeric: tabular-nums; }
+.count.done { color: var(--accent); }
+.bar-right { display: flex; align-items: center; gap: 8px; }
+.seg { display: inline-flex; background: var(--fill); border-radius: 9px; padding: 2px; }
+.seg button {
+  border: 0; background: transparent; border-radius: 7px; padding: 5px 12px; font-size: 14px; font-weight: 500; min-height: 30px;
+  font-variant-numeric: tabular-nums;
+}
+.seg button[aria-pressed="true"] { background: var(--seg-on); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); font-weight: 600; }
+.text-btn { border: 0; background: transparent; color: var(--accent); font-weight: 500; padding: 6px 4px; min-height: 36px; }
+.text-btn.strong { font-weight: 600; }
+
+/* Sections */
+.section { display: grid; gap: 7px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 16px; }
+.section-head h2 {
+  margin: 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted);
+}
+.section-count { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.section-count.done { color: var(--accent); font-weight: 600; }
+.section-note { margin: 0; padding: 0 16px; font-size: 13px; color: var(--muted); }
+
+.row {
+  position: relative; width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  padding: 10px 16px; min-height: 48px; border: 0; background: transparent; text-align: left;
+}
+.row:active { background: var(--fill); }
+.row .text { min-width: 0; display: grid; gap: 1px; }
+.row .name { overflow-wrap: anywhere; transition: color 0.2s; }
+.row .note { font-size: 13px; color: var(--muted); }
+.row .qty { font: 500 16px var(--font-round); color: var(--muted); font-variant-numeric: tabular-nums; }
+.row.packed .name { color: var(--muted); }
+.row .mine { font-size: 12px; color: var(--muted); }
+
+.check {
+  width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--ring);
+  display: grid; place-items: center; transition: background-color 0.2s, border-color 0.2s;
+}
+.check svg { width: 14px; height: 14px; opacity: 0; transform: scale(0.4); transition: opacity 0.15s, transform 0.35s var(--spring); }
+.packed .check { background: var(--accent); border-color: var(--accent); }
+.packed .check svg { opacity: 1; transform: none; }
+.pop .check { animation: pop 0.45s var(--spring); }
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(0.8); } 100% { transform: scale(1); } }
+
+.minus {
+  width: 24px; height: 24px; border-radius: 50%; background: var(--danger); display: grid; place-items: center;
+}
+.minus::before { content: ""; width: 11px; height: 2px; border-radius: 1px; background: #FFFFFF; }
+
+.add { position: relative; display: flex; align-items: center; gap: 12px; padding: 6px 16px; min-height: 48px; }
+.add .plus { width: 26px; text-align: center; color: var(--accent); font-size: 22px; line-height: 1; }
+.add input {
+  flex: 1; min-width: 0; border: 0; background: transparent; padding: 8px 0; font-size: 17px;
+}
+.add input::placeholder { color: var(--muted); }
+.add input:focus-visible { outline: none; }
+.restore { justify-self: start; margin-left: 12px; }
+
+.empty { text-align: center; padding: 28px 16px; color: var(--muted); }
+.empty strong { display: block; color: var(--fg); font: 600 20px var(--font-round); margin-bottom: 4px; }
+
+/* Footer */
+.foot { display: grid; gap: 10px; }
+.foot .card { display: grid; }
+.foot-btn {
+  position: relative; border: 0; background: transparent; text-align: left; padding: 12px 16px; min-height: 48px; color: var(--accent);
+}
+.foot-btn + .foot-btn::before { content: ""; position: absolute; top: 0; left: 16px; right: 0; height: 0.5px; background: var(--sep); }
+.foot-btn.danger { color: var(--danger); }
+.confirm { padding: 14px 16px; display: grid; gap: 12px; }
+.confirm p { margin: 0; }
+.confirm-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.pill {
+  border: 0; border-radius: 999px; padding: 9px 18px; min-height: 40px; font-weight: 600; background: var(--fill);
+}
+.pill.danger { background: var(--danger); color: #FFFFFF; }
+.small { font-size: 13px; color: var(--muted); padding: 0 16px; margin: 0; }
+
+/* Toast */
+.toast {
+  position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 20;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: var(--toast); color: var(--on-toast); border-radius: 999px; padding: 10px 10px 10px 18px;
+  display: flex; align-items: center; gap: 12px; font-size: 15px; max-width: calc(100% - 32px);
+  transition: opacity 0.2s, transform 0.35s var(--spring);
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast button { border: 0; background: transparent; color: var(--accent); font-weight: 600; padding: 4px 8px; }
+.toast:not(.has-action) { padding-right: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+<style id="standalone">
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <input id="where" class="where" type="text" placeholder="Where are you going?" autocomplete="off" spellcheck="false" aria-label="Destination">
+    <div class="sub" id="sub"></div>
+  </header>
+
+  <section class="card" aria-label="Trip details">
+    <button class="trip-toggle" id="trip-toggle" aria-expanded="true" aria-controls="trip-body">
+      <span>Trip details</span>
+      <svg class="chev" width="10" height="16" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="trip-body" id="trip-body">
+      <div class="hint" id="example-hint"><strong>This is an example trip.</strong> Change anything here and the list updates.</div>
+      <div class="field">
+        <span class="field-label" id="nights-label">Nights away</span>
+        <span class="stepper" role="group" aria-labelledby="nights-label">
+          <button id="nights-down" aria-label="One night fewer">−</button>
+          <output id="nights" aria-live="polite"></output>
+          <button id="nights-up" aria-label="One night more">+</button>
+        </span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="date">Leaving on</label>
+        <input id="date" type="date">
+      </div>
+      <div class="field stack">
+        <span class="field-label" id="weather-label">Weather</span>
+        <div class="chips" role="group" aria-labelledby="weather-label" id="weather"></div>
+      </div>
+      <div class="field stack">
+        <span class="field-label" id="doing-label">What you’ll be doing</span>
+        <div class="chips" role="group" aria-labelledby="doing-label" id="doing"></div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="abroad">Going abroad</label>
+        <input id="abroad" class="switch" type="checkbox" role="switch">
+      </div>
+      <div class="field">
+        <label class="field-label" for="flying">Flying</label>
+        <input id="flying" class="switch" type="checkbox" role="switch">
+      </div>
+      <div class="field" id="carry-field">
+        <label class="field-label" for="carry">Hand luggage only</label>
+        <input id="carry" class="switch" type="checkbox" role="switch">
+      </div>
+      <div class="field">
+        <label class="field-label" for="laundry">Can do laundry there</label>
+        <input id="laundry" class="switch" type="checkbox" role="switch">
+      </div>
+    </div>
+  </section>
+
+  <div class="bar" id="bar">
+    <span class="count" id="count" aria-live="polite"></span>
+    <span class="bar-right">
+      <span class="seg" role="group" aria-label="Show">
+        <button id="show-all" aria-pressed="true">All</button>
+        <button id="show-left" aria-pressed="false">To pack</button>
+      </span>
+      <button class="text-btn" id="edit" aria-pressed="false">Edit</button>
+    </span>
+  </div>
+
+  <div id="list" style="display:grid;gap:26px"></div>
+
+  <footer class="foot" id="foot"></footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-text"></span><button id="toast-btn" hidden>Undo</button></div>
+
+<script>
+(() => {
+  const KEY = "packed.v1";
+  const $ = (s) => document.querySelector(s);
+
+  const isoDate = (d) => {
+    const z = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+    return z.toISOString().slice(0, 10);
+  };
+  const inDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return isoDate(d); };
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const WEATHER = [["warm", "Warm"], ["cold", "Cold"], ["rain", "Rain likely"]];
+  const DOING = [["city", "City"], ["beach", "Beach"], ["hiking", "Hiking"], ["work", "Work"], ["snow", "Snow sports"]];
+
+  const CATS = [
+    { id: "docs", name: "Documents and money" },
+    { id: "clothes", name: "Clothes" },
+    { id: "toiletries", name: "Toiletries" },
+    { id: "health", name: "Health" },
+    { id: "tech", name: "Tech" },
+    { id: "extras", name: "Bag and extras" },
+    { id: "dayof", name: "Pack on the day", note: "Things you use until you walk out the door." },
+    { id: "leave", name: "Before you leave", note: "Jobs to do at home, not things to pack." },
+  ];
+
+  const I = (id, cat, name, o = {}) => ({ id, cat, name, ...o });
+  const some = (n) => Math.max(1, Math.ceil(n / 3));
+  const ITEMS = [
+    I("passport", "docs", "Passport", { when: (t) => t.abroad, note: "Check it’s valid for long enough" }),
+    I("entry", "docs", "Visa or entry permit", { when: (t) => t.abroad, note: "Check what your destination needs" }),
+    I("id", "docs", "Driving licence or ID"),
+    I("tickets", "docs", "Tickets and bookings", { note: (t) => (t.flying ? "Boarding passes in your phone’s wallet" : "") }),
+    I("insurance", "docs", "Travel insurance details", { when: (t) => t.abroad }),
+    I("cards", "docs", "Bank cards", { note: "Bring a backup card in case one stops working" }),
+    I("cash", "docs", "Some local cash", { when: (t) => t.abroad }),
+
+    I("underwear", "clothes", "Underwear", { qty: (t) => t.wear }),
+    I("socks", "clothes", "Socks", { qty: (t) => t.wear }),
+    I("tops", "clothes", "T-shirts and tops", { qty: (t) => t.wear }),
+    I("trousers", "clothes", "Trousers or jeans", { qty: (t) => (t.warm && !t.cold ? 1 : some(t.wear)) }),
+    I("shorts", "clothes", "Shorts or skirts", { when: (t) => t.warm || t.beach, qty: (t) => some(t.wear) }),
+    I("sleep", "clothes", "Sleepwear"),
+    I("shoes", "clothes", "Comfortable walking shoes"),
+    I("jacket", "clothes", "Light jacket", { when: (t) => !t.cold && !t.snow }),
+    I("jumper", "clothes", "Jumper or fleece", { when: (t) => !t.warm || t.cold || t.hiking || t.snow, qty: (t) => (t.cold || t.snow ? 2 : 1) }),
+    I("coat", "clothes", "Warm coat", { when: (t) => t.cold && !t.snow }),
+    I("thermals", "clothes", "Thermal base layers", { when: (t) => t.cold || t.snow, qty: () => 2 }),
+    I("winter", "clothes", "Hat, gloves and scarf", { when: (t) => t.cold || t.snow }),
+    I("waterproof", "clothes", "Waterproof jacket", { when: (t) => t.rain || t.hiking }),
+    I("swim", "clothes", "Swimwear", { when: (t) => t.beach, qty: () => 2 }),
+    I("sandals", "clothes", "Sandals or flip-flops", { when: (t) => t.warm || t.beach }),
+    I("sunhat", "clothes", "Sun hat", { when: (t) => t.warm || t.beach }),
+    I("workwear", "clothes", "Work outfits", { when: (t) => t.work, qty: (t) => Math.min(t.wear, 5) }),
+    I("smartshoes", "clothes", "Smart shoes", { when: (t) => t.work }),
+    I("boots", "clothes", "Hiking boots", { when: (t) => t.hiking, note: "Wear them on the journey to save space" }),
+    I("skiwear", "clothes", "Ski jacket and trousers", { when: (t) => t.snow }),
+    I("skisocks", "clothes", "Ski socks", { when: (t) => t.snow, qty: (t) => some(t.wear) + 1 }),
+    I("goggles", "clothes", "Goggles and helmet", { when: (t) => t.snow }),
+
+    I("liquids", "toiletries", "Clear bag for liquids", { when: (t) => t.flying && t.carry, note: "Most airports: containers of 100 ml or less" }),
+    I("toothpaste", "toiletries", "Toothpaste"),
+    I("deodorant", "toiletries", "Deodorant"),
+    I("shampoo", "toiletries", "Shampoo and conditioner"),
+    I("skincare", "toiletries", "Skincare and moisturiser"),
+    I("razor", "toiletries", "Razor"),
+    I("hairbrush", "toiletries", "Hairbrush or comb"),
+    I("sunscreen", "toiletries", "Sunscreen", { when: (t) => t.warm || t.beach || t.snow || t.hiking }),
+    I("aftersun", "toiletries", "After-sun", { when: (t) => t.beach }),
+    I("lipbalm", "toiletries", "Lip balm", { when: (t) => t.cold || t.snow || t.warm }),
+
+    I("meds", "health", "Regular medication", { note: "In your hand luggage, with a few days spare" }),
+    I("painkillers", "health", "Painkillers"),
+    I("plasters", "health", "Plasters", { note: (t) => (t.hiking ? "And blister plasters" : "") }),
+    I("glasses", "health", "Glasses or contact lenses"),
+    I("sanitiser", "health", "Hand sanitiser"),
+    I("repellent", "health", "Insect repellent", { when: (t) => t.warm || t.hiking || t.beach }),
+
+    I("powerbank", "tech", "Power bank", { note: (t) => (t.flying ? "Hand luggage only, never in a checked bag" : "") }),
+    I("headphones", "tech", "Headphones"),
+    I("adapter", "tech", "Travel adapter", { when: (t) => t.abroad, note: "Check the plug type where you’re going" }),
+    I("laptop", "tech", "Laptop and charger", { when: (t) => t.work }),
+    I("ereader", "tech", "Book or e-reader"),
+
+    I("daybag", "extras", "Day bag"),
+    I("bottle", "extras", "Water bottle", { note: (t) => (t.flying ? "Empty it before airport security" : "") }),
+    I("snacks", "extras", "Snacks for the journey"),
+    I("sunglasses", "extras", "Sunglasses", { when: (t) => t.warm || t.beach || t.snow }),
+    I("umbrella", "extras", "Small umbrella", { when: (t) => t.rain && !t.hiking }),
+    I("towel", "extras", "Beach towel", { when: (t) => t.beach }),
+    I("torch", "extras", "Head torch", { when: (t) => t.hiking }),
+    I("laundrybag", "extras", "Bag for dirty clothes", { when: (t) => t.nights >= 3 }),
+    I("earplugs", "extras", "Earplugs and eye mask", { when: (t) => t.flying || t.nights >= 3 }),
+
+    I("phone", "dayof", "Phone"),
+    I("charger", "dayof", "Phone charger"),
+    I("toothbrush", "dayof", "Toothbrush"),
+    I("keys", "dayof", "House keys"),
+
+    I("checkin", "leave", "Check in online", { when: (t) => t.flying }),
+    I("maps", "leave", "Download offline maps", { when: (t) => t.abroad }),
+    I("ooo", "leave", "Set your out-of-office", { when: (t) => t.work }),
+    I("plants", "leave", "Water the plants", { when: (t) => t.nights >= 3 }),
+    I("fridge", "leave", "Clear out the fridge", { when: (t) => t.nights >= 3 }),
+    I("bins", "leave", "Take the bins out"),
+    I("heating", "leave", "Turn the heating down", { when: (t) => t.nights >= 2 }),
+    I("unplug", "leave", "Unplug appliances"),
+    I("lock", "leave", "Lock windows and doors"),
+  ];
+
+  const fresh = () => ({
+    trip: { where: "Lisbon", nights: 5, date: inDays(7), weather: ["warm"], doing: ["city"], abroad: true, flying: true, carry: true, laundry: false },
+    checked: {}, removed: {}, custom: [], filter: "all", tripOpen: true, example: true,
+  });
+
+  let state;
+  try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
+  if (!state || !state.trip) state = fresh();
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+
+  let editing = false;
+  let confirming = false;
+  let addingIn = null; // category whose add field should keep focus after a render
+
+  const flags = () => {
+    const t = state.trip, w = new Set(t.weather), d = new Set(t.doing), days = t.nights + 1;
+    return {
+      nights: t.nights, days, wear: t.laundry ? Math.min(days, 4) : days,
+      warm: w.has("warm"), cold: w.has("cold"), rain: w.has("rain"),
+      city: d.has("city"), beach: d.has("beach"), hiking: d.has("hiking"), work: d.has("work"), snow: d.has("snow"),
+      abroad: t.abroad, flying: t.flying, carry: t.flying && t.carry, laundry: t.laundry,
+    };
+  };
+
+  // Everything that belongs on this trip's list, before the viewer's removals.
+  const tripItems = () => {
+    const t = flags();
+    const base = ITEMS.filter((it) => !it.when || it.when(t)).map((it) => ({
+      id: it.id, cat: it.cat, name: it.name,
+      qty: it.qty ? it.qty(t) : 0,
+      note: typeof it.note === "function" ? it.note(t) : it.note || "",
+    }));
+    const mine = state.custom.map((c) => ({ id: c.id, cat: c.cat, name: c.name, qty: 0, note: "", mine: true }));
+    return base.concat(mine);
+  };
+  const visibleItems = () => tripItems().filter((it) => !state.removed[it.id]);
+
+  /* ---------- Trip details ---------- */
+  const chipGroup = (el, options, key) => {
+    el.innerHTML = options.map(([v, label]) => `<button class="chip" data-v="${v}" aria-pressed="${state.trip[key].includes(v)}">${label}</button>`).join("");
+    el.onclick = (e) => {
+      const b = e.target.closest(".chip"); if (!b) return;
+      const list = state.trip[key], v = b.dataset.v, i = list.indexOf(v);
+      if (i >= 0) list.splice(i, 1); else list.push(v);
+      if (key === "weather" && v === "warm" && i < 0) remove(list, "cold");
+      if (key === "weather" && v === "cold" && i < 0) remove(list, "warm");
+      tripChanged();
+    };
+  };
+  const remove = (list, v) => { const i = list.indexOf(v); if (i >= 0) list.splice(i, 1); };
+
+  const tripChanged = () => { state.example = false; save(); render(); };
+
+  $("#where").addEventListener("input", (e) => { state.trip.where = e.target.value; state.example = false; save(); renderSub(); });
+  $("#nights-down").onclick = () => { state.trip.nights = Math.max(1, state.trip.nights - 1); tripChanged(); };
+  $("#nights-up").onclick = () => { state.trip.nights = Math.min(30, state.trip.nights + 1); tripChanged(); };
+  $("#date").addEventListener("change", (e) => { state.trip.date = e.target.value; tripChanged(); });
+  ["abroad", "flying", "carry", "laundry"].forEach((k) => {
+    $("#" + k).addEventListener("change", (e) => { state.trip[k] = e.target.checked; tripChanged(); });
+  });
+  $("#trip-toggle").onclick = () => { state.tripOpen = !state.tripOpen; save(); renderTrip(); };
+
+  const renderSub = () => {
+    const t = state.trip, parts = [`${t.nights} ${t.nights === 1 ? "night" : "nights"}`];
+    if (t.date) {
+      const d = new Date(t.date + "T12:00:00"), now = new Date(); now.setHours(12, 0, 0, 0);
+      const n = Math.round((d - now) / 86400000);
+      const day = d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+      const when = n === 0 ? "today" : n === 1 ? "tomorrow" : n > 1 ? `in ${n} days` : n === -1 ? "yesterday" : `${-n} days ago`;
+      parts.push(n >= 0 ? `Leaving ${day}, ${when}` : `Left ${day}, ${when}`);
+    }
+    $("#sub").textContent = parts.join(" · ");
+    document.title = t.where.trim() ? `Packed · ${t.where.trim()}` : "Packed";
+  };
+
+  const renderTrip = () => {
+    const t = state.trip;
+    if (document.activeElement !== $("#where")) $("#where").value = t.where;
+    $("#nights").textContent = t.nights;
+    $("#nights-down").disabled = t.nights <= 1;
+    $("#nights-up").disabled = t.nights >= 30;
+    $("#date").value = t.date || "";
+    ["abroad", "flying", "carry", "laundry"].forEach((k) => { $("#" + k).checked = !!t[k]; });
+    $("#carry-field").hidden = !t.flying;
+    chipGroup($("#weather"), WEATHER, "weather");
+    chipGroup($("#doing"), DOING, "doing");
+    $("#example-hint").hidden = !state.example;
+    $("#trip-toggle").setAttribute("aria-expanded", state.tripOpen);
+    $("#trip-body").hidden = !state.tripOpen;
+    renderSub();
+  };
+
+  /* ---------- List ---------- */
+  const tick = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="var(--on-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  const rowHTML = (it) => {
+    const packed = !!state.checked[it.id];
+    const label = `${it.name}${it.qty ? ", " + it.qty : ""}`;
+    const lead = editing ? '<span class="minus" aria-hidden="true"></span>' : `<span class="check" aria-hidden="true">${tick}</span>`;
+    const aria = editing ? `aria-label="Remove ${esc(label)}"` : `aria-pressed="${packed}" aria-label="${esc(label)}"`;
+    return `<button class="row${packed && !editing ? " packed" : ""}" data-id="${esc(it.id)}" ${aria}>
+      ${lead}
+      <span class="text"><span class="name">${esc(it.name)}</span>${it.note ? `<span class="note">${esc(it.note)}</span>` : ""}</span>
+      <span class="qty">${it.qty ? "×" + it.qty : it.mine && editing ? '<span class="mine">Yours</span>' : ""}</span>
+    </button>`;
+  };
+
+  const render = () => {
+    renderTrip();
+    const all = tripItems();
+    const items = all.filter((it) => !state.removed[it.id]);
+    const packedCount = items.filter((it) => state.checked[it.id]).length;
+    const left = items.length - packedCount;
+
+    const count = $("#count");
+    count.textContent = items.length && left === 0 ? "Everything’s packed" : `${packedCount} of ${items.length} packed`;
+    count.classList.toggle("done", items.length > 0 && left === 0);
+    $("#show-left").textContent = `To pack (${left})`;
+    $("#show-all").setAttribute("aria-pressed", state.filter === "all");
+    $("#show-left").setAttribute("aria-pressed", state.filter === "left");
+    $("#edit").textContent = editing ? "Done" : "Edit";
+    $("#edit").classList.toggle("strong", editing);
+    $("#edit").setAttribute("aria-pressed", editing);
+
+    const showLeft = state.filter === "left" && !editing;
+    let html = "";
+    for (const cat of CATS) {
+      const inCat = items.filter((it) => it.cat === cat.id);
+      const removedHere = all.filter((it) => it.cat === cat.id && state.removed[it.id]).length;
+      const done = inCat.filter((it) => state.checked[it.id]).length;
+      const shown = showLeft ? inCat.filter((it) => !state.checked[it.id]) : inCat;
+      if (showLeft && !shown.length) continue;
+      const allDone = inCat.length > 0 && done === inCat.length;
+      html += `<section class="section" aria-labelledby="h-${cat.id}">
+        <div class="section-head"><h2 id="h-${cat.id}">${cat.name}</h2>
+          <span class="section-count${allDone ? " done" : ""}">${inCat.length ? (allDone ? "All done" : `${done} of ${inCat.length}`) : ""}</span></div>
+        ${cat.note ? `<p class="section-note">${cat.note}</p>` : ""}
+        <div class="card">
+          ${shown.map(rowHTML).join("")}
+          ${showLeft ? "" : `<div class="add"><span class="plus" aria-hidden="true">+</span><input data-cat="${cat.id}" id="add-${cat.id}" type="text" placeholder="Add an item" aria-label="Add an item to ${cat.name}" enterkeyhint="done" autocomplete="off"></div>`}
+        </div>
+        ${editing && removedHere ? `<button class="text-btn restore" data-restore="${cat.id}">Put back ${removedHere} removed ${removedHere === 1 ? "item" : "items"}</button>` : ""}
+      </section>`;
+    }
+    if (showLeft && left === 0) {
+      html = `<div class="card empty"><strong>Everything’s packed</strong>${state.trip.where.trim() ? `Have a good trip to ${esc(state.trip.where.trim())}.` : "Have a good trip."}</div>`;
+    }
+    $("#list").innerHTML = html;
+
+    if (addingIn) { const inp = $("#add-" + addingIn); if (inp) inp.focus(); addingIn = null; }
+    renderFoot(packedCount);
+  };
+
+  $("#list").addEventListener("click", (e) => {
+    const restore = e.target.closest("[data-restore]");
+    if (restore) {
+      const cat = restore.dataset.restore;
+      tripItems().forEach((it) => { if (it.cat === cat) delete state.removed[it.id]; });
+      save(); render(); return;
+    }
+    const row = e.target.closest(".row"); if (!row) return;
+    const id = row.dataset.id;
+    if (editing) return removeItem(id);
+    if (state.checked[id]) delete state.checked[id]; else state.checked[id] = true;
+    save();
+    // Update in place so the tick can animate, then re-render.
+    row.classList.toggle("packed", !!state.checked[id]);
+    row.setAttribute("aria-pressed", !!state.checked[id]);
+    row.classList.remove("pop"); void row.offsetWidth; row.classList.add("pop");
+    if (state.filter === "left") setTimeout(render, 380); else { const y = window.scrollY; render(); window.scrollTo(0, y); keepPop(id); }
+  });
+  const keepPop = (id) => {
+    const row = document.querySelector(`.row[data-id="${CSS.escape(id)}"]`);
+    if (row) row.classList.add("pop");
+  };
+
+  $("#list").addEventListener("keydown", (e) => {
+    const inp = e.target.closest(".add input"); if (!inp || e.key !== "Enter") return;
+    const name = inp.value.trim(); if (!name) return;
+    state.custom.push({ id: "c" + Date.now().toString(36), cat: inp.dataset.cat, name });
+    addingIn = inp.dataset.cat;
+    save(); render();
+    toast(`Added ${name}`);
+  });
+
+  let undo = null;
+  const removeItem = (id) => {
+    const it = tripItems().find((x) => x.id === id); if (!it) return;
+    let restore;
+    if (it.mine) {
+      const i = state.custom.findIndex((c) => c.id === id);
+      const [c] = state.custom.splice(i, 1);
+      restore = () => state.custom.splice(i, 0, c);
+    } else {
+      state.removed[id] = true;
+      restore = () => delete state.removed[id];
+    }
+    save(); render();
+    toast(`Removed ${it.name}`, () => { restore(); save(); render(); });
+  };
+
+  /* ---------- Toolbar ---------- */
+  $("#show-all").onclick = () => { state.filter = "all"; save(); render(); };
+  $("#show-left").onclick = () => { state.filter = "left"; save(); render(); };
+  $("#edit").onclick = () => { editing = !editing; render(); };
+
+  /* ---------- Footer ---------- */
+  const renderFoot = (packedCount) => {
+    const foot = $("#foot");
+    if (confirming) {
+      foot.innerHTML = `<div class="card confirm">
+        <p>Untick all ${packedCount} packed ${packedCount === 1 ? "item" : "items"}? Your own items and trip details stay.</p>
+        <div class="confirm-actions"><button class="pill danger" id="do-reset">Untick all</button><button class="pill" id="cancel-reset">Cancel</button></div>
+      </div>`;
+      $("#do-reset").onclick = () => { state.checked = {}; confirming = false; save(); render(); toast("Everything unticked"); };
+      $("#cancel-reset").onclick = () => { confirming = false; render(); };
+      $("#do-reset").focus();
+      return;
+    }
+    foot.innerHTML = `<div class="card">
+        <button class="foot-btn" id="copy">Copy list as text</button>
+        ${packedCount ? `<button class="foot-btn danger" id="reset">Untick everything</button>` : ""}
+      </div>
+      <p class="small">Your list is saved in this browser only.</p>`;
+    $("#copy").onclick = copyList;
+    if ($("#reset")) $("#reset").onclick = () => { confirming = true; render(); };
+  };
+
+  const listText = () => {
+    const t = state.trip, items = visibleItems();
+    const lines = [`${t.where.trim() || "My trip"} · ${$("#sub").textContent}`];
+    for (const cat of CATS) {
+      const inCat = items.filter((it) => it.cat === cat.id);
+      if (!inCat.length) continue;
+      lines.push("", cat.name);
+      inCat.forEach((it) => lines.push(`${state.checked[it.id] ? "✓" : "–"} ${it.name}${it.qty ? " ×" + it.qty : ""}`));
+    }
+    return lines.join("\n");
+  };
+  const copyList = () => {
+    const text = listText();
+    const fallback = () => {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+      ta.remove();
+      toast(ok ? "List copied" : "Couldn’t copy. Your browser blocked it.");
+    };
+    try {
+      navigator.clipboard.writeText(text).then(() => toast("List copied"), fallback);
+    } catch (e) { fallback(); }
+  };
+
+  /* ---------- Toast ---------- */
+  let toastTimer;
+  const toast = (msg, action) => {
+    const el = $("#toast"), btn = $("#toast-btn");
+    $("#toast-text").textContent = msg;
+    btn.hidden = !action;
+    el.classList.toggle("has-action", !!action);
+    undo = action || null;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.classList.remove("show"); undo = null; }, action ? 5000 : 2200);
+  };
+  $("#toast-btn").onclick = () => { if (undo) undo(); undo = null; $("#toast").classList.remove("show"); };
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -5,6 +5,33 @@ window.LAB_UPDATED = "2026-10-31";
 
 window.PROJECTS = [
   {
+    id: "packed",
+    tint: ["#D6F2EE", "#B4E3DC"],
+    tintDark: ["#16302D", "#122522"],
+    name: "Packed",
+    kind: "web",
+    platform: "Web app, phone and Mac",
+    tagline: "A packing list that builds itself from your trip.",
+    about:
+      "Tell it where you're going, for how many nights, the weather and what you'll be doing, and it makes the packing list: clothes counted by nights (fewer if you can do laundry), passport and adapter when you go abroad, the liquids bag when you fly with hand luggage only. Tick things off as they go in the bag, add your own items, and see what's left. It also lists what to pack on the morning you leave and the jobs to do at home before you lock up.",
+    highlights: [
+      "List changes with nights, weather and activities",
+      "Tick off as you pack, or show only what's left",
+      "Add your own items, remove ones you don't need",
+      "Pack on the day and before-you-leave lists",
+    ],
+    made: "October 2026",
+    updated: "2026-10-31",
+    version: "1.0",
+    stack: "HTML, CSS, JavaScript",
+    where: "shivams-lab/packing",
+    icon: "packed",
+    links: [
+      { label: "Open Packed", url: "https://imshivam.github.io/shivams-lab/packing/", primary: true },
+      { label: "Packed Artifact", url: "https://claude.ai/artifact/B6fncirqAZDzv2kv8ckzdi" },
+    ],
+  },
+  {
     id: "reference-kit",
     tint: ["#DCE9FF", "#C9D7F7"],
     tintDark: ["#1E2738", "#1A1F2E"],
