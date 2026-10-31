@@ -193,6 +193,7 @@ input[type="date"] { border: 0; background: var(--fill); border-radius: 8px; pad
 .pill.accent { background: var(--accent); color: var(--on-accent); }
 .pill.danger { background: var(--danger); color: #FFFFFF; }
 .small { font-size: 13px; color: var(--muted); padding: 0 16px; margin: 0; }
+.small a { color: var(--accent); }
 
 /* Toast */
 .toast {
@@ -239,11 +240,16 @@ input[type="date"] { border: 0; background: var(--fill); border-radius: 8px; pad
   let state;
   try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
   if (!state || !Array.isArray(state.days)) state = blank();
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const save = () => {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    pendingRemote = null; // a change made here wins over a remote one still waiting
+    queueSync();
+  };
 
   let confirming = null; // "new" | "untick"
   let refocus = null;    // add-field id to focus after a render
   let undo = null;
+  let pendingRemote = null; // a change from another device, held while you type
 
   /* ---------- Model ---------- */
   const dayDate = (i) => {
@@ -341,7 +347,7 @@ input[type="date"] { border: 0; background: var(--fill); border-radius: 8px; pad
       ? `<div class="card confirm"><p>Start a new trip? This clears every day and item in this one.</p>
           <div class="confirm-actions"><button class="pill danger" id="do-new">Clear trip</button><button class="pill" id="cancel">Cancel</button></div></div>`
       : `<div class="card"><button class="foot-btn danger" id="new">Start a new trip</button></div>
-         <p class="small">Your plan is saved in this browser only.</p>`;
+         <p class="small" id="sync-note">${syncText()}</p>`;
 
     $("#view").innerHTML = `
       <header class="head">
@@ -400,7 +406,8 @@ input[type="date"] { border: 0; background: var(--fill); border-radius: 8px; pad
     const foot = confirming === "untick"
       ? `<div class="card confirm"><p>Untick all ${packed} packed ${packed === 1 ? "thing" : "things"}?</p>
           <div class="confirm-actions"><button class="pill danger" id="do-untick">Untick all</button><button class="pill" id="cancel">Cancel</button></div></div>`
-      : `<div class="card"><button class="foot-btn" id="copy">Copy list as text</button>${packed ? `<button class="foot-btn danger" id="untick">Untick everything</button>` : ""}</div>`;
+      : `<div class="card"><button class="foot-btn" id="copy">Copy list as text</button>${packed ? `<button class="foot-btn danger" id="untick">Untick everything</button>` : ""}</div>
+         <p class="small" id="sync-note">${syncText()}</p>`;
 
     $("#view").innerHTML = `
       <div class="head">
@@ -460,6 +467,11 @@ input[type="date"] { border: 0; background: var(--fill); border-radius: 8px; pad
     if (!t.dataset.key) return;
     // Let a tap on a suggestion land before the list closes.
     setTimeout(() => { if (document.activeElement !== t) hideSuggest(t); }, 150);
+  });
+  view.addEventListener("focusout", () => {
+    setTimeout(() => {
+      if (pendingRemote && !typing()) { const data = pendingRemote; pendingRemote = null; applyRemote(data); }
+    }, 200);
   });
   view.addEventListener("keydown", (e) => {
     const t = e.target;
@@ -553,6 +565,79 @@ input[type="date"] { border: 0; background: var(--fill); border-radius: 8px; pad
     toastTimer = setTimeout(() => { el.classList.remove("show"); undo = null; }, action ? 5000 : 2200);
   };
   $("#toast-btn").onclick = () => { if (undo) undo(); undo = null; $("#toast").classList.remove("show"); };
+
+  /* ---------- Sync across devices ----------
+     Inside Claude, the plan is kept in this artifact's private per-person store, so the same
+     person sees it on every device. Elsewhere (the Lab's GitHub Pages copy) it stays in this browser. */
+  const ARTIFACT_URL = "https://claude.ai/artifact/B6fncirqAZDzv2kv8ckzdi";
+  const outsideClaude = /(^|\.)github\.io$|^localhost$|^127\./.test(location.hostname) || location.protocol === "file:";
+  let sync = outsideClaude ? "elsewhere" : "connecting"; // elsewhere | connecting | on | offline | signed-out
+  let ref = null, writing = false, dirty = false, syncTimer = null, decided = false;
+
+  const shared = () => { const { view, ...rest } = state; return rest; };
+  const hasItems = (s) => !!(s && s.items && Object.keys(s.items).length);
+  const typing = () => { const a = document.activeElement; return !!(a && a.tagName === "INPUT" && view.contains(a)); };
+
+  function syncText() {
+    switch (sync) {
+      case "on": return "Saved to your Claude account, so it’s the same on all your devices.";
+      case "connecting": return "Connecting to your Claude account…";
+      case "offline": return "Can’t reach your Claude account right now. Changes are saved on this device and sync when it’s back.";
+      case "signed-out": return "Saved on this device only. Sign in to Claude to have your plan on all your devices.";
+      default: return `Saved on this device only. <a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Open Packed in Claude</a> to have your plan on all your devices.`;
+    }
+  }
+  const renderSync = () => { document.querySelectorAll("#sync-note").forEach((el) => { el.innerHTML = syncText(); }); };
+
+  function queueSync() {
+    if (!ref) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(push, 500);
+  }
+  async function push() {
+    if (!ref) return;
+    if (writing) { dirty = true; return; }
+    writing = true; dirty = false;
+    try {
+      await ref.set(JSON.parse(JSON.stringify(shared())));
+    } catch (e) {
+      const code = e && e.code;
+      if (code === "unavailable") { dirty = true; await new Promise((r) => setTimeout(r, 1500 + Math.random() * 1500)); }
+      else { ref = null; sync = code === "invalid_argument" ? "signed-out" : "offline"; renderSync(); }
+    }
+    writing = false;
+    if (dirty && ref) push();
+  }
+  function applyRemote(data) {
+    state = { ...JSON.parse(JSON.stringify(data)), view: state.view };
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    const y = window.scrollY; render(); window.scrollTo(0, y);
+  }
+
+  (async () => {
+    if (sync === "elsewhere") return;
+    for (let i = 0; i < 30 && !(window.claude && window.claude.use); i++) await new Promise((r) => setTimeout(r, 100));
+    if (!(window.claude && window.claude.use)) { sync = "elsewhere"; renderSync(); return; }
+    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    const id = user ? await user.id() : null;
+    if (!db || !id) { sync = "signed-out"; renderSync(); return; }
+    ref = db.doc("data/users/" + id + "/trip");
+    const slow = setTimeout(() => { if (!decided) { sync = "offline"; renderSync(); } }, 10000);
+    ref.onSnapshot((snap) => {
+      if (snap.metadata.hasPendingWrites || snap.metadata.fromCache) return;
+      clearTimeout(slow);
+      sync = "on";
+      const data = snap.exists ? snap.data() : null;
+      if (!decided) {
+        decided = true;
+        // First answer from the account: if only this device has a plan, upload it instead of wiping it.
+        if (!hasItems(data) && (hasItems(state) || !data)) { push(); renderSync(); return; }
+      }
+      if (!data || JSON.stringify(data) === JSON.stringify(shared())) { renderSync(); return; }
+      if (typing()) { pendingRemote = data; renderSync(); return; }
+      applyRemote(data);
+    }, () => { clearTimeout(slow); ref = null; sync = "offline"; renderSync(); });
+  })();
 
   render();
 })();

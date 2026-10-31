@@ -13,7 +13,7 @@ window.PROJECTS = [
     platform: "Web app, phone and Mac",
     tagline: "Plan your trip day by day, then pack one list.",
     about:
-      "Lay out your trip a day at a time and note what you'll wear and need for each one. Anything you use on several days is suggested again and packed once, and things you need every day go in Whole trip. The Pack tab adds it all up into one list: tick things off and set how many of each to bring. It starts empty and adds nothing you didn't choose.",
+      "Lay out your trip a day at a time and note what you'll wear and need for each one. Anything you use on several days is suggested again and packed once, and things you need every day go in Whole trip. The Pack tab adds it all up into one list: tick things off and set how many of each to bring. It starts empty and adds nothing you didn't choose. Opened in Claude, the plan is saved to your account, so it's the same on your iPad and iPhone.",
     highlights: [
       "A card for each day of the trip",
       "Reuse an item across days with one tap",
@@ -22,13 +22,13 @@ window.PROJECTS = [
     ],
     made: "October 2026",
     updated: "2026-10-31",
-    version: "2.0",
-    stack: "HTML, CSS, JavaScript",
+    version: "2.1",
+    stack: "HTML, CSS, JavaScript, Claude artifact storage",
     where: "shivams-lab/packing",
     icon: "packed",
     links: [
-      { label: "Open Packed", url: "https://imshivam.github.io/shivams-lab/packing/", primary: true },
-      { label: "Packed Artifact", url: "https://claude.ai/artifact/B6fncirqAZDzv2kv8ckzdi" },
+      { label: "Open Packed", url: "https://claude.ai/artifact/B6fncirqAZDzv2kv8ckzdi", primary: true },
+      { label: "This Device Only", url: "https://imshivam.github.io/shivams-lab/packing/" },
     ],
   },
   {

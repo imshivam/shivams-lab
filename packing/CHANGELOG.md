@@ -2,6 +2,14 @@
 
 Newest first.
 
+## 2.1 · 31 October 2026 · Same plan on every device
+
+- In Claude, the plan is now saved to your Claude account (the artifact's private per-person storage), so the iPad and iPhone show the same trip. Changes from another device appear while the page is open; if you're typing, they wait until you finish.
+- The first time a device connects, a plan that only that device has is uploaded rather than replaced, so items added earlier on one device aren't lost.
+- The note under the list says where the plan is saved. The Lab's GitHub Pages copy can't reach your account, so it stays on one device and links to the Claude version.
+- The Lab's main "Open Packed" link now goes to the Claude version.
+- Why: Shivam added items on his iPad and didn't see them on his iPhone, because 2.0 only saved in each browser.
+
 ## 2.0 · 31 October 2026 · Plan by day
 
 - Rebuilt from scratch. It now starts empty and adds nothing you didn't choose.
