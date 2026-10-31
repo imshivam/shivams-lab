@@ -2,6 +2,15 @@
 
 Newest first.
 
+## 2.0 · 31 October 2026 · Plan by day
+
+- Rebuilt from scratch. It now starts empty and adds nothing you didn't choose.
+- Plan tab: a card for each day with a short plan ("Beach", "Travel") and what you'll wear and need. A Whole trip card holds things you use every day, like a toothbrush.
+- When you add to a day, things already in your trip are offered again, so a shirt worn on two days is one item.
+- Pack tab: every item once, with the days it's for. Tick things off and set how many to bring.
+- Optional first-day date turns "Day 1" into real dates. Remove a day or an item with Undo; start a new trip with a confirm step.
+- Why: Shivam said 1.0 assumed too much and filled the list for him. He wanted help planning, and chose planning by day out of three options.
+
 ## 1.0 · 31 October 2026 · First version
 
 - Trip details: destination, nights away, leaving date, weather (warm, cold, rain), what you'll be doing (city, beach, hiking, work, snow sports), going abroad, flying, hand luggage only, laundry there.
