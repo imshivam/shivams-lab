@@ -48,7 +48,7 @@ window.PROJECTS = [
     ],
     made: "October 2026",
     updated: "2026-10-31",
-    version: "0.3",
+    version: "0.4",
     stack: "HTML, CSS, JavaScript, device motion",
     where: "~/Documents/card game",
     icon: "cardGame",

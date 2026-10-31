@@ -2,6 +2,15 @@
 
 Newest first.
 
+## 0.4 · 31 October 2026 · Openers and the apps already out there
+
+- `RESEARCH.md` covers:
+  - **Openers**, the closest rival Shivam found: an in-person question card app with 10,000+ questions, three depths per deck and a strong illustrated look, from one indie developer with 23 US ratings
+  - **21 Questions, Get Closer, Gottman Card Decks, Party Qs and Flamingo Cards**, with their rating counts
+  - what is still open for us: three questions per card, the pass, the physical feel and remote play
+- The reference board has a new "Already out there" section with 17 store screenshots from these apps.
+- `RESEARCH.md` explains why my first search missed Openers: brand-name queries, a search engine that isn't Google, and no sweep of the App Store itself. Competitor scans now include an App Store keyword sweep and plain shopper-style queries.
+
 ## 0.3 · 31 October 2026 · Real references
 
 - New private reference board with 73 real screenshots and clips from games and apps, grouped into six visual directions: printed, editorial, playful, holographic, arcade, tabletop. Each one has Keep / Drop and a note, saved where Claude can read them back. https://claude.ai/artifact/5odjRkw1ivwmXGFKZ8AuDR

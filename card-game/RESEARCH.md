@@ -28,6 +28,40 @@ Sources: [Gamely](https://gamelygames.com/products/a-little-more-conversation), 
 | **TableTopics: The App** | 50+ free questions, 400+ with in-app purchase, save favourites. | The obvious version: a list of questions in a phone. Correct, but no feel. This is what we must beat. |
 | **We're Not Really Strangers apps** | Several apps in the App Store; it is unclear which is official. | Brands are weak in the app space; a well-made app can stand out. |
 | **Deep Qs, We're Deep Conversations Cards** | Card swiping, paid packs. | Swipe-through-cards is the default pattern; nobody does physical feel. |
+| **Openers** (added 31 Oct) | One phone on the table: draw, read aloud, everyone answers. 60+ decks, 10,000+ questions, three depths per deck. | The closest rival. See below. |
+| **21 Questions** (Linear Lab) | Card decks for couples, friends and parties, with a loud, bold look. 9,385 ratings in the US, the most of any app here. | The category is busy and loud. Calm is still open. |
+| **Get Closer** (Intelligent Change) | Three depths shown as coloured card stacks: Close, Closer, Closest. From the makers of the Five Minute Journal. 971 ratings. | Same depth idea as WNRS, sold as a premium brand. |
+| **Gottman Card Decks** | 14 research-based decks for couples, as plain tiles. 1,679 ratings. | Credibility from research, but no play in it at all. |
+| **Party Qs, Flamingo Cards** | A grid of packs and a question on a flat card. 335 and 1,575 ratings. | The default look: a pack grid, then a flat card. |
+
+### Closest rival: Openers
+
+[openers.app](https://openers.app/), [App Store](https://apps.apple.com/us/app/openers-question-card-games/id6451129455). Shivam found it on 31 Oct; my first research missed it.
+
+- **What it is:** "The question card game that only works in person." One phone sits on the table. Someone draws, someone asks, and everyone answers. Tap to deal the next card. Turn the phone sideways and the question fills the screen for the table.
+- **Content:** 60+ decks (Date Night, Team Bonding, Long Distance, Road Tripping and more) and 10,000+ hand-written questions. Each deck has three depths: fun, casual and deep. You choose how far tonight goes.
+- **Extras:**
+  - an AI tool writes a 30-card deck for an occasion, and you review each card
+  - a video answer recorded with the question on screen
+  - offline play, no account needed, and 11 languages
+- **Business:** free to start, then a subscription or a one-off lifetime purchase.
+- **Look:** two-colour illustrations of people around a table, lowercase text, and named colour themes like "red rock" and "lavender rain". It's the only app here with a strong look of its own. It belongs with our printed and tactile direction.
+- **Traction:** one indie developer, out since December 2024, with 23 ratings in the US. It ranks well on Google but is still small.
+- **What it does that we planned:** in-person play, one phone, choosing the depth, decks by occasion, team bonding.
+- **What it doesn't do, from its site and store page:**
+  - three questions per card, where the holder picks one
+  - the next person answers too
+  - passing the card
+  - shake, flip, tilt or face down
+  - remote play on the same card
+- **What it means:** the idea of "a question app for the table" is taken. The parts still open are the ones that make the phone feel like a card: the choice of three, the pass, the physical feel, and remote play. That is where our effort should go. Shivam should play Openers once before we design anything.
+
+### Why my first search missed it
+
+- **My queries:** I searched with brand names (WNRS, TableTopics) and "conversation card game apps". I never searched the way a person shopping for an app would, like Shivam's "best apps for conversation starters games between social settings".
+- **My search engine:** my web search isn't Google. Even Shivam's exact query, run through my search tool on 31 Oct, didn't return Openers. It returned app listings and roundup pages instead.
+- **The App Store:** I never swept the App Store itself for the category. Searching "conversation starters", "conversation cards", "question game", "deep questions" and "icebreaker questions" lists the rivals directly, with their rating counts.
+- **The fix for next time:** competitor scans now include an App Store sweep by keyword, plus plain-language shopper queries. If Shivam has searched himself, I ask for his top results.
 
 ### Games that use the phone's body (the feel we want)
 
@@ -115,5 +149,8 @@ The deciding test is phase 1: a web prototype on Shivam's iPhone. If the deck do
 17. SharePlay card games
 18. Wallet-style tilt shimmer, holographic shaders in SwiftUI
 19. We're Not Really Strangers levels and wildcards
+20. (31 Oct) Shivam's Google query: "best apps for conversation starters games between social settings"
+21. (31 Oct) App Store sweep: "conversation starters", "conversation cards", "question game", "deep questions", "icebreaker questions"
+22. (31 Oct) openers.app and its App Store page
 
 Not found: the remaining two Gamely round names; Apple's own description of how Wallet's card shimmer is built; a developer postmortem for TCG Pocket's tilt and foil.
