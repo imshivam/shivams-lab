@@ -1,9 +1,35 @@
 // Everything in the Lab. To add a project, copy one entry, change it, and keep the list newest first.
 // kind: "app" | "web" | "artifact". icon: a key in ICONS (icons.js). shot: optional image in assets/shots.
 
-window.LAB_UPDATED = "2026-10-30";
+window.LAB_UPDATED = "2026-10-31";
 
 window.PROJECTS = [
+  {
+    id: "reference-kit",
+    tint: ["#DCE9FF", "#C9D7F7"],
+    tintDark: ["#1E2738", "#1A1F2E"],
+    name: "Reference Kit",
+    kind: "artifact",
+    platform: "Mac tools + private boards",
+    tagline: "Real screenshots and clips, marked Keep or Drop.",
+    about:
+      "Tools for collecting real visual references for any project: App Store screenshots, Mobbin screens, a site's share image and short loops cut from gameplay videos, all logged with their source. They become a private board where each one gets Keep or Drop and a note, which Claude reads to narrow the next round. The assets stay private; only the code is here.",
+    highlights: [
+      "App Store, Mobbin, websites and YouTube in one library",
+      "Peek at a video's frames, then cut a short silent loop",
+      "Private Keep / Drop board with notes",
+      "Picks saved where Claude can read them",
+    ],
+    made: "October 2026",
+    updated: "2026-10-31",
+    version: "0.1",
+    stack: "Python, yt-dlp, ffmpeg, HTML",
+    where: "~/Documents/references",
+    icon: "referenceKit",
+    links: [
+      { label: "Card Game Board", url: "https://claude.ai/artifact/5odjRkw1ivwmXGFKZ8AuDR", primary: true },
+    ],
+  },
   {
     id: "card-game",
     tint: ["#FFE7B8", "#F7B9A2"],
@@ -21,14 +47,15 @@ window.PROJECTS = [
       "Research on apps, sensors and conversation design",
     ],
     made: "October 2026",
-    updated: "2026-10-30",
-    version: "0.1",
+    updated: "2026-10-31",
+    version: "0.3",
     stack: "HTML, CSS, JavaScript, device motion",
     where: "~/Documents/card game",
     icon: "cardGame",
     links: [
       { label: "Open Playroom", url: "https://imshivam.github.io/shivams-lab/card-game/", primary: true },
       { label: "Playroom Artifact", url: "https://claude.ai/artifact/1d5PF4Jm4JCXPV5a8K77n2" },
+      { label: "Reference Board", url: "https://claude.ai/artifact/5odjRkw1ivwmXGFKZ8AuDR" },
     ],
   },
   {

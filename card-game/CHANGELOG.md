@@ -2,6 +2,13 @@
 
 Newest first.
 
+## 0.3 · 31 October 2026 · Real references
+
+- New private reference board with 73 real screenshots and clips from games and apps, grouped into six visual directions: printed, editorial, playful, holographic, arcade, tabletop. Each one has Keep / Drop and a note, saved where Claude can read them back. https://claude.ai/artifact/5odjRkw1ivwmXGFKZ8AuDR
+- In the private playroom artifact, "In the wild" now shows real footage and screens instead of drawings: Gamely's box, WNRS and Esther Perel's decks in hand, Heads Up, a TCG Pocket pack reveal, Balatro, Jackbox, Donut and others. The Swipe, Tilt, Flip and Room code mechanics show a real example too. `playroom/make-private.py` builds this copy.
+- The public Lab page keeps the drawings and links, because the screenshots and footage belong to their makers.
+- Why: Shivam said drawn stand-ins don't help him decide, and real assets do. The tools that collect them live in `~/Documents/references` (the Reference Kit), so any project can use them.
+
 ## 0.2 · 30 October 2026 · Visual references
 
 - Every mechanic, app, principle and sensor in the playroom now has a small animated diagram: the phone shaking, the card swiping off, the pack tearing in TCG Pocket, the Heads Up nod, depth as steps going down, and so on. Sensors get an icon each.

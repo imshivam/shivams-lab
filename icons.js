@@ -22,6 +22,14 @@
     `<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
 
   const ICONS = {
+    referenceKit: (u) => `
+      <defs>${lg(u + "b", "#3D7BFF", "#1E2F6B", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect class="rk-t rk-1" x="20" y="20" width="27" height="34" rx="5" fill="#FFFDF8"/>
+      <rect class="rk-t rk-2" x="53" y="20" width="27" height="34" rx="5" fill="#FFFDF8" opacity=".55"/>
+      <rect class="rk-t rk-3" x="20" y="60" width="27" height="20" rx="5" fill="#FFFDF8" opacity=".55"/>
+      <rect class="rk-t rk-4" x="53" y="60" width="27" height="20" rx="5" fill="#FFFDF8"/>
+      <g class="rk-check"><circle cx="40" cy="27" r="9" fill="#2FCB7E"/><path d="M35.5 27.2l3 3 6-6.2" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></g>`,
     cardGame: (u) => `
       <defs>${lg(u + "b", "#FFC75A", "#F2704E", 1, 1)}</defs>
       <rect width="100" height="100" fill="url(#${u}b)"/>

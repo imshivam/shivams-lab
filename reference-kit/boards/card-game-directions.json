@@ -1,0 +1,8 @@
+[
+ {"id":"print","name":"Printed and tactile","about":"Feels like a real boxed game: paper, ink, illustration, hands on cards. Closest to Gamely's original.","look":"the paper texture, how illustration sits on the card, the warmth of real hands and tables."},
+ {"id":"editorial","name":"Calm and editorial","about":"Big type on solid colour, nothing else. The question is the hero. We're Not Really Strangers is the reference here.","look":"type size and weight, how few elements there are, the colour per level."},
+ {"id":"playful","name":"Soft and playful","about":"Rounded, friendly, a character or a wink. Feels like a toy rather than a tool.","look":"corner radius, colour saturation, whether a character helps or distracts from the question."},
+ {"id":"holo","name":"Holographic collectible","about":"Cards that feel precious: foil that shifts as you tilt, a reveal moment, a card you want to keep.","look":"the shine on tilt, the pause before a reveal, how the card sits in 3D."},
+ {"id":"arcade","name":"Bold and arcade","about":"Loud, juicy, pixel or retro. Every tap shakes, pops and scores.","look":"how much the screen moves, the sound you imagine, whether it would drown out a quiet question."},
+ {"id":"tabletop","name":"Tabletop","about":"Cards dealt onto a table or felt, swiped like decisions. Classic card-game furniture.","look":"the table surface, how cards stack and fan, the swipe gesture."}
+]

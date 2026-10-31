@@ -1,0 +1,219 @@
+<title>__TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F6F3EE; --surface: #FFFFFF; --ink: #1B1F2A; --muted: #6B6F7A; --line: #E4DFD6;
+  --accent: #E0533D; --keep: #1E8E5A; --keep-bg: #E3F4EA; --drop: #9A9EA8; --drop-bg: #EEEDEA;
+  --radius: 16px; --spring: cubic-bezier(.34,1.4,.64,1);
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121418; --surface: #1C1F25; --ink: #F1EEE8; --muted: #9A9EA8; --line: #2C3038;
+  --accent: #FF7A62; --keep: #4BD18C; --keep-bg: #183A29; --drop: #6B6F7A; --drop-bg: #24272D;
+} }
+:root[data-theme="dark"] {
+  --bg: #121418; --surface: #1C1F25; --ink: #F1EEE8; --muted: #9A9EA8; --line: #2C3038;
+  --accent: #FF7A62; --keep: #4BD18C; --keep-bg: #183A29; --drop: #6B6F7A; --drop-bg: #24272D;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.5 "Atkinson Hyperlegible", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+h1, h2, h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; letter-spacing: -.01em; margin: 0; }
+a { color: inherit; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 32px 16px 96px; }
+header p { color: var(--muted); max-width: 60ch; margin: 8px 0 0; }
+h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; line-height: 1.05; }
+
+.bar { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); margin: 24px -16px 0; padding: 10px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.bar::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 8px 14px; min-height: 40px; font: 700 .9rem/1 inherit; font-family: inherit; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.chip .n { opacity: .6; font-weight: 400; margin-left: 4px; }
+
+.tally { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 20px; }
+.tally > div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: .88rem; }
+.tally b { display: block; font-family: "Bricolage Grotesque"; font-size: 1rem; }
+.tally .meter { height: 4px; border-radius: 4px; background: var(--drop-bg); margin-top: 8px; overflow: hidden; display: flex; }
+.tally .meter i { background: var(--keep); } .tally .meter s { background: var(--drop); }
+
+section.dir { margin-top: 48px; }
+section.dir[hidden] { display: none; }
+.dir-head { display: grid; gap: 4px; margin-bottom: 16px; }
+.dir-head h2 { font-size: 1.6rem; font-weight: 800; }
+.dir-head p { margin: 0; color: var(--muted); max-width: 70ch; }
+.dir-head .look { color: var(--ink); }
+.dir-head .look::before { content: "Look at: "; font-weight: 700; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; align-items: start; }
+@media (max-width: 520px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: opacity .25s, transform .3s var(--spring), border-color .2s; }
+.tile[hidden] { display: none; }
+.tile.keep { border-color: var(--keep); box-shadow: 0 0 0 2px var(--keep); }
+.tile.drop { opacity: .45; }
+.media { display: block; width: 100%; padding: 0; border: 0; background: #000; cursor: zoom-in; position: relative; }
+.media img, .media video { display: block; width: 100%; height: auto; max-height: 460px; object-fit: contain; background: #0d0e10; }
+.media .play { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,.6); color: #fff; font: 700 .7rem/1 "Atkinson Hyperlegible"; padding: 5px 8px; border-radius: 999px; letter-spacing: .04em; }
+.meta { padding: 10px 12px 12px; display: grid; gap: 8px; }
+.meta h3 { font-family: "Atkinson Hyperlegible"; font-size: .92rem; font-weight: 700; line-height: 1.3; }
+.meta .src { font-size: .8rem; color: var(--muted); text-decoration: none; }
+.meta .src::after { content: " ↗"; }
+.verdict { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.verdict button { min-height: 40px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); font: 700 .88rem "Atkinson Hyperlegible"; cursor: pointer; transition: transform .2s var(--spring); }
+.verdict button:active { transform: scale(.94); }
+.verdict [data-v="keep"][aria-pressed="true"] { background: var(--keep-bg); color: var(--keep); border-color: var(--keep); }
+.verdict [data-v="drop"][aria-pressed="true"] { background: var(--drop-bg); color: var(--ink); border-color: var(--drop); }
+.note { width: 100%; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px; padding: 8px 10px; font: 400 .88rem/1.35 "Atkinson Hyperlegible"; resize: vertical; min-height: 38px; }
+.note::placeholder { color: var(--muted); }
+.status { font-size: .8rem; color: var(--muted); margin-top: 12px; }
+
+dialog { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; }
+dialog::backdrop { background: rgba(10,10,12,.86); }
+dialog img, dialog video { display: block; max-width: min(92vw, 1200px); max-height: 86vh; border-radius: 12px; }
+dialog p { color: #fff; text-align: center; margin: 10px 0 0; font-size: .9rem; }
+dialog button { position: fixed; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.15); color: #fff; font-size: 1.3rem; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Which way should the cards look?</h1>
+    <p>Real screens and footage from games and apps, grouped into six directions. Mark each one <strong>Keep</strong> or <strong>Drop</strong> and add a note on what you like or don't. Claude reads your picks and the next round goes deeper into what you kept. Tap any image or clip to see it full size.</p>
+    <div class="tally" id="tally"></div>
+    <p class="status" id="status">Loading your picks…</p>
+  </header>
+  <nav class="bar" id="bar" aria-label="Filter"></nav>
+  <main id="main"></main>
+</div>
+<dialog id="zoom"><button aria-label="Close">✕</button><div id="zoomBody"></div><p id="zoomCap"></p></dialog>
+
+<script>
+const DATA = __DATA__;
+const picks = {};           // id -> {verdict, note}
+let db = null, filter = "all";
+
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function tileHTML(it) {
+  const media = it.kind === "video"
+    ? `<video src="${it.src}" poster="${it.poster}" muted loop playsinline preload="none"></video><span class="play">CLIP</span>`
+    : `<img src="${it.src}" alt="${esc(it.title)}" loading="lazy">`;
+  return `<article class="tile" data-id="${it.id}">
+    <button class="media" aria-label="Open ${esc(it.title)} full size">${media}</button>
+    <div class="meta">
+      <h3>${esc(it.title)}</h3>
+      <a class="src" href="${esc(it.link)}" target="_blank" rel="noopener">${esc(it.source)}</a>
+      <div class="verdict" role="group" aria-label="Verdict">
+        <button data-v="keep" aria-pressed="false">Keep</button>
+        <button data-v="drop" aria-pressed="false">Drop</button>
+      </div>
+      <textarea class="note" rows="1" placeholder="What about it?" aria-label="Note on ${esc(it.title)}"></textarea>
+    </div>
+  </article>`;
+}
+
+function render() {
+  $("#main").innerHTML = DATA.directions.map(d => {
+    const its = DATA.items.filter(i => i.dir === d.id);
+    if (!its.length) return "";
+    return `<section class="dir" id="d-${d.id}" data-dir="${d.id}">
+      <div class="dir-head"><h2>${esc(d.name)}</h2><p>${esc(d.about)}</p><p class="look">${esc(d.look)}</p></div>
+      <div class="grid">${its.map(tileHTML).join("")}</div>
+    </section>`;
+  }).join("");
+  const chips = [["all", "All"], ["keep", "Kept"], ["drop", "Dropped"], ["open", "Undecided"]]
+    .concat(DATA.directions.map(d => ["dir:" + d.id, d.name]));
+  $("#bar").innerHTML = chips.map(([k, l]) => `<button class="chip" data-f="${k}" aria-pressed="${k === filter}">${esc(l)}<span class="n"></span></button>`).join("");
+  watchVideos();
+}
+
+function paint() {
+  document.querySelectorAll(".tile").forEach(t => {
+    const p = picks[t.dataset.id] || {};
+    t.classList.toggle("keep", p.verdict === "keep");
+    t.classList.toggle("drop", p.verdict === "drop");
+    t.querySelectorAll(".verdict button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === p.verdict)));
+    const n = $(".note", t);
+    if (document.activeElement !== n) n.value = p.note || "";
+    const v = p.verdict || "open";
+    t.hidden = !(filter === "all" || filter === v || (filter.startsWith("dir:")));
+  });
+  document.querySelectorAll("section.dir").forEach(s => {
+    s.hidden = filter.startsWith("dir:") ? s.dataset.dir !== filter.slice(4) : ![...s.querySelectorAll(".tile")].some(t => !t.hidden);
+  });
+  const count = f => DATA.items.filter(i => f(picks[i.id]?.verdict || "open", i)).length;
+  document.querySelectorAll(".chip").forEach(c => {
+    const k = c.dataset.f;
+    c.setAttribute("aria-pressed", String(k === filter));
+    $(".n", c).textContent = k === "all" ? DATA.items.length : k.startsWith("dir:") ? count((v, i) => i.dir === k.slice(4)) : count(v => v === k);
+  });
+  $("#tally").innerHTML = DATA.directions.map(d => {
+    const its = DATA.items.filter(i => i.dir === d.id), n = its.length || 1;
+    const k = its.filter(i => picks[i.id]?.verdict === "keep").length, x = its.filter(i => picks[i.id]?.verdict === "drop").length;
+    return `<div><b>${esc(d.name)}</b>${k} kept · ${x} dropped · ${its.length - k - x} left
+      <div class="meter"><i style="width:${k / n * 100}%"></i><s style="width:${x / n * 100}%"></s></div></div>`;
+  }).join("");
+}
+
+async function save(id) {
+  const p = picks[id] || {};
+  const row = { verdict: p.verdict || "", note: p.note || "", updatedAt: new Date().toISOString() };
+  if (db) {
+    try { await db.collection("picks").doc(id).set(row); $("#status").textContent = "Saved. Claude can read your picks."; }
+    catch (e) { $("#status").textContent = "Couldn't save (" + (e.code || "error") + "). Your picks stay on this device for now."; local(); }
+  } else local();
+}
+function local() { try { localStorage.setItem("picks", JSON.stringify(picks)); } catch (e) {} }
+
+document.addEventListener("click", e => {
+  const chip = e.target.closest(".chip");
+  if (chip) { filter = chip.dataset.f; paint(); return; }
+  const vb = e.target.closest(".verdict button");
+  if (vb) {
+    const id = vb.closest(".tile").dataset.id, p = picks[id] = picks[id] || {};
+    p.verdict = p.verdict === vb.dataset.v ? "" : vb.dataset.v;
+    paint(); save(id); return;
+  }
+  const m = e.target.closest(".media");
+  if (m) {
+    const it = DATA.items.find(i => i.id === m.closest(".tile").dataset.id);
+    $("#zoomBody").innerHTML = it.kind === "video"
+      ? `<video src="${it.src}" autoplay muted loop playsinline controls></video>`
+      : `<img src="${it.src}" alt="${esc(it.title)}">`;
+    $("#zoomCap").textContent = it.title;
+    $("#zoom").showModal();
+  }
+});
+$("#zoom").addEventListener("click", e => { if (e.target.tagName !== "VIDEO") $("#zoom").close(); });
+$("#zoom").addEventListener("close", () => { $("#zoomBody").innerHTML = ""; });
+
+const timers = {};
+document.addEventListener("input", e => {
+  if (!e.target.classList.contains("note")) return;
+  const id = e.target.closest(".tile").dataset.id;
+  (picks[id] = picks[id] || {}).note = e.target.value;
+  clearTimeout(timers[id]); timers[id] = setTimeout(() => save(id), 700);
+});
+
+function watchVideos() {
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const io = new IntersectionObserver(es => es.forEach(en => {
+    const v = en.target;
+    if (en.isIntersecting && !still) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+  }), { threshold: .4 });
+  document.querySelectorAll(".tile video").forEach(v => io.observe(v));
+}
+
+render();
+try { Object.assign(picks, JSON.parse(localStorage.getItem("picks") || "{}")); } catch (e) {}
+paint();
+(async () => {
+  db = window.claude ? await claude.use("db") : null;
+  if (!db) { $("#status").textContent = "Picks are saved on this device only."; return; }
+  db.collection("picks").onSnapshot(snap => {
+    snap.docs.forEach(d => { const v = d.data() || {}; picks[d.id] = { verdict: v.verdict || "", note: v.note || "" }; });
+    $("#status").textContent = "Your picks are saved. Claude can read them.";
+    paint();
+  }, err => { $("#status").textContent = "Couldn't load saved picks (" + err.code + ")."; });
+})();
+</script>
