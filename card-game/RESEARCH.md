@@ -30,7 +30,9 @@ Sources: [Gamely](https://gamelygames.com/products/a-little-more-conversation), 
 | **Deep Qs, We're Deep Conversations Cards** | Card swiping, paid packs. | Swipe-through-cards is the default pattern; nobody does physical feel. |
 | **Openers** (added 31 Oct) | One phone on the table: draw, read aloud, everyone answers. 60+ decks, 10,000+ questions, three depths per deck. | The closest rival. See below. |
 | **21 Questions** (Linear Lab) | Card decks for couples, friends and parties, with a loud, bold look. 9,385 ratings in the US, the most of any app here. | The category is busy and loud. Calm is still open. |
-| **Get Closer** (Intelligent Change) | Three depths shown as coloured card stacks: Close, Closer, Closest. From the makers of the Five Minute Journal. 971 ratings. | Same depth idea as WNRS, sold as a premium brand. |
+| **Get Closer** (Intelligent Change) | Three depths shown as coloured card stacks: Close, Closer, Closest. From the makers of the Five Minute Journal. 971 ratings. | Same depth idea as WNRS, sold as a premium brand. Shivam called it a good example (31 Oct): calm serif type and decks drawn as real card stacks. |
+| **Plunge** (added 31 Oct, found by Shivam) | Depth told as a dive: Blimpin' (light), Surface, Depth, each framed as equal, with "no rush" to go deep. Themed dives, a Guided Dive sized by minutes or number of questions, a Free Dive where you pick the depth, and saved playlists for dates, friends or family. Ocean art in green and purple. 32 US ratings since May 2024. [Site](https://www.plungeapp.app/), [App Store](https://apps.apple.com/us/app/plunge-app-deep-conversation/id6479176103). | A whole world built around one metaphor gives depth a name and a feeling. Sizing a session by time ("10 minutes") is a good idea for one-on-ones. Still a screen you read from, with nothing physical. |
+| **HH Talk** | A list of decks (Deep Conversations, Couples Quiz, Ask Mom), then one question on a bright full-screen card. 2,140 ratings. | Bigger than it looks; the plainest format can still win on content. |
 | **Gottman Card Decks** | 14 research-based decks for couples, as plain tiles. 1,679 ratings. | Credibility from research, but no play in it at all. |
 | **Party Qs, Flamingo Cards** | A grid of packs and a question on a flat card. 335 and 1,575 ratings. | The default look: a pack grid, then a flat card. |
 
@@ -152,5 +154,6 @@ The deciding test is phase 1: a web prototype on Shivam's iPhone. If the deck do
 20. (31 Oct) Shivam's Google query: "best apps for conversation starters games between social settings"
 21. (31 Oct) App Store sweep: "conversation starters", "conversation cards", "question game", "deep questions", "icebreaker questions"
 22. (31 Oct) openers.app and its App Store page
+23. (31 Oct) plungeapp.app (found by Shivam) and App Store "plunge deep conversation"
 
 Not found: the remaining two Gamely round names; Apple's own description of how Wallet's card shimmer is built; a developer postmortem for TCG Pocket's tilt and foil.
