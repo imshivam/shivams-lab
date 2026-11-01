@@ -126,6 +126,17 @@ h1 { margin: 0; font: 700 30px/1.15 var(--font-round); letter-spacing: -0.01em; 
 .sub { font-size: 15px; color: var(--muted); overflow-wrap: anywhere; }
 .qty { font-size: 15px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .item.on .name { color: var(--muted); }
+/* An outfit typed as several pieces: one header, its pieces underneath, one outfit open at a time */
+.grp .name { font-weight: 600; }
+.grp .open { flex: 0 0 auto; border: 0; background: transparent; color: var(--muted); width: 44px; height: 44px; margin-right: 6px; border-radius: 22px; display: grid; place-items: center; }
+.grp .open svg.i { transition: transform 0.2s; }
+.grp.expanded .open svg.i { transform: rotate(90deg); }
+.part { border-top: 0; }
+.part .tick { padding: 10px 16px 10px 56px; min-height: 48px; position: relative; }
+.part .tick::before { content: ""; position: absolute; top: 0; left: 56px; right: 0; border-top: 0.5px solid var(--sep); }
+.part .check { width: 22px; height: 22px; }
+.part .check svg.i { width: 13px; height: 13px; }
+.clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .side { flex: 0 0 auto; border: 0; background: transparent; color: var(--muted); min-width: 44px; height: 44px; margin-right: 6px; border-radius: 22px; display: grid; place-items: center; }
 .side.decide { color: var(--warn); font-size: 15px; font-weight: 600; padding: 0 10px; }
 
@@ -308,7 +319,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     }
     return t;
   }
-  const normal = (p) => ({ done: {}, answers: {}, dismissed: {}, kept: {}, added: {}, ...(isObj(p) ? clone(p) : {}) });
+  const normal = (p) => ({ done: {}, answers: {}, dismissed: {}, kept: {}, added: {}, parts: {}, ...(isObj(p) ? clone(p) : {}) });
 
   /* ---------- State ---------- */
   let cache = {};
@@ -331,7 +342,26 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   // What counts in a step: its things, ideas you chose to keep, and what you added. Ideas you haven't looked at don't count.
   const items = (step) => [...step.items.filter((it) => !hidden(it) && (!it.sug || prog.kept[it.id])), ...added(step.id)];
   const ideas = (step) => step.items.filter((it) => it.sug && !prog.kept[it.id] && !prog.dismissed[it.id]);
-  const isDone = (it) => it.kind === "decide" ? !!answer(it.id) : !!prog.done[it.id];
+  /* A typed answer with several pieces ("Black sweatshirt / Green cargo pants / ...") becomes a list to tick.
+     Claude tidies it into short names with a note for when (stored in progress.parts, tied to the exact text);
+     until then, or without Claude, each line you typed is one piece. */
+  const slug = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+  const cap = (t) => t ? t[0].toUpperCase() + t.slice(1) : t;
+  const lines = (a) => a.split(/\n+/).map((l) => l.trim()).filter(Boolean);
+  function partsOf(qid) {
+    const a = answer(qid);
+    if (!a) return null;
+    const st = prog.parts[qid];
+    const list = isObj(st) && st.src === a && Array.isArray(st.items) ? st.items
+      : lines(a).length > 1 ? lines(a).map((name) => ({ name: cap(name) })) : null;
+    return list && list.length ? list.filter((x) => x && x.name).map((x) => ({ key: qid + "~" + slug(x.name), name: x.name, note: x.note || "" })) : null;
+  }
+  const wordy = (a) => lines(a).length > 1 || a.split(/\s+/).length > 10;
+  const isDone = (it) => {
+    if (it.kind === "decide") return !!answer(it.id);
+    const ps = it.from && partsOf(it.from);
+    return ps ? ps.every((p) => prog.done[p.key]) : !!prog.done[it.id];
+  };
   const count = (step) => { const all = items(step); return { done: all.filter(isDone).length, total: all.length }; };
   const complete = (step) => { const c = count(step); return c.done === c.total; };
   const questions = (step) => step.items.filter((it) => it.kind === "decide");
@@ -450,11 +480,14 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   function nextQuestion() {
     const i = stepIndex(); const s = plan.steps[i];
     typing = false;
+    setTimeout(tidy, 0);
     if (qi < questions(s).length - 1) { qi++; saveLocal(); show(); }
     else goStep(i + 1);
   }
 
+  let shownGroup = null;
   function renderStep(s, i, banner) {
+    shownGroup = currentGroup(s);
     const list = items(s);
     const idl = ideas(s);
     const next = plan.steps[i + 1];
@@ -475,16 +508,44 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     setDock(next ? `Next: ${SHORT[next.id] || next.title}` : "Finish", done, () => goStep(i + 1));
   }
 
+  let openGroup = null; // the outfit whose pieces are showing
+  const groups = (s) => items(s).filter((it) => it.from && partsOf(it.from));
+  const currentGroup = (s) => {
+    const gs = groups(s);
+    if (openGroup === "__none") return null;
+    if (openGroup && gs.some((g) => g.id === openGroup)) return openGroup;
+    const g = gs.find((g) => !isDone(g));
+    return g ? g.id : null;
+  };
+  function groupHTML(it, open) {
+    const ps = partsOf(it.from);
+    const n = ps.filter((p) => prog.done[p.key]).length;
+    const on = n === ps.length;
+    return `<li class="item grp ${on ? "on" : ""} ${open ? "expanded" : ""}" data-id="${esc(it.id)}">
+      <button class="tick" data-act="tick-group" aria-pressed="${on}" aria-label="${esc(it.name)}: tick all ${ps.length}">
+        <span class="check">${ic("check")}</span>
+        <span class="txt"><span class="name">${esc(it.name)}</span><span class="sub">${on ? "All packed" : `${n} of ${ps.length}`}</span></span>
+      </button>
+      <button class="open" data-act="open-group" aria-expanded="${open}" aria-label="${open ? "Hide" : "Show"} the pieces">${ic("chev")}</button>
+    </li>${open ? ps.map((p) => `<li class="item part ${prog.done[p.key] ? "on" : ""}" data-id="${esc(p.key)}">
+      <button class="tick" data-act="tick" aria-pressed="${!!prog.done[p.key]}">
+        <span class="check">${ic("check")}</span>
+        <span class="txt"><span class="name">${esc(p.name)}</span>${p.note ? `<span class="sub">${esc(p.note)}</span>` : ""}</span>
+      </button></li>`).join("") : ""}`;
+  }
+
   function rowHTML(it) {
+    if (it.from && partsOf(it.from)) return groupHTML(it, it.id === shownGroup);
     const on = isDone(it);
     let sub = it.note || "", unset = false;
-    if (it.from) { const a = answer(it.from); if (a) sub = a; else unset = true; }
+    let clamp = false;
+    if (it.from) { const a = answer(it.from); if (a) { sub = a; clamp = true; } else unset = true; }
     const side = unset ? `<button class="side decide" data-act="ask" data-q="${esc(it.from)}">Decide</button>`
       : (it.mine || it.sug) ? `<button class="side" data-act="drop" aria-label="Remove ${esc(it.name)}">${ic("close")}</button>` : "";
     return `<li class="item ${on ? "on" : ""}" data-id="${esc(it.id)}">
       <button class="tick" data-act="tick" aria-pressed="${on}">
         <span class="check">${ic("check")}</span>
-        <span class="txt"><span class="name">${esc(it.name)}</span>${sub ? `<span class="sub">${esc(sub)}</span>` : ""}</span>
+        <span class="txt"><span class="name">${esc(it.name)}</span>${sub ? `<span class="sub ${clamp ? "clamp" : ""}">${esc(sub)}</span>` : ""}</span>
         ${it.qty ? `<span class="qty">${esc(it.qty)}</span>` : ""}
       </button>${side}
     </li>`;
@@ -520,10 +581,11 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     const cards = (plan.days || []).map((d) => {
       const rows = [];
       const uses = [...(d.uses || [])];
-      if (d.wear) { const w = answer(d.wear), it = byId(d.wear); rows.push(["shirt", w || `${it ? it.name : "Outfit"}: not decided`, !w]); }
+      if (d.wear) { const w = answer(d.wear), it = byId(d.wear), ps = partsOf(d.wear); rows.push(["shirt", ps ? ps.map((p) => p.name).join(", ") : w || `${it ? it.name : "Outfit"}: not decided`, !w]); }
       if (d.event && eventDay === d.event) {
         const ev = answer("d-event");
-        rows.push(["sparkle", "Event: " + (ev || "outfit not decided"), !ev]);
+        const eps = partsOf("d-event");
+        rows.push(["sparkle", "Event: " + (eps ? eps.map((p) => p.name).join(", ") : ev || "outfit not decided"), !ev]);
         uses.push("w-event"); if (boots !== "Buy in Barcelona on Sat 7") uses.push("w-boots");
       } else if (d.event && !eventDay) rows.push(["sparkle", "The event, if it's today", true]);
       if (d.ifBoots && boots === "Buy in Barcelona on Sat 7") rows.push(["shop", "Buy dress boots", false]);
@@ -546,7 +608,8 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   function autosize(ta) { ta.style.height = "auto"; ta.style.height = Math.max(120, ta.scrollHeight + 2) + "px"; }
 
   /* ---------- Moving around ---------- */
-  function show() { render(); window.scrollTo({ top: 0 }); }
+  function show() { openGroup = null; render(); window.scrollTo({ top: 0 }); }
+  const stay = () => { const y = window.scrollY; render(); window.scrollTo(0, y); };
   function go(o) { if (o.tab) tab = o.tab; saveLocal(); show(); }
   function goStep(n) {
     typing = false; ideasOpen = false;
@@ -587,6 +650,14 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   function tickRow(id) {
     const on = !prog.done[id];
     patch({ done: { [id]: on } });
+    if (id.includes("~")) {
+      // A piece of an outfit: redraw in place, and once the outfit is complete, open the next one.
+      const s = plan.steps[stepIndex()];
+      const g = groups(s).find((g) => g.id === shownGroup);
+      stay();
+      if (on && g && isDone(g)) setTimeout(() => { if (shownGroup === g.id && isDone(g)) { openGroup = null; const nx = groups(s).find((x) => !isDone(x)); openGroup = nx ? nx.id : g.id; stay(); } }, 450);
+      return;
+    }
     const row = view.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
     if (row) { row.classList.toggle("on", on); row.querySelector(".tick").setAttribute("aria-pressed", on); }
     const i = stepIndex(); const s = plan.steps[i];
@@ -602,6 +673,14 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     const id = holder && holder.dataset.id;
     switch (el.dataset.act) {
       case "tick": tickRow(id); break;
+      case "tick-group": {
+        const it = byId(id); const ps = partsOf(it.from); const on = !isDone(it);
+        const d = {}; ps.forEach((p) => { d[p.key] = on; });
+        patch({ done: d });
+        if (on && shownGroup === id) { const nx = groups(plan.steps[stepIndex()]).find((x) => !isDone(x)); openGroup = nx ? nx.id : id; }
+        stay(); break;
+      }
+      case "open-group": openGroup = shownGroup === id ? "__none" : id; stay(); break;
       case "opt": {
         const val = el.dataset.val;
         const nv = answer(id) === val ? "" : val;
@@ -748,6 +827,33 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     }
   };
 
+  /* ---------- Tidying typed answers into pieces ---------- */
+  const tidying = new Set(), tidyFailed = new Set();
+  async function tidy() {
+    if (!sample || !plan) return;
+    for (const it of allItems()) {
+      if (it.kind !== "decide" || tidying.has(it.id) || tidyFailed.has(it.id)) continue;
+      const a = answer(it.id);
+      const st = prog.parts[it.id];
+      if (!a || (it.options || []).includes(a) || !wordy(a) || (isObj(st) && st.src === a)) continue;
+      if (typing && view.querySelector(`[data-id="${CSS.escape(it.id)}"] .answer`)) continue; // still being typed
+      tidying.add(it.id);
+      const prompt = `Someone packing for a trip answered "${it.q || it.name}" by typing or dictating the text below. ` +
+        `Turn it into a list of the separate things to pack or wear. Each name is 1–5 words, sentence case, keeping colour and brand (e.g. "Black Uniqlo sweatshirt"). ` +
+        `If they said when a thing is for (e.g. only on the way there, only coming back, only if it's cold), put that in a short note of 2–4 words, otherwise leave the note empty. ` +
+        `If they named two alternatives, keep them as one thing ("Denim jeans or black pants"). Drop anything that isn't a thing to pack or wear, like comments or wishes. Fix obvious typos and abbreviations.\n\n` +
+        `Reply with only a JSON array like [{"name":"Olive puffer jacket","note":"Flying out"}].\n\nWhat they said:\n${a}`;
+      try {
+        const out = await sample.json(prompt, { modelTier: "default" });
+        const list = (Array.isArray(out) ? out : []).filter((x) => x && typeof x.name === "string" && x.name.trim())
+          .map((x) => ({ name: x.name.trim().slice(0, 60), note: typeof x.note === "string" ? x.note.trim().slice(0, 40) : "" }));
+        if (list.length && answer(it.id) === a) { patch({ parts: { [it.id]: { src: a, items: list } } }); rerender(); }
+        else if (!list.length) tidyFailed.add(it.id);
+      } catch (e) { tidyFailed.add(it.id); }
+      tidying.delete(it.id);
+    }
+  }
+
   /* ---------- Toast ---------- */
   let toastTimer, undo = null;
   function toast(text, action) {
@@ -797,6 +903,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     if (!(window.claude && window.claude.use)) { sync = "elsewhere"; rerender(); return; }
     const [db, user, smp] = await Promise.all([window.claude.use("db"), window.claude.use("user"), window.claude.use("sample")]);
     sample = smp;
+    setTimeout(tidy, 1500);
     const id = user ? await user.id() : null;
     if (!db || !id) { sync = "signed-out"; rerender(); return; }
     const base = "data/users/" + id + "/";
@@ -823,6 +930,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       if (outbox) { merge(next, outbox); flush(); }
       if (JSON.stringify(next) === JSON.stringify(prog)) return;
       prog = next; saveLocal(); rerender();
+      tidy();
     }, () => setSync("offline"));
   })();
 

@@ -22,7 +22,7 @@ window.PROJECTS = [
     ],
     made: "October 2026",
     updated: "2026-11-01",
-    version: "4.0",
+    version: "4.1",
     stack: "HTML, CSS, JavaScript, Claude artifact storage and sampling",
     where: "shivams-lab/packing",
     icon: "packed",

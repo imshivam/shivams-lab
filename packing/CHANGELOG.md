@@ -2,6 +2,19 @@
 
 Newest first.
 
+## 4.1 · 1 November 2026 · Outfits become lists to tick
+
+At "Lay out your clothes", an outfit you'd typed showed as one long paragraph to read. The lines you typed were also squashed together. Now:
+- An answer with several pieces becomes a list of tidy, tickable pieces under the outfit's name, for example "Black Uniqlo sweatshirt" or "Olive puffer jacket · Flying out".
+- Claude tidies what you typed or dictated:
+  - short names that keep the colour and brand
+  - a small note when a piece is only for one part of the trip
+  - comments dropped
+  Without Claude, each line you typed is one piece.
+- Only one outfit is open at a time. Tick its pieces, and once it's complete the next one opens. Ticking an outfit's circle ticks all of its pieces.
+- A long answer that isn't a list is cut to two lines.
+- Your days lists the tidied pieces too.
+
 ## 4.0 · 1 November 2026 · One thing per screen (in packing/v4, next to 3.0.2)
 
 Version 3 was overwhelming: every feature showed at once, and the biggest words ("Barcelona", "Decide what you'll wear") didn't say what to do. Version 4 is a redesign built on written principles (DESIGN.md), drawn from GOV.UK "one thing per page", W3C COGA (cognitive accessibility), NN/g and real apps on Mobbin. 3.0.2 is kept as it was, so the two can be compared.
