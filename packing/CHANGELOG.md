@@ -2,6 +2,13 @@
 
 Newest first.
 
+## 4.8 · 1 November 2026 · Move list by bag
+
+"Move to another bag" listed Suitcase and Backpack with icons, and the pouches without them, in one list. It wasn't clear which pouch was in which bag.
+- Each bag is now a labelled section with its icon. Under it are "Loose in the suitcase" and that bag's pouches. A bag with no pouches reads "In the backpack". No row has an icon.
+- The jewellery pouch is now in the suitcase.
+- The backpack hint now reads "Laptop, tablet, power banks and what you need on the plane."
+
 ## 4.7.1 · 1 November 2026 · Options for every thing
 
 - Things linked to a step 1 answer had no ⋯ button, so the towel couldn't be left for the morning. The same was true of underwear and the single-line outfits. Every thing now has it, except a row still waiting for its answer, which shows "Decide" instead.

@@ -228,6 +228,9 @@ dialog.closing::backdrop { animation: fade-out 0.22s ease-in forwards; }
 dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var(--sheet-row); }
 .sheet-head .back { width: 32px; height: 32px; margin-left: -6px; border: 0; background: transparent; color: var(--accent); display: grid; place-items: center; padding: 0; }
 .head-l { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.meta.sec { margin: 14px 0 -6px; color: var(--fg); font-size: 15px; }
+.meta.sec svg.i { width: 20px; height: 20px; }
+.group button:disabled { cursor: default; color: var(--muted); }
 .group .now { margin-left: auto; font-size: 15px; color: var(--muted); }
 .sheet { padding: 8px var(--gutter) calc(20px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; }
 .grab { width: 36px; height: 5px; border-radius: 3px; background: var(--ring); margin: 0 auto 4px; }
@@ -888,8 +891,9 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
   /* ---------- One thing's options: morning, buy there, move, not taking ---------- */
   const itemDlg = $("#item");
   let sheetId = null;
-  const bags = () => plan.steps.filter((x) => x.bag).flatMap((st) => [{ step: st.id, group: null, name: nm(st), icon: st.icon },
-    ...(st.groups || []).map((g) => ({ step: st.id, group: g.id, name: g.name }))]);
+  // Each bag, with the places inside it: loose in the bag, or in one of its pouches.
+  const bags = () => plan.steps.filter((x) => x.bag).map((st) => ({ st, places: [{ step: st.id, group: null, name: `${(st.groups || []).length ? "Loose in" : "In"} the ${nm(st).toLowerCase()}` },
+    ...(st.groups || []).map((g) => ({ step: st.id, group: g.id, name: g.name }))] }));
   const find = (id) => everything().find((x) => x.id === id);
   let itemPanel = "main";
   function itemHTML(it) {
@@ -903,10 +907,10 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
         <button class="close" data-act="close" aria-label="Close">${ic("close")}</button></div>`;
     if (itemPanel === "move") {
       return `<div class="panel-in">${head(`Move ${esc(it.name)}`, "", true)}
-        <ul class="group" style="margin-top:14px">${bags().map((c) => {
+        ${bags().map((b) => `<p class="meta sec">${ic(b.st.icon)}${esc(nm(b.st))}</p><ul class="group">${b.places.map((c) => {
           const here = c.step === pl.step && (c.group || null) === (pl.group || null);
-          return `<li><button data-act="move" data-step="${esc(c.step)}" data-group="${esc(c.group || "")}" class="${c.group ? "indent" : ""}" ${here ? "disabled" : ""}>${c.group ? "" : ic(c.icon)}<span>${esc(c.name)}</span>${here ? `<span class="now">Here now</span>` : ""}</button></li>`;
-        }).join("")}</ul></div>`;
+          return `<li><button data-act="move" data-step="${esc(c.step)}" data-group="${esc(c.group || "")}" ${here ? "disabled" : ""}><span>${esc(c.name)}</span>${here ? `<span class="now">Here now</span>` : ""}</button></li>`;
+        }).join("")}</ul>`).join("")}</div>`;
     }
     const row = (act, icon, label, cls) => `<li><button data-act="${act}" class="${cls || ""}">${ic(icon)}<span>${label}</span>${act === "to-move" ? `<span class="left">${ic("chev")}</span>` : ""}</button></li>`;
     return `${head(esc(it.name), [where, state].filter(Boolean).join(" · "))}
