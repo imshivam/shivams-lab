@@ -2,6 +2,25 @@
 
 Newest first.
 
+## 4.4 · 1 November 2026 · Morning, buy there, move
+
+From six comments left while packing. Some things are still in use or charging, some will be bought on arrival, some belong in another bag, and several toiletries seemed to be missing (they were hidden in the morning step).
+- Each thing has one quiet "more" button. It opens one sheet with these options:
+  - **Pack it in the morning**
+  - **Buy it there**, at the airport or at the destination
+  - **Goes in**: move it to any bag or pouch
+  - **Not taking it**, with Undo
+- Things for the morning stay in their pouch's overview, under an "In the morning" divider. They don't count against tonight's step, and the pouch header reads, for example, "6 of 6 · 13 in the morning".
+- **Tomorrow morning** is now built from everything left for the morning, grouped by where it goes, for example "Into the toiletry bag" and "Into the backpack".
+- **To buy there** shows at the top of Your days, and in the menu with a count. Tick each thing once it's bought.
+- Changes to the trip plan:
+  - The morning toiletries (toothbrush, toothpaste, tongue cleaner, face wash, sinus rinse, moisturisers, hair serum and cream, bidet) now sit in the toiletry bag, marked for the morning.
+  - Beard trimmer (charging) and nail clipper are marked for the morning.
+  - Lip balm moved to the backpack, marked for the morning.
+  - Phone charger is in the backpack, marked for the morning.
+- "Start packing again" keeps your moves and the things you're not taking, and clears morning and buy marks.
+- Plan fields: `step.bag`, `step.morning`, `item.later`. Progress fields: `where`, `later`, `buy`, `skip`.
+
 ## 4.3 · 1 November 2026 · Pouches
 
 Small things were listed one by one ("Shampoo", "Conditioner", "Body wash"…), but they actually go into a pouch first and then into the bag. A plan can now group things by the pouch they go in. Each pouch works like an outfit:

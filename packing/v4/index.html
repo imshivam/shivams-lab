@@ -131,12 +131,25 @@ h1 { margin: 0; font: 700 30px/1.15 var(--font-round); letter-spacing: -0.01em; 
 .grp .open { flex: 0 0 auto; border: 0; background: transparent; color: var(--muted); width: 44px; height: 44px; margin-right: 6px; border-radius: 22px; display: grid; place-items: center; }
 .grp .open svg.i { transition: transform 0.2s; }
 .grp.expanded .open svg.i { transform: rotate(90deg); }
-.part { border-top: 0; }
-.part .tick { padding: 10px 16px 10px 56px; min-height: 48px; position: relative; }
-.part .tick::before { content: ""; position: absolute; top: 0; left: 56px; right: 0; border-top: 0.5px solid var(--sep); }
+.part { border-top: 0; position: relative; }
+.part .tick { padding: 10px 16px 10px 56px; min-height: 48px; }
+.part::before { content: ""; position: absolute; top: 0; left: 56px; right: 0; border-top: 0.5px solid var(--sep); }
 .part .check { width: 22px; height: 22px; }
 .part .check svg.i { width: 13px; height: 13px; }
 .clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* One quiet "more" button per thing: morning, buy there, move, not taking */
+.more { flex: 0 0 auto; border: 0; background: transparent; color: var(--muted); width: 44px; height: 44px; margin-right: 4px; border-radius: 22px; display: grid; place-items: center; opacity: 0.75; }
+.more svg.i { width: 18px; height: 18px; }
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.tag svg.i { width: 14px; height: 14px; stroke-width: 2; }
+.item.buy .check { border-style: dashed; }
+.divider { display: flex; align-items: center; gap: 6px; padding: 14px 16px 6px 56px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.divider svg.i { width: 15px; height: 15px; }
+.divider + .part::before { display: none; }
+.items.flat { margin: 6px -16px -8px; background: none; border-radius: 0; }
+.group .indent { padding-left: 52px; }
+.group button .txt { display: grid; gap: 2px; }
+.group button .sub { font-size: 13px; }
 .side { flex: 0 0 auto; border: 0; background: transparent; color: var(--muted); min-width: 44px; height: 44px; margin-right: 6px; border-radius: 22px; display: grid; place-items: center; }
 .side.decide { color: var(--warn); font-size: 15px; font-weight: 600; padding: 0 10px; }
 
@@ -257,6 +270,8 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
 
 <dialog id="menu" aria-labelledby="menu-title"><div class="sheet" id="menu-body"></div></dialog>
 
+<dialog id="item" aria-labelledby="item-title"><div class="sheet" id="item-body"></div></dialog>
+
 <dialog id="add" aria-labelledby="add-title">
   <form class="sheet" method="dialog" id="add-form">
     <div class="grab" aria-hidden="true"></div>
@@ -322,7 +337,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     }
     return t;
   }
-  const normal = (p) => ({ done: {}, answers: {}, dismissed: {}, kept: {}, added: {}, parts: {}, ...(isObj(p) ? clone(p) : {}) });
+  const normal = (p) => ({ done: {}, answers: {}, dismissed: {}, kept: {}, added: {}, parts: {}, where: {}, later: {}, buy: {}, skip: {}, ...(isObj(p) ? clone(p) : {}) });
 
   /* ---------- State ---------- */
   let cache = {};
@@ -338,13 +353,28 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
 
   const answer = (id) => String(prog.answers[id] || "").trim();
   const hidden = (it) => Array.isArray(it.hideIf) && answer(it.hideIf[0]) === it.hideIf[1];
-  const added = (stepId) => Object.entries(prog.added)
-    .filter(([, a]) => isObj(a) && !a.gone && a.step === stepId)
-    .sort((a, b) => (a[1].at || 0) - (b[1].at || 0))
-    .map(([id, a]) => ({ id, name: a.name, note: a.note, mine: true }));
-  // What counts in a step: its things, ideas you chose to keep, and what you added. Ideas you haven't looked at don't count.
-  const items = (step) => [...step.items.filter((it) => !hidden(it) && (!it.sug || prog.kept[it.id])), ...added(step.id)];
-  const ideas = (step) => step.items.filter((it) => it.sug && !prog.kept[it.id] && !prog.dismissed[it.id]);
+  /* Everything on the trip, each with the step it came from (`home`): the plan's things plus what you added.
+     You can move a thing to another bag or pouch (progress.where), leave it for the morning (progress.later,
+     or the plan's `later`), buy it there instead (progress.buy) or not take it (progress.skip). */
+  const everything = () => {
+    if (!plan) return [];
+    const out = [];
+    plan.steps.forEach((st) => st.items.forEach((it) => out.push({ ...it, home: st.id })));
+    Object.entries(prog.added).filter(([, a]) => isObj(a) && !a.gone).sort((a, b) => (a[1].at || 0) - (b[1].at || 0))
+      .forEach(([id, a]) => out.push({ id, name: a.name, note: a.note, mine: true, home: a.step }));
+    return out;
+  };
+  const placeOf = (it) => { const w = prog.where[it.id]; return isObj(w) && w.step ? { step: w.step, group: w.group || null } : { step: it.home, group: it.group || null }; };
+  const isLater = (it) => typeof prog.later[it.id] === "boolean" ? prog.later[it.id] : !!it.later;
+  const isBuy = (it) => !!prog.buy[it.id];
+  const live = (it) => !hidden(it) && !prog.skip[it.id] && (!it.sug || prog.kept[it.id]);
+  // The morning step gathers everything left for the morning, from every bag.
+  const items = (step) => step.morning
+    ? everything().filter((it) => it.kind !== "decide" && live(it) && isLater(it) && !isBuy(it))
+    : everything().filter((it) => live(it) && placeOf(it).step === step.id).sort((a, b) => (a.home !== step.id) - (b.home !== step.id)); // moved in: at the end
+  // What a step needs done now: not the things left for the morning or to buy there.
+  const counted = (step) => step.morning ? items(step) : items(step).filter((it) => !isLater(it) && !isBuy(it));
+  const ideas = (step) => step.morning ? [] : everything().filter((it) => it.sug && !prog.kept[it.id] && !prog.dismissed[it.id] && !prog.skip[it.id] && placeOf(it).step === step.id);
   /* A typed answer with several pieces ("Black sweatshirt / Green cargo pants / ...") becomes a list to tick.
      Claude tidies it into short names with a note for when (stored in progress.parts, tied to the exact text);
      until then, or without Claude, each line you typed is one piece. */
@@ -365,7 +395,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     const ps = it.from && partsOf(it.from);
     return ps ? ps.every((p) => prog.done[p.key]) : !!prog.done[it.id];
   };
-  const count = (step) => { const all = items(step); return { done: all.filter(isDone).length, total: all.length }; };
+  const count = (step) => { const all = counted(step); return { done: all.filter(isDone).length, total: all.length }; };
   const complete = (step) => { const c = count(step); return c.done === c.total; };
   const questions = (step) => step.items.filter((it) => it.kind === "decide");
   const allItems = () => plan ? plan.steps.flatMap((s) => s.items) : [];
@@ -498,7 +528,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       <div class="glyph">${ic(s.icon)}</div>
       <h1>${esc(s.do || s.title)}</h1>
       ${s.tip ? `<p class="tip">${esc(s.tip)}</p>` : ""}
-      ${list.length ? `<ul class="items">${blocks(s).map((b) => b.pieces ? groupHTML(b, b.id === shownGroup) : rowHTML(b.it)).join("")}</ul>` : ""}
+      ${list.length ? `<ul class="items">${blocks(s).map((b) => b.pieces ? groupHTML(b, b.id === shownGroup) : rowHTML(b.it, s.morning)).join("")}</ul>` : ""}
       ${idl.length ? `<details class="ideas" ${ideasOpen ? "open" : ""}>
         <summary>${ic("sparkle")}${idl.length} ${idl.length === 1 ? "idea" : "ideas"} you didn't mention${ic("chev").replace('class="i"', 'class="i chev"')}</summary>
         <ul class="idea-list">${idl.map((it) => `<li class="idea" data-id="${esc(it.id)}">
@@ -515,23 +545,33 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
      an outfit typed as several pieces, or things the plan puts in one pouch (step.groups and item.group).
      One group is open at a time; when it's complete, the next one opens. */
   let openGroup = null;
+  const piece = (x, morning) => ({ key: x.id, name: x.name, note: x.note || "", qty: x.qty, item: true,
+    later: isLater(x), buy: isBuy(x), counts: morning || (!isLater(x) && !isBuy(x)) });
+  const placeName = (pl) => { const st = plan.steps.find((x) => x.id === pl.step); const g = st && pl.group && (st.groups || []).find((x) => x.id === pl.group); return g ? g.name : st ? nm(st) : ""; };
   function blocks(s) {
     const out = [], seen = new Set();
-    const defs = Object.fromEntries((s.groups || []).map((g) => [g.id, g]));
     const list = items(s);
+    if (s.morning) {
+      // Grouped by where each thing goes once you've used it.
+      const by = new Map();
+      list.forEach((it) => { const pl = placeOf(it); const k = pl.step + "/" + (pl.group || ""); if (!by.has(k)) by.set(k, { pl, its: [] }); by.get(k).its.push(it); });
+      return [...by.entries()].map(([k, v]) => ({ id: "m/" + k, name: "Into the " + placeName(v.pl).toLowerCase(), note: "", pieces: v.its.map((x) => piece(x, true)) }));
+    }
+    const defs = Object.fromEntries((s.groups || []).map((g) => [g.id, g]));
     for (const it of list) {
       if (it.from && partsOf(it.from)) { out.push({ id: it.id, name: it.name, note: "", pieces: partsOf(it.from) }); continue; }
-      const g = it.group && defs[it.group];
+      const pg = placeOf(it).group;
+      const g = pg && defs[pg];
       if (!g) { out.push({ it }); continue; }
       if (seen.has(g.id)) continue;
       seen.add(g.id);
-      out.push({ id: g.id, name: g.name, note: g.note || "", pieces: list.filter((x) => x.group === g.id)
-        .map((x) => ({ key: x.id, name: x.name, note: x.note || "", qty: x.qty, removable: !!(x.mine || x.sug) })) });
+      out.push({ id: g.id, name: g.name, note: g.note || "", pieces: list.filter((x) => placeOf(x).group === g.id).map((x) => piece(x, false)).sort((a, b) => b.counts - a.counts) }); // what's for now first, the morning after
     }
     return out;
   }
   const groups = (s) => blocks(s).filter((b) => b.pieces);
-  const groupDone = (b) => b.pieces.every((p) => prog.done[p.key]);
+  const counts = (p) => p.counts !== false;
+  const groupDone = (b) => b.pieces.filter(counts).every((p) => prog.done[p.key]);
   const currentGroup = (s) => {
     if (openGroup === "__none") return null;
     const gs = groups(s);
@@ -542,35 +582,38 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   const openNext = (s, fallback) => { const nx = groups(s).find((x) => !groupDone(x)); openGroup = nx ? nx.id : fallback; };
   function groupHTML(b, open) {
     const ps = b.pieces;
-    const n = ps.filter((p) => prog.done[p.key]).length;
-    const on = n === ps.length;
+    const now = ps.filter(counts);
+    const n = now.filter((p) => prog.done[p.key]).length;
+    const on = now.length > 0 && n === now.length;
+    const later = ps.filter((p) => p.later && !counts(p)).length;
+    const status = (now.length === 0 ? "All for the morning" : on ? "All packed" : `${n} of ${now.length}`) + (later && now.length ? ` · ${later} in the morning` : "");
     return `<li class="item grp ${on ? "on" : ""} ${open ? "expanded" : ""}" data-id="${esc(b.id)}">
-      <button class="tick" data-act="tick-group" aria-pressed="${on}" aria-label="${esc(b.name)}: tick all ${ps.length}">
+      <button class="tick" data-act="tick-group" aria-pressed="${on}" aria-label="${esc(b.name)}: tick all ${now.length}">
         <span class="check">${ic("check")}</span>
-        <span class="txt"><span class="name">${esc(b.name)}</span><span class="sub">${on ? "All packed" : `${n} of ${ps.length}`}</span>${open && !on && b.note ? `<span class="sub">${esc(b.note)}</span>` : ""}</span>
+        <span class="txt"><span class="name">${esc(b.name)}</span><span class="sub">${status}</span>${open && !on && b.note ? `<span class="sub">${esc(b.note)}</span>` : ""}</span>
       </button>
       <button class="open" data-act="open-group" aria-expanded="${open}" aria-label="${open ? "Hide" : "Show"} what goes in ${esc(b.name)}">${ic("chev")}</button>
-    </li>${open ? ps.map((p) => `<li class="item part ${prog.done[p.key] ? "on" : ""}" data-id="${esc(p.key)}">
-      <button class="tick" data-act="tick" aria-pressed="${!!prog.done[p.key]}">
-        <span class="check">${ic("check")}</span>
-        <span class="txt"><span class="name">${esc(p.name)}</span>${p.note ? `<span class="sub">${esc(p.note)}</span>` : ""}</span>
-        ${p.qty ? `<span class="qty">${esc(p.qty)}</span>` : ""}
-      </button>${p.removable ? `<button class="side" data-act="drop" aria-label="Remove ${esc(p.name)}">${ic("close")}</button>` : ""}</li>`).join("") : ""}`;
+    </li>${open ? ps.map((p, n) => (!counts(p) && p.later && (n === 0 || counts(ps[n - 1]) || !ps[n - 1].later) ? `<li class="divider">${ic("sun")}In the morning</li>` : "") +
+      thingHTML({ id: p.key, name: p.name, note: p.note, qty: p.qty, buy: p.buy, item: p.item }, "part")).join("") : ""}`;
   }
 
-  function rowHTML(it) {
-    const on = isDone(it);
-    let sub = it.note || "", unset = false;
-    let clamp = false;
+  function rowHTML(it, morning) {
+    let sub = it.note || "", unset = false, clamp = false;
     if (it.from) { const a = answer(it.from); if (a) { sub = a; clamp = true; } else unset = true; }
-    const side = unset ? `<button class="side decide" data-act="ask" data-q="${esc(it.from)}">Decide</button>`
-      : (it.mine || it.sug) ? `<button class="side" data-act="drop" aria-label="Remove ${esc(it.name)}">${ic("close")}</button>` : "";
-    return `<li class="item ${on ? "on" : ""}" data-id="${esc(it.id)}">
-      <button class="tick" data-act="tick" aria-pressed="${on}">
+    return thingHTML({ id: it.id, name: it.name, note: sub, clamp, qty: it.qty, unset: unset && it.from, item: !it.from,
+      later: !morning && isLater(it), buy: isBuy(it) }, "");
+  }
+  // One thing to tick. Left for the morning or to buy there shows as a small tag; "more" opens its options.
+  function thingHTML(t, cls) {
+    const on = !!prog.done[t.id] && !t.buy;
+    const tag = t.buy ? `<span class="tag">${ic("shop")}Buying it there</span>` : t.later ? `<span class="tag">${ic("sun")}Morning</span>` : "";
+    return `<li class="item ${cls} ${on ? "on" : ""} ${t.buy ? "buy" : ""}" data-id="${esc(t.id)}">
+      <button class="tick" data-act="${t.buy ? "item" : "tick"}" aria-pressed="${on}">
         <span class="check">${ic("check")}</span>
-        <span class="txt"><span class="name">${esc(it.name)}</span>${sub ? `<span class="sub ${clamp ? "clamp" : ""}">${esc(sub)}</span>` : ""}</span>
-        ${it.qty ? `<span class="qty">${esc(it.qty)}</span>` : ""}
-      </button>${side}
+        <span class="txt"><span class="name">${esc(t.name)}</span>${t.note ? `<span class="sub ${t.clamp ? "clamp" : ""}">${esc(t.note)}</span>` : ""}${tag}</span>
+        ${t.qty ? `<span class="qty">${esc(t.qty)}</span>` : ""}
+      </button>${t.unset ? `<button class="side decide" data-act="ask" data-q="${esc(t.unset)}">Decide</button>`
+        : t.item ? `<button class="more" data-act="item" aria-label="Options for ${esc(t.name)}">${DOTS}</button>` : ""}
     </li>`;
   }
 
@@ -591,6 +634,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     return `<div class="centre"><h1>${h}</h1>${p ? `<p>${p}</p>` : ""}</div>`;
   }
 
+  const toBuy = () => everything().filter((it) => it.kind !== "decide" && !hidden(it) && !prog.skip[it.id] && isBuy(it));
   function renderDays() {
     $("#back").innerHTML = ic("back"); $("#back").disabled = false;
     $("#more").innerHTML = DOTS;
@@ -599,6 +643,9 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     const today = todayIso();
     const eventDay = answer("d-eventday");
     const boots = answer("d-boots");
+    const buys = toBuy();
+    const buyCard = buys.length ? `<section class="tips" aria-label="To buy there"><p class="meta">${ic("shop")}To buy there</p>
+      <ul class="items flat">${buys.map((it) => thingHTML({ id: it.id, name: it.name, item: true }, "")).join("")}</ul></section>` : "";
     const tips = (plan.tips || []).length ? `<section class="tips" aria-label="Good to know"><p class="meta">Good to know</p>
       <ul class="lines">${plan.tips.map((t) => `<li>${ic(t.icon)}<span>${esc(t.text)}</span></li>`).join("")}</ul></section>` : "";
     const cards = (plan.days || []).map((d) => {
@@ -615,7 +662,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       (d.lines || []).forEach((l) => rows.push([/^on the plane/i.test(l) ? "plane" : "note", l, false]));
       if (d.gym) { rows.push(["gym", `Gym: set ${d.gym}`, false]); uses.push("w-gym", "w-gymshoes", "w-gymsocks"); }
       if (d.night) { rows.push(["moon", `Pyjamas, set ${d.night}`, false]); uses.push("w-pj"); }
-      const need = [...new Set(uses)].map(byId).filter((it) => it && !hidden(it));
+      const need = [...new Set(uses)].map(byId).filter((it) => it && !hidden(it) && !prog.skip[it.id] && !isBuy(it));
       const left = need.filter((it) => !isDone(it)).length;
       return `<section class="day ${d.date === today ? "today" : ""}">
         <div class="day-head">
@@ -625,7 +672,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
         <ul class="lines">${rows.map(([icon, t, unset]) => `<li>${ic(icon)}<span class="${unset ? "unset" : ""}">${esc(t)}</span></li>`).join("")}</ul>
       </section>`;
     }).join("");
-    view.innerHTML = tips + cards;
+    view.innerHTML = buyCard + tips + cards;
   }
 
   function autosize(ta) { ta.style.height = "auto"; ta.style.height = Math.max(120, ta.scrollHeight + 2) + "px"; }
@@ -673,6 +720,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   function tickRow(id) {
     const on = !prog.done[id];
     patch({ done: { [id]: on } });
+    if (tab === "days") { stay(); return; }
     const s0 = plan.steps[stepIndex()];
     const g = s0 && !isQuestions(s0) && groups(s0).find((b) => b.pieces.some((p) => p.key === id));
     if (g) {
@@ -702,8 +750,9 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       case "tick-group": {
         const s = plan.steps[stepIndex()]; const b = groups(s).find((x) => x.id === id);
         if (!b) break;
+        const now = b.pieces.filter(counts); if (!now.length) break;
         const on = !groupDone(b);
-        const d = {}; b.pieces.forEach((p) => { d[p.key] = on; });
+        const d = {}; now.forEach((p) => { d[p.key] = on; });
         patch({ done: d });
         if (on && shownGroup === id) openNext(s, id);
         stay(); break;
@@ -728,6 +777,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
         toast(`Not taking ${byId(id).name}`, () => { patch({ dismissed: { [id]: false } }); render(); });
         break;
       }
+      case "item": openItem(id); break;
       case "drop": {
         const mine = !!prog.added[id];
         const name = mine ? prog.added[id].name : byId(id).name;
@@ -753,6 +803,59 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     questionDock();
   });
 
+  /* ---------- One thing's options: morning, buy there, move, not taking ---------- */
+  const itemDlg = $("#item");
+  let sheetId = null;
+  const bags = () => plan.steps.filter((x) => x.bag).flatMap((st) => [{ step: st.id, group: null, name: nm(st), icon: st.icon },
+    ...(st.groups || []).map((g) => ({ step: st.id, group: g.id, name: g.name }))]);
+  const find = (id) => everything().find((x) => x.id === id);
+  function itemHTML(it) {
+    const pl = placeOf(it), later = isLater(it), buy = isBuy(it);
+    const inBag = plan.steps.some((x) => x.bag && x.id === pl.step);
+    const opt = (act, icon, label, sub, on) => `<li><button data-act="${act}" aria-pressed="${on}">${ic(icon)}<span class="txt"><span>${label}</span><span class="sub">${sub}</span></span><span class="left ok">${on ? ic("check") : ""}</span></button></li>`;
+    return `<div class="grab" aria-hidden="true"></div>
+      <div class="sheet-head"><div><h2 id="item-title">${esc(it.name)}</h2>${inBag ? `<p class="tip">In the ${esc(placeName(pl).toLowerCase())}</p>` : ""}</div>
+        <button class="close" data-act="close" aria-label="Close">${ic("close")}</button></div>
+      <ul class="group">
+        ${opt("later", "sun", "Pack it in the morning", "Once you've used it, or it's charged", later)}
+        ${opt("buy", "shop", "Buy it there", `At the airport or in ${esc(plan.title)}`, buy)}
+      </ul>
+      ${inBag ? `<p class="meta" style="margin:4px 0 -6px">Goes in</p><ul class="group">${bags().map((c) => {
+        const here = c.step === pl.step && (c.group || null) === (pl.group || null);
+        return `<li><button data-act="move" data-step="${esc(c.step)}" data-group="${esc(c.group || "")}" class="${c.group ? "indent" : ""}" aria-pressed="${here}">${c.group ? "" : ic(c.icon)}<span>${esc(c.name)}</span><span class="left ok">${here ? ic("check") : ""}</span></button></li>`;
+      }).join("")}</ul>` : ""}
+      <ul class="group"><li><button class="danger" data-act="skip">${ic("close")}<span>${it.mine ? "Remove it" : "Not taking it"}</span></button></li></ul>`;
+  }
+  function openItem(id) {
+    const it = find(id); if (!it) return;
+    sheetId = id; $("#item-body").innerHTML = itemHTML(it);
+    if (!itemDlg.open) itemDlg.showModal();
+  }
+  itemDlg.addEventListener("click", (e) => {
+    if (e.target === itemDlg) { itemDlg.close(); return; }
+    const el = e.target.closest("[data-act]");
+    const it = el && find(sheetId);
+    if (!it) return;
+    const id = it.id, done = (msg, undo) => { itemDlg.close(); stay(); toast(msg, undo); };
+    switch (el.dataset.act) {
+      case "close": itemDlg.close(); break;
+      case "later": { const was = isLater(it); patch({ later: { [id]: !was } }); done(!was ? `${it.name}: in the morning` : `${it.name}: packing it now`); break; }
+      case "buy": { const was = isBuy(it); patch({ buy: { [id]: !was } }); done(!was ? `${it.name}: buying it there` : `${it.name}: packing it`); break; }
+      case "move": {
+        const prev = placeOf(it), to = { step: el.dataset.step, group: el.dataset.group || null };
+        patch({ where: { [id]: to } });
+        done(`Moved to the ${placeName(to).toLowerCase()}`, () => { patch({ where: { [id]: prev } }); stay(); });
+        break;
+      }
+      case "skip": {
+        if (it.mine) { patch({ added: { [id]: { gone: true } } }); done(`Removed ${it.name}`, () => { patch({ added: { [id]: { gone: false } } }); stay(); }); }
+        else if (it.sug) { patch({ kept: { [id]: false }, dismissed: { [id]: true } }); done(`Not taking ${it.name}`, () => { patch({ kept: { [id]: true }, dismissed: { [id]: false } }); stay(); }); }
+        else { patch({ skip: { [id]: true } }); done(`Not taking ${it.name}`, () => { patch({ skip: { [id]: false } }); stay(); }); }
+        break;
+      }
+    }
+  });
+
   /* ---------- Menu ---------- */
   const menu = $("#menu");
   function menuHTML() {
@@ -769,7 +872,8 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
         return `<li><button data-act="step" data-n="${n}" ${n === i && tab === "pack" ? 'aria-current="step"' : ""}>${ic(s.icon)}<span>${esc(nm(s))}</span>
           <span class="left ${ok ? "ok" : ""}">${ok ? ic("check") : `${c.total - c.done} left`}</span></button></li>`;
       }).join("")}</ul>
-      <ul class="group"><li><button data-act="days">${ic("calendar")}<span>Your days</span><span class="left">${ic("chev")}</span></button></li></ul>
+      <ul class="group"><li><button data-act="days">${ic("calendar")}<span>Your days</span><span class="left">${ic("chev")}</span></button></li>
+        ${toBuy().length ? `<li><button data-act="days">${ic("shop")}<span>To buy there</span><span class="left">${toBuy().filter((x) => !prog.done[x.id]).length || ic("check")}</span></button></li>` : ""}</ul>
       ${confirming ? `<div class="confirm"><p>Clear every tick and answer? The things you added stay, ready for the next trip.</p>
           <div class="row2"><button class="cta" data-act="reset-no">Keep</button><button class="cta danger" data-act="reset-yes">Clear</button></div></div>`
         : `<ul class="group"><li><button class="danger" data-act="reset">${ic("reset")}<span>Start packing again</span></button></li></ul>`}` : ""}
@@ -790,7 +894,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       case "reset-yes": {
         confirming = false;
         clearTimeout(flushTimer);
-        prog = normal({ added: prog.added, dismissed: prog.dismissed, kept: prog.kept }); at = null; qi = 0; tab = "pack"; outbox = null; saveLocal();
+        prog = normal({ added: prog.added, dismissed: prog.dismissed, kept: prog.kept, where: prog.where, skip: prog.skip }); at = null; qi = 0; tab = "pack"; outbox = null; saveLocal();
         if (progRef) progRef.set(clone(prog)).catch(() => setSync("offline"));
         menu.close(); show(); toast("Cleared. Ready for the next trip.");
         break;
@@ -914,7 +1018,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     if (!plan || was === "offline" || s === "offline") { rerender(); }
     document.querySelectorAll("#sync-note").forEach((el) => { el.textContent = syncText(); });
   }
-  const busy = () => { const a = document.activeElement; return !!(a && (a.tagName === "TEXTAREA" || a.tagName === "INPUT")) || menu.open || addDlg.open; };
+  const busy = () => { const a = document.activeElement; return !!(a && (a.tagName === "TEXTAREA" || a.tagName === "INPUT")) || menu.open || addDlg.open || itemDlg.open; };
   let held = false;
   // An update that arrived while you were typing is applied as soon as you stop.
   const release = () => setTimeout(() => { if (held && !busy()) { held = false; rerender(); } }, 0);
@@ -922,6 +1026,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   document.addEventListener("pointerup", release);
   document.addEventListener("visibilitychange", release);
   menu.addEventListener("close", release);
+  itemDlg.addEventListener("close", release);
   addDlg.addEventListener("close", release);
   const rerender = () => { if (busy()) { held = true; return; } const y = window.scrollY; render(); window.scrollTo(0, y); };
 
