@@ -2,6 +2,16 @@
 
 Newest first.
 
+## 4.7 · 1 November 2026 · Fold, then open
+
+Switching pouches felt janky because everything moved at once.
+- Switching is now two calm beats:
+  1. The open pouch folds shut and fades, while the page eases so both headers are in view.
+  2. After a short pause, the pouch you chose unfolds, and the page scrolls only as far as needed to show what's in it.
+- Movement is eased and paced by distance: long pouches take a bit longer, up to about three quarters of a second. Measured on a phone-sized screen, a header moves at most 24px per frame, down from a jump of several hundred pixels.
+- Finishing a pouch now opens the next unfinished one further down, instead of jumping back to an earlier one.
+- The motion always completes, even if the page is paused mid-way. With reduced motion turned on, it switches without animating.
+
 ## 4.6 · 1 November 2026 · An opened pouch comes into view
 
 Opening the medicine pouch while scrolled down the toiletry bag folded the toiletry bag away, and the medicine pouch jumped off the top of the screen.

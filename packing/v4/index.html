@@ -133,6 +133,7 @@ h1 { margin: 0; font: 700 30px/1.15 var(--font-round); letter-spacing: -0.01em; 
 .grp .open { flex: 0 0 auto; border: 0; background: transparent; color: var(--muted); width: 44px; height: 44px; margin-right: 6px; border-radius: 22px; display: grid; place-items: center; }
 .grp .open svg.i { transition: transform 0.2s; }
 .grp.expanded .open svg.i { transform: rotate(90deg); }
+.pieces { list-style: none; margin: 0; padding: 0; }
 .part { border-top: 0; position: relative; }
 .part .tick { padding: 10px 16px 10px 56px; min-height: 48px; }
 .part::before { content: ""; position: absolute; top: 0; left: 56px; right: 0; border-top: 0.5px solid var(--sep); }
@@ -594,7 +595,6 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
     const g = gs.find((g) => !groupDone(g));
     return g ? g.id : null;
   };
-  const openNext = (s, fallback) => { const nx = groups(s).find((x) => !groupDone(x)); openGroup = nx ? nx.id : fallback; };
   function groupHTML(b, open) {
     const ps = b.pieces;
     const now = ps.filter(counts);
@@ -608,8 +608,8 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
         <span class="txt"><span class="name">${esc(b.name)}</span><span class="sub">${status}</span>${open && !on && b.note ? `<span class="sub">${esc(b.note)}</span>` : ""}</span>
       </button>
       <button class="open" data-act="open-group" aria-expanded="${open}" aria-label="${open ? "Hide" : "Show"} what goes in ${esc(b.name)}">${ic("chev")}</button>
-    </li>${open ? ps.map((p, n) => (!counts(p) && p.later && (n === 0 || counts(ps[n - 1]) || !ps[n - 1].later) ? `<li class="divider">${ic("sun")}In the morning</li>` : "") +
-      thingHTML({ id: p.key, name: p.name, note: p.note, qty: p.qty, buy: p.buy, item: p.item }, "part")).join("") : ""}`;
+    </li>${open ? `<li class="pieces-wrap" data-for="${esc(b.id)}"><ul class="pieces">` + ps.map((p, n) => (!counts(p) && p.later && (n === 0 || counts(ps[n - 1]) || !ps[n - 1].later) ? `<li class="divider">${ic("sun")}In the morning</li>` : "") +
+      thingHTML({ id: p.key, name: p.name, note: p.note, qty: p.qty, buy: p.buy, item: p.item }, "part")).join("") + `</ul></li>` : ""}`;
   }
 
   function rowHTML(it, morning) {
@@ -695,19 +695,69 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
   /* ---------- Moving around ---------- */
   function show() { openGroup = null; render(); window.scrollTo({ top: 0 }); }
   const stay = () => { const y = window.scrollY; render(); window.scrollTo(0, y); };
-  // Redraw after a group opens, then glide that group's header to just under the top bar.
-  // `from` is the header you tapped: it's held still first, so the list doesn't jump when the group above it folds away.
+  /* Switching groups is two calm beats, so you can see what happened:
+     1. the open group folds shut while the page eases so both headers are in view;
+     2. the group you chose unfolds, scrolling only as far as needed to show what's in it. */
   const grpEl = (id) => id && view.querySelector(`.grp[data-id="${CSS.escape(id)}"]`);
-  function openAndShow(from) {
-    const before = grpEl(from), anchor = before ? before.getBoundingClientRect().top : null;
+  const wrapEl = (id) => id && view.querySelector(`.pieces-wrap[data-for="${CSS.escape(id)}"]`);
+  const easeInOut = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  // Frame by frame, with a timer as a backstop so a paused page (frames stop in the background) always finishes.
+  const tween = (ms, fn, curve) => new Promise((done) => {
+    const t0 = performance.now();
+    let over = false;
+    const finish = () => { if (over) return; over = true; fn(1); done(); };
+    const backstop = setTimeout(finish, ms + 250);
+    const step = (now) => { if (over) return; const t = Math.min(1, (now - t0) / ms); if (t >= 1) { clearTimeout(backstop); finish(); return; } fn((curve || easeInOut)(t)); requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
+  const docTop = (el) => el.getBoundingClientRect().top + window.scrollY;
+  let switching = false;
+  async function switchGroup(closeId, openId) {
+    if (switching) return;
+    if (still.matches) { openGroup = openId || "__none"; stay(); const h = grpEl(openId); if (h && h.getBoundingClientRect().top < $("#top").offsetHeight) window.scrollTo(0, docTop(h) - $("#top").offsetHeight - 12); return; }
+    switching = true;
+    const gap = $("#top").offsetHeight + 12;
+    const shut = wrapEl(closeId);
+    if (shut) {
+      const h = shut.offsetHeight;
+      const heads = [grpEl(closeId), grpEl(openId)].filter(Boolean);
+      const upper = Math.min(...heads.map(docTop));
+      const lower = Math.max(...heads.map(docTop));
+      const y0 = window.scrollY;
+      const maxY = Math.max(0, document.documentElement.scrollHeight - h - window.innerHeight);
+      // Keep the scroll if both headers will already be on screen; otherwise bring the upper one to the top.
+      const lowerAfter = lower > docTop(shut) ? lower - h : lower;
+      const fits = upper - y0 >= gap && lowerAfter - y0 + 80 <= window.innerHeight - $("#dock").offsetHeight;
+      const y1 = fits ? Math.min(y0, maxY) : Math.max(0, Math.min(upper - gap, maxY));
+      const hd = grpEl(closeId); if (hd) hd.classList.remove("expanded");
+      shut.style.overflow = "hidden"; shut.style.height = h + "px";
+      // Longer groups take a little longer to fold, so nothing ever races.
+      await tween(Math.min(780, 420 + Math.max(Math.abs(y1 - y0), h) * 0.3), (k) => { shut.style.height = h * (1 - k) + "px"; shut.style.opacity = String(1 - k); window.scrollTo(0, y0 + (y1 - y0) * k); });
+      await new Promise((r) => setTimeout(r, 90));
+    }
+    openGroup = openId || "__none";
     stay();
-    const held = grpEl(from);
-    if (held && anchor != null) window.scrollBy(0, held.getBoundingClientRect().top - anchor);
-    const target = grpEl(shownGroup);
-    if (!target) return;
-    const top = target.getBoundingClientRect().top + window.scrollY - $("#top").offsetHeight - 12;
-    window.scrollTo({ top: Math.max(0, top), behavior: still.matches ? "auto" : "smooth" });
+    const grow = wrapEl(openId), hd = grpEl(openId);
+    if (grow && hd) {
+      hd.classList.remove("expanded"); void hd.offsetWidth; hd.classList.add("expanded"); // let the chevron turn
+      const h = grow.scrollHeight;
+      grow.style.overflow = "hidden"; grow.style.height = "0px"; grow.style.opacity = "0";
+      const y0 = window.scrollY, room = window.innerHeight - $("#dock").offsetHeight - 12;
+      const bottom = docTop(hd) + hd.offsetHeight + h - y0;
+      const need = Math.max(0, Math.min(bottom - room, docTop(hd) - y0 - gap)); // scroll only what's needed, never past the header
+      await tween(Math.min(680, 420 + h * 0.35), (k) => { grow.style.height = h * k + "px"; grow.style.opacity = String(k); window.scrollTo(0, y0 + need * k); }, easeOut);
+      grow.style.height = ""; grow.style.overflow = ""; grow.style.opacity = "";
+    }
+    switching = false;
   }
+  // The next unfinished group after this one, going down the list first, then back to the top.
+  const nextOpen = (s, after) => {
+    const gs = groups(s), i = gs.findIndex((x) => x.id === after);
+    const nx = [...gs.slice(i + 1), ...gs.slice(0, Math.max(0, i))].find((x) => !groupDone(x));
+    return nx ? nx.id : null;
+  };
+
   function go(o) { if (o.tab) tab = o.tab; saveLocal(); show(); }
   function goStep(n) {
     typing = false; ideasOpen = false;
@@ -756,7 +806,7 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
       stay();
       if (on) setTimeout(() => {
         const now = groups(s0).find((b) => b.id === g.id);
-        if (shownGroup === g.id && now && groupDone(now)) { openNext(s0, g.id); openAndShow(g.id); }
+        if (shownGroup === g.id && now && groupDone(now)) switchGroup(g.id, nextOpen(s0, g.id));
       }, 450);
       return;
     }
@@ -782,13 +832,12 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
         const on = !groupDone(b);
         const d = {}; now.forEach((p) => { d[p.key] = on; });
         patch({ done: d });
-        if (on && shownGroup === id) { openNext(s, id); openAndShow(id); } else stay();
+        if (on && shownGroup === id) switchGroup(id, nextOpen(s, id)); else stay();
         break;
       }
       case "open-group": {
         const opening = shownGroup !== id;
-        openGroup = opening ? id : "__none";
-        if (opening) openAndShow(id); else stay();
+        if (opening) switchGroup(shownGroup, id); else switchGroup(id, null);
         break;
       }
       case "opt": {
