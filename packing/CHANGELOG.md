@@ -2,6 +2,12 @@
 
 Newest first.
 
+## 4.6 · 1 November 2026 · An opened pouch comes into view
+
+Opening the medicine pouch while scrolled down the toiletry bag folded the toiletry bag away, and the medicine pouch jumped off the top of the screen.
+- Now the header you tapped stays where it was while the list above folds. Then the page glides so the opened pouch sits just under the top bar, with its first things showing. With reduced motion turned on, it moves without the glide.
+- The same happens when finishing one pouch opens the next.
+
 ## 4.5 · 1 November 2026 · A calmer options sheet
 
 The options for one thing looked like the whole page had changed: no visible motion, the same colour as the page, eight choices at once, and a green focus ring on the close button.

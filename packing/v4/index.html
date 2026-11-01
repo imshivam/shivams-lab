@@ -695,6 +695,19 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
   /* ---------- Moving around ---------- */
   function show() { openGroup = null; render(); window.scrollTo({ top: 0 }); }
   const stay = () => { const y = window.scrollY; render(); window.scrollTo(0, y); };
+  // Redraw after a group opens, then glide that group's header to just under the top bar.
+  // `from` is the header you tapped: it's held still first, so the list doesn't jump when the group above it folds away.
+  const grpEl = (id) => id && view.querySelector(`.grp[data-id="${CSS.escape(id)}"]`);
+  function openAndShow(from) {
+    const before = grpEl(from), anchor = before ? before.getBoundingClientRect().top : null;
+    stay();
+    const held = grpEl(from);
+    if (held && anchor != null) window.scrollBy(0, held.getBoundingClientRect().top - anchor);
+    const target = grpEl(shownGroup);
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - $("#top").offsetHeight - 12;
+    window.scrollTo({ top: Math.max(0, top), behavior: still.matches ? "auto" : "smooth" });
+  }
   function go(o) { if (o.tab) tab = o.tab; saveLocal(); show(); }
   function goStep(n) {
     typing = false; ideasOpen = false;
@@ -743,7 +756,7 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
       stay();
       if (on) setTimeout(() => {
         const now = groups(s0).find((b) => b.id === g.id);
-        if (shownGroup === g.id && now && groupDone(now)) { openNext(s0, g.id); stay(); }
+        if (shownGroup === g.id && now && groupDone(now)) { openNext(s0, g.id); openAndShow(g.id); }
       }, 450);
       return;
     }
@@ -769,10 +782,15 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
         const on = !groupDone(b);
         const d = {}; now.forEach((p) => { d[p.key] = on; });
         patch({ done: d });
-        if (on && shownGroup === id) openNext(s, id);
-        stay(); break;
+        if (on && shownGroup === id) { openNext(s, id); openAndShow(id); } else stay();
+        break;
       }
-      case "open-group": openGroup = shownGroup === id ? "__none" : id; stay(); break;
+      case "open-group": {
+        const opening = shownGroup !== id;
+        openGroup = opening ? id : "__none";
+        if (opening) openAndShow(id); else stay();
+        break;
+      }
       case "opt": {
         const val = el.dataset.val;
         const nv = answer(id) === val ? "" : val;
