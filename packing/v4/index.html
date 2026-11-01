@@ -279,7 +279,10 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   const KEY = "packed.v4";
   const ARTIFACT_URL = "https://claude.ai/artifact/KV5TuPgEUfo9iqi7FwQZPo";
   const outsideClaude = /(^|\.)github\.io$|^localhost$|^127\./.test(location.hostname) || location.protocol === "file:";
-  const SHORT = { decide: "Decide", charge: "Charge", layout: "Lay out", big: "Big bag", cabin: "Cabin bag", morning: "Morning", door: "Door" };
+  const SHORT = { // used when a plan step has no `short` name
+  decide: "Decide", charge: "Charge", layout: "Lay out", big: "Big bag", cabin: "Cabin bag", morning: "Morning", door: "Door" };
+
+  const nm = (s) => s.short || SHORT[s.id] || s.title;
 
   /* One line-icon set, used only where a symbol is faster to recognise than a word. */
   const P = {
@@ -445,7 +448,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       return `<span class="${n === i ? "cur" : ""}"><i style="width:${pct}%"></i></span>`;
     }).join("");
     const cur = steps[i];
-    bar.setAttribute("aria-label", cur ? `Step ${i + 1} of ${steps.length}, ${SHORT[cur.id] || cur.title}. Show all steps` : "All packed. Show all steps");
+    bar.setAttribute("aria-label", cur ? `Step ${i + 1} of ${steps.length}, ${nm(cur)}. Show all steps` : "All packed. Show all steps");
   }
 
   function renderQuestion(s, i, banner) {
@@ -459,7 +462,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     const showText = !opts.length || own || typing;
     view.innerHTML = `${banner}
       <section data-id="${esc(it.id)}">
-        <p class="meta">${ic(s.icon)}${esc(SHORT[s.id] || s.title)} · ${qi + 1} of ${qs.length}</p>
+        <p class="meta">${ic(s.icon)}${esc(nm(s))} · ${qi + 1} of ${qs.length}</p>
         <h1 id="q-title">${esc(it.q || it.name)}</h1>
         ${it.tip || it.hint ? `<p class="tip">${esc(it.tip != null ? it.tip : it.hint)}</p>` : ""}
         ${opts.length ? `<div class="choices" role="group" aria-labelledby="q-title">
@@ -505,7 +508,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
         </li>`).join("")}</ul>
       </details>` : ""}`;
     const done = complete(s);
-    setDock(next ? `Next: ${SHORT[next.id] || next.title}` : "Finish", done, () => goStep(i + 1));
+    setDock(next ? `Next: ${nm(next)}` : "Finish", done, () => goStep(i + 1));
   }
 
   let openGroup = null; // the outfit whose pieces are showing
@@ -615,7 +618,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     typing = false; ideasOpen = false;
     if (n >= plan.steps.length) {
       const open = plan.steps.findIndex((s) => !complete(s));
-      if (open >= 0) { toast(`${SHORT[plan.steps[open].id] || plan.steps[open].title} still has things left`); n = open; }
+      if (open >= 0) { toast(`${nm(plan.steps[open])} still has things left`); n = open; }
       else { at = "__done"; tab = "pack"; saveLocal(); show(); return; }
     }
     const s = plan.steps[n];
@@ -738,7 +741,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       ${plan ? `<button class="cta primary" data-act="add">Add something</button>
       <ul class="group" aria-label="Steps">${steps.map((s, n) => {
         const c = count(s), ok = complete(s);
-        return `<li><button data-act="step" data-n="${n}" ${n === i && tab === "pack" ? 'aria-current="step"' : ""}>${ic(s.icon)}<span>${esc(SHORT[s.id] || s.title)}</span>
+        return `<li><button data-act="step" data-n="${n}" ${n === i && tab === "pack" ? 'aria-current="step"' : ""}>${ic(s.icon)}<span>${esc(nm(s))}</span>
           <span class="left ${ok ? "ok" : ""}">${ok ? ic("check") : `${c.total - c.done} left`}</span></button></li>`;
       }).join("")}</ul>
       <ul class="group"><li><button data-act="days">${ic("calendar")}<span>Your days</span><span class="left">${ic("chev")}</span></button></li></ul>
@@ -800,7 +803,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       if (!fresh.length) { addMsg("That's already in your list."); return; }
       const st = here();
       addAll(fresh.map((name) => ({ name, step: st.id })));
-      addDlg.close(); render(); toast(`Added to ${SHORT[st.id] || st.title}`);
+      addDlg.close(); render(); toast(`Added to ${nm(st)}`);
       return;
     }
     const btn = $("#add-go"); btn.disabled = true; btn.textContent = "Sorting…";
@@ -818,7 +821,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       btn.disabled = false;
       if (!sorted.length) { sorted = null; btn.textContent = "Add"; addMsg("Nothing new in that. It's all in your list already."); return; }
       $("#add-text").hidden = true;
-      $("#add-out").innerHTML = sorted.map((s) => `<li><span>${esc(s.name)}</span><small>${esc(SHORT[s.step] || s.step)}</small></li>`).join("");
+      $("#add-out").innerHTML = sorted.map((s) => `<li><span>${esc(s.name)}</span><small>${esc(nm(plan.steps.find((x) => x.id === s.step) || { title: s.step }))}</small></li>`).join("");
       $("#add-out").hidden = false; $("#add-msg").hidden = true;
       btn.textContent = `Add ${sorted.length}`;
     } catch (e) {

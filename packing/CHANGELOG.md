@@ -2,6 +2,15 @@
 
 Newest first.
 
+## 4.2 · 1 November 2026 · Suitcase and backpack
+
+The plan assumed a cabin bag, but the trip has one checked suitcase and a backpack. That made it unclear whether the big-bag step meant "pack now".
+- "Pack the big bag" is now "Pack your suitcase", with the hint "The one you check in. Pack it now."
+- "Pack your cabin bag" is now "Pack your backpack", holding only what can't go in the suitcase: laptop, iPad, AirPods, power banks and valuables.
+- Medicines, glasses kit, lip balm, mints, the book, the bottle and the straps moved to the suitcase. Ticks moved with them.
+- The liquids-bag idea is gone, since no liquids travel in the backpack.
+- Step names now come from the plan (`short`), so a trip can name its own bags.
+
 ## 4.1 · 1 November 2026 · Outfits become lists to tick
 
 At "Lay out your clothes", an outfit you'd typed showed as one long paragraph to read. The lines you typed were also squashed together. Now:
