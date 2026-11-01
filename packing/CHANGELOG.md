@@ -2,6 +2,19 @@
 
 Newest first.
 
+## 3.0 · 1 November 2026 · Pack one step at a time
+
+- Rebuilt around a packing run. Pack shows one step at a time, in the order things should happen: decide what you'll wear, put things on charge, lay out clothes, pack the big bag, pack the cabin bag, the morning of departure, and the door. A rail shows where you are and lets you jump between steps.
+- Decisions come first, as blanks to fill. Where there are only a few sensible answers (which day, buy or bring), you can tap one.
+- Things you didn't mention are kept apart under "You didn't mention these", and each one can be dismissed.
+- Add something to any step, or tap "Thought of something?", say it out loud, and Claude puts each thing in the right step.
+- Days shows the trip a day at a time: what you'll wear, gym, night, and whether that day's things are packed.
+- Claude writes the plan from what you tell it, into your private storage. The page saves your ticks and answers as small changes, so two devices ticking at once don't overwrite each other, and it keeps working offline.
+- "Start packing again" clears ticks and answers but keeps your items for the next trip.
+- The GitHub Pages copy no longer holds any trip; it links to the Claude version.
+- How it was made, step by step: PROCESS.md.
+- Why: typing items in wasn't working for Shivam. He talks through his packing and pictures it a day at a time, and asked to be told what to pack first, next and last, one thing at a time.
+
 ## 2.1 · 31 October 2026 · Same plan on every device
 
 - In Claude, the plan is now saved to your Claude account (the artifact's private per-person storage), so the iPad and iPhone show the same trip. Changes from another device appear while the page is open; if you're typing, they wait until you finish.

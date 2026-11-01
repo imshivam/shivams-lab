@@ -1,7 +1,7 @@
 // Everything in the Lab. To add a project, copy one entry, change it, and keep the list newest first.
 // kind: "app" | "web" | "artifact". icon: a key in ICONS (icons.js). shot: optional image in assets/shots.
 
-window.LAB_UPDATED = "2026-10-31";
+window.LAB_UPDATED = "2026-11-01";
 
 window.PROJECTS = [
   {
@@ -11,24 +11,23 @@ window.PROJECTS = [
     name: "Packed",
     kind: "web",
     platform: "Web app, phone and Mac",
-    tagline: "Plan your trip day by day, then pack one list.",
+    tagline: "Say what you need. Pack it one step at a time.",
     about:
-      "Lay out your trip a day at a time and note what you'll wear and need for each one. Anything you use on several days is suggested again and packed once, and things you need every day go in Whole trip. The Pack tab adds it all up into one list: tick things off and set how many of each to bring. It starts empty and adds nothing you didn't choose. Opened in Claude, the plan is saved to your account, so it's the same on your iPad and iPhone.",
+      "Tell Claude everything you need for a trip, out loud and in any order, and it turns that into a packing run. Packed shows one step at a time, in the order things should happen: decide what you'll wear, charge, lay out, big bag, cabin bag, the morning you leave, and the door. Things you didn't mention are kept apart as suggestions you can dismiss. Days shows each day of the trip and whether its things are packed. It's saved to your Claude account, so it's the same on every device, and your items stay for the next trip.",
     highlights: [
-      "A card for each day of the trip",
-      "Reuse an item across days with one tap",
-      "One pack list that shows which days need each thing",
-      "Tick off and set how many to bring",
+      "One step on screen at a time, in packing order",
+      "Decisions first, as blanks to fill",
+      "Say a thought and Claude puts it in the right step",
+      "Each day of the trip, checked against the bag",
     ],
     made: "October 2026",
-    updated: "2026-10-31",
-    version: "2.1",
-    stack: "HTML, CSS, JavaScript, Claude artifact storage",
+    updated: "2026-11-01",
+    version: "3.0",
+    stack: "HTML, CSS, JavaScript, Claude artifact storage and sampling",
     where: "shivams-lab/packing",
     icon: "packed",
     links: [
       { label: "Open Packed", url: "https://claude.ai/artifact/B6fncirqAZDzv2kv8ckzdi", primary: true },
-      { label: "This Device Only", url: "https://imshivam.github.io/shivams-lab/packing/" },
     ],
   },
   {
