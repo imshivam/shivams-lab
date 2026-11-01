@@ -615,7 +615,7 @@ dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var
   function rowHTML(it, morning) {
     let sub = it.note || "", unset = false, clamp = false;
     if (it.from) { const a = answer(it.from); if (a) { sub = a; clamp = true; } else unset = true; }
-    return thingHTML({ id: it.id, name: it.name, note: sub, clamp, qty: it.qty, unset: unset && it.from, item: !it.from,
+    return thingHTML({ id: it.id, name: it.name, note: sub, clamp, qty: it.qty, unset: unset && it.from, item: true,
       later: !morning && isLater(it), buy: isBuy(it) }, "");
   }
   // One thing to tick. Left for the morning or to buy there shows as a small tag; "more" opens its options.

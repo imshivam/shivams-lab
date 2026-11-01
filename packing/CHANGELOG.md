@@ -2,6 +2,10 @@
 
 Newest first.
 
+## 4.7.1 · 1 November 2026 · Options for every thing
+
+- Things linked to a step 1 answer had no ⋯ button, so the towel couldn't be left for the morning. The same was true of underwear and the single-line outfits. Every thing now has it, except a row still waiting for its answer, which shows "Decide" instead.
+
 ## 4.7 · 1 November 2026 · Fold, then open
 
 Switching pouches felt janky because everything moved at once.
