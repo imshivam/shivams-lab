@@ -2,6 +2,11 @@
 
 Newest first.
 
+## 3.0.1 · 1 November 2026 · Sync note fix
+
+- The note under the list could stay on "Connecting…" when this device already had the latest plan. It now says the plan is saved to your account.
+- The project now has its own folder, ~/Documents/packed: the app, trips, test page, changelog and process record.
+
 ## 3.0 · 1 November 2026 · Pack one step at a time
 
 - Rebuilt around a packing run. Pack shows one step at a time, in the order things should happen: decide what you'll wear, put things on charge, lay out clothes, pack the big bag, pack the cabin bag, the morning of departure, and the door. A rail shows where you are and lets you jump between steps.

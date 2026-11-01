@@ -726,10 +726,9 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
     planRef.onSnapshot((snap) => {
       if (snap.metadata.fromCache) return;
       clearTimeout(slow);
-      sync = "on";
       const data = snap.exists ? snap.data() : null;
       const next = data && Array.isArray(data.steps) ? data : null;
-      if (JSON.stringify(next) !== JSON.stringify(plan)) { plan = next; saveLocal(); rerender(); }
+      if (JSON.stringify(next) !== JSON.stringify(plan)) { sync = "on"; plan = next; saveLocal(); rerender(); }
       else setSync("on");
     }, () => { clearTimeout(slow); setSync("offline"); });
     let first = true;
