@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Packed 4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Pack for a trip one thing at a time, from a plan Claude sorts out of what you say.">
+<style>
+/* Packed 4. One job per screen: the biggest thing is what to do now, one main button sits at the bottom,
+   and everything else (adding, days, steps, starting again) waits behind the menu. See DESIGN.md. */
+:root {
+  --bg: #F2F3F5;
+  --card: #FFFFFF;
+  --fg: #1D1D1F;
+  --muted: #6C6F75;
+  --sep: rgba(60, 64, 72, 0.14);
+  --fill: rgba(118, 122, 132, 0.12);
+  --ring: rgba(60, 64, 72, 0.32);
+  --bar: rgba(242, 243, 245, 0.86);
+  --accent: #0A7A72;
+  --accent-soft: rgba(10, 122, 114, 0.12);
+  --on-accent: #FFFFFF;
+  --warn: #8A5A00;
+  --danger: #D70015;
+  --toast: #1D1D1F;
+  --on-toast: #F5F5F7;
+  --toast-act: #3CCBBE;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --gutter: max(20px, env(safe-area-inset-left, 0px));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000; --card: #1C1C1E; --fg: #F5F5F7; --muted: #98989F;
+    --sep: rgba(84, 84, 88, 0.5); --fill: rgba(118, 118, 128, 0.24); --ring: rgba(235, 235, 245, 0.34);
+    --bar: rgba(0, 0, 0, 0.8); --accent: #3CCBBE; --accent-soft: rgba(60, 203, 190, 0.16); --on-accent: #00201D;
+    --warn: #FFC861; --danger: #FF453A; --toast: #F5F5F7; --on-toast: #1D1D1F; --toast-act: #0A7A72;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --card: #1C1C1E; --fg: #F5F5F7; --muted: #98989F;
+  --sep: rgba(84, 84, 88, 0.5); --fill: rgba(118, 118, 128, 0.24); --ring: rgba(235, 235, 245, 0.34);
+  --bar: rgba(0, 0, 0, 0.8); --accent: #3CCBBE; --accent-soft: rgba(60, 203, 190, 0.16); --on-accent: #00201D;
+  --warn: #FFC861; --danger: #FF453A; --toast: #F5F5F7; --on-toast: #1D1D1F; --toast-act: #0A7A72;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 17px/1.35 var(--font); -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 10px; }
+[hidden] { display: none !important; }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+
+.app { max-width: 600px; margin: 0 auto; min-height: 100dvh; }
+
+/* Top bar: back, where you are, menu */
+.top {
+  position: sticky; top: 0; z-index: 5;
+  display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; gap: 8px;
+  padding: calc(6px + env(safe-area-inset-top, 0px)) calc(var(--gutter) - 10px) 6px;
+  background: var(--bar); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+}
+.icon-btn {
+  width: 44px; height: 44px; border: 0; background: transparent; border-radius: 50%; padding: 0;
+  display: grid; place-items: center; color: var(--accent);
+}
+.icon-btn:disabled { color: var(--muted); opacity: 0.35; cursor: default; }
+.prog { border: 0; background: transparent; padding: 14px 0; display: flex; gap: 4px; min-width: 0; }
+.prog span { flex: 1; height: 5px; border-radius: 3px; background: var(--fill); overflow: hidden; }
+.prog span i { display: block; height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.35s ease; }
+.prog span.cur { background: var(--ring); }
+.top-title { text-align: center; font-weight: 600; }
+
+/* A screen */
+.view { padding: 12px var(--gutter) calc(120px + env(safe-area-inset-bottom, 0px)); }
+.meta { margin: 0 0 10px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.meta svg.i { width: 18px; height: 18px; color: var(--accent); }
+h1 { margin: 0; font: 700 30px/1.15 var(--font-round); letter-spacing: -0.01em; text-wrap: balance; }
+.tip { margin: 8px 0 0; color: var(--muted); font-size: 15px; }
+.glyph { width: 52px; height: 52px; border-radius: 16px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; margin-bottom: 16px; }
+.glyph svg.i { width: 28px; height: 28px; }
+
+/* Choices: big rows, one tap */
+.choices { display: grid; gap: 10px; margin-top: 28px; }
+.choice {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left;
+  min-height: 58px; padding: 14px 18px; border: 0; border-radius: 16px; background: var(--card);
+  box-shadow: inset 0 0 0 1.5px transparent; transition: box-shadow 0.2s, background-color 0.2s;
+}
+.choice .dot { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--ring); display: grid; place-items: center; flex: 0 0 auto; }
+.choice .dot svg.i { width: 15px; height: 15px; stroke-width: 2.6; opacity: 0; }
+.choice[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--accent); }
+.choice[aria-pressed="true"] .dot { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.choice[aria-pressed="true"] .dot svg.i { opacity: 1; }
+.choice.other { color: var(--accent); }
+.answer {
+  width: 100%; margin-top: 28px; border: 0; border-radius: 16px; background: var(--card); padding: 16px 18px;
+  font-size: 17px; line-height: 1.4; min-height: 120px; resize: none; box-shadow: inset 0 0 0 1.5px var(--sep);
+}
+.choices + .answer { margin-top: 10px; }
+.answer:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
+.answer::placeholder { color: var(--muted); }
+
+/* Things to tick */
+.items { list-style: none; margin: 24px 0 0; padding: 0; background: var(--card); border-radius: 16px; overflow: hidden; }
+.item { display: flex; align-items: center; border-top: 0.5px solid var(--sep); }
+.item:first-child { border-top: 0; }
+.tick {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 14px; text-align: left;
+  border: 0; background: transparent; padding: 14px 16px; min-height: 56px; border-radius: 0;
+}
+.check { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--ring); display: grid; place-items: center; flex: 0 0 auto; transition: background-color 0.2s, border-color 0.2s; }
+.check svg.i { width: 15px; height: 15px; stroke-width: 2.6; opacity: 0; transform: scale(0.5); transition: opacity 0.15s, transform 0.3s var(--spring); }
+.item.on .check { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.item.on .check svg.i { opacity: 1; transform: none; }
+.txt { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.name { overflow-wrap: anywhere; }
+.sub { font-size: 15px; color: var(--muted); overflow-wrap: anywhere; }
+.qty { font-size: 15px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.item.on .name { color: var(--muted); }
+.side { flex: 0 0 auto; border: 0; background: transparent; color: var(--muted); min-width: 44px; height: 44px; margin-right: 6px; border-radius: 22px; display: grid; place-items: center; }
+.side.decide { color: var(--warn); font-size: 15px; font-weight: 600; padding: 0 10px; }
+
+/* Ideas you didn't mention: folded */
+.ideas { margin-top: 12px; }
+.ideas summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; color: var(--accent);
+  padding: 14px 16px; min-height: 52px; border-radius: 16px; background: var(--accent-soft); font-size: 16px; font-weight: 600;
+}
+.ideas summary::-webkit-details-marker { display: none; }
+.ideas summary .chev { margin-left: auto; transition: transform 0.2s; }
+.ideas[open] summary .chev { transform: rotate(90deg); }
+.idea-list { list-style: none; margin: 8px 0 0; padding: 0; background: var(--card); border-radius: 16px; overflow: hidden; }
+.idea { display: flex; align-items: center; gap: 10px; padding: 12px 8px 12px 16px; border-top: 0.5px solid var(--sep); }
+.idea:first-child { border-top: 0; }
+.pill { border: 0; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 15px; font-weight: 600; min-height: 36px; padding: 0 14px; }
+
+/* The one main button */
+.dock {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  padding: 16px var(--gutter) calc(16px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--bg) 70%, transparent);
+}
+.dock-in { max-width: 560px; margin: 0 auto; }
+.cta {
+  width: 100%; border: 0; border-radius: 16px; min-height: 56px; padding: 14px 20px; font-size: 17px; font-weight: 600;
+  background: var(--card); color: var(--accent); box-shadow: inset 0 0 0 1px var(--sep);
+  transition: background-color 0.25s, color 0.25s;
+}
+.cta.primary { background: var(--accent); color: var(--on-accent); box-shadow: none; }
+
+/* All packed, and empty states */
+.centre { min-height: 60dvh; display: grid; place-content: center; justify-items: center; text-align: center; gap: 10px; }
+.centre .big { width: 76px; height: 76px; border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; animation: pop 0.5s var(--spring); }
+.centre .big svg.i { width: 38px; height: 38px; stroke-width: 2.4; }
+.centre p { margin: 0; color: var(--muted); max-width: 32ch; }
+.centre a { color: var(--accent); }
+@keyframes pop { from { transform: scale(0.4); opacity: 0; } to { transform: none; opacity: 1; } }
+.banner { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; padding: 10px 14px; border-radius: 12px; background: var(--fill); color: var(--muted); font-size: 15px; }
+
+/* Days */
+.day, .tips { background: var(--card); border-radius: 16px; padding: 16px; margin-top: 12px; }
+.day.today { box-shadow: inset 0 0 0 2px var(--accent); }
+.day-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.day h2 { margin: 0; font-size: 20px; font-weight: 700; }
+.day .meta { margin-bottom: 2px; }
+.badge { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; padding-top: 2px; }
+.badge.ok { color: var(--accent); }
+.badge svg.i { width: 16px; height: 16px; stroke-width: 2.4; }
+.lines { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; font-size: 15px; }
+.lines li { display: flex; gap: 12px; align-items: flex-start; }
+.lines svg.i { width: 20px; height: 20px; color: var(--muted); margin-top: -1px; }
+.lines .unset { color: var(--warn); }
+
+/* Sheets: menu and add */
+dialog {
+  border: 0; padding: 0; background: var(--bg); color: var(--fg);
+  width: 100%; max-width: 600px; margin: auto auto 0; border-radius: 22px 22px 0 0;
+  max-height: calc(100dvh - 40px); overflow: auto;
+}
+dialog[open] { animation: up 0.3s cubic-bezier(0.2, 0.9, 0.3, 1); }
+@keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
+.sheet { padding: 8px var(--gutter) calc(20px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; }
+.grab { width: 36px; height: 5px; border-radius: 3px; background: var(--ring); margin: 0 auto 4px; }
+.sheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.sheet h2 { margin: 0; font: 700 24px/1.2 var(--font-round); }
+.sheet .tip { margin-top: 2px; }
+.close { width: 32px; height: 32px; border: 0; border-radius: 50%; background: var(--fill); color: var(--muted); display: grid; place-items: center; padding: 0; }
+.close svg.i { width: 16px; height: 16px; stroke-width: 2.4; }
+.group { list-style: none; margin: 0; padding: 0; background: var(--card); border-radius: 16px; overflow: hidden; }
+.group li + li { border-top: 0.5px solid var(--sep); }
+.group button { width: 100%; display: flex; align-items: center; gap: 14px; text-align: left; border: 0; background: transparent; padding: 12px 16px; min-height: 52px; }
+.group button svg.i { color: var(--accent); }
+.group .left { margin-left: auto; font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 4px; }
+.group .left.ok { color: var(--accent); }
+.group .left svg.i { width: 17px; height: 17px; stroke-width: 2.4; }
+.group button[aria-current="step"] { font-weight: 600; }
+.group button.danger, .group button.danger svg.i { color: var(--danger); }
+.status { margin: 0; text-align: center; font-size: 13px; color: var(--muted); }
+.confirm { display: grid; gap: 10px; background: var(--card); border-radius: 16px; padding: 16px; }
+.confirm p { margin: 0; font-size: 15px; }
+.confirm .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.confirm .cta { min-height: 48px; }
+.confirm .cta.danger { background: var(--danger); color: #fff; box-shadow: none; }
+#add-text { min-height: 140px; margin: 0; }
+.sorted { list-style: none; margin: 0; padding: 0; background: var(--card); border-radius: 16px; overflow: hidden; }
+.sorted li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-top: 0.5px solid var(--sep); }
+.sorted li:first-child { border-top: 0; }
+.sorted small { color: var(--muted); font-size: 15px; white-space: nowrap; }
+.acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); z-index: 20;
+  transform: translate(-50%, 16px); opacity: 0; pointer-events: none;
+  background: var(--toast); color: var(--on-toast); border-radius: 999px; padding: 10px 18px;
+  display: flex; align-items: center; gap: 12px; font-size: 15px; max-width: calc(100vw - 32px);
+  transition: opacity 0.2s, transform 0.3s var(--spring);
+}
+.toast.has-action { padding-right: 8px; }
+.toast span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast button { border: 0; background: transparent; color: var(--toast-act); font-weight: 600; font-size: 15px; padding: 4px 10px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top" id="top" hidden>
+    <button class="icon-btn" id="back" aria-label="Back"></button>
+    <button class="prog" id="prog"></button>
+    <button class="icon-btn" id="more" aria-label="Menu"></button>
+  </header>
+  <main class="view" id="view"></main>
+  <div class="dock" id="dock" hidden><div class="dock-in"><button class="cta" id="cta"></button></div></div>
+</div>
+
+<dialog id="menu" aria-labelledby="menu-title"><div class="sheet" id="menu-body"></div></dialog>
+
+<dialog id="add" aria-labelledby="add-title">
+  <form class="sheet" method="dialog" id="add-form">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="sheet-head"><h2 id="add-title">Add something</h2></div>
+    <textarea class="answer" id="add-text" placeholder="Type or say it. As many things as you like." aria-label="What to add"></textarea>
+    <ul class="sorted" id="add-out" hidden></ul>
+    <p class="tip" id="add-msg" hidden></p>
+    <div class="acts">
+      <button class="cta" value="cancel" formnovalidate>Cancel</button>
+      <button class="cta primary" id="add-go" type="button">Add</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-text"></span><button id="toast-btn" hidden>Undo</button></div>
+
+<script>
+(() => {
+  "use strict";
+  const KEY = "packed.v4";
+  const ARTIFACT_URL = "https://claude.ai/artifact/KV5TuPgEUfo9iqi7FwQZPo";
+  const outsideClaude = /(^|\.)github\.io$|^localhost$|^127\./.test(location.hostname) || location.protocol === "file:";
+  const SHORT = { decide: "Decide", charge: "Charge", layout: "Lay out", big: "Big bag", cabin: "Cabin bag", morning: "Morning", door: "Door" };
+
+  /* One line-icon set, used only where a symbol is faster to recognise than a word. */
+  const P = {
+    back: "M15 5l-7 7 7 7", close: "M6 6l12 12M18 6L6 18", check: "M5 12.5l4.5 4.5L19 7", plus: "M12 5v14M5 12h14", chev: "M9 6l6 6-6 6",
+    hanger: "M10 5.5a2 2 0 1 1 2 2v1.5M12 9l-8.5 6.8c-.6.5-.3 1.2.4 1.2h16.2c.7 0 1-.7.4-1.2z",
+    bolt: "M13 3L5 14h6l-1 7 8-11h-6z",
+    shirt: "M8 4L3 7l2 4 2-1v10h10V10l2 1 2-4-5-3c-.5 1.5-2 2.5-4 2.5S8.5 5.5 8 4z",
+    suitcase: "M4 9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM9 7V5h6v2M8 20v1M16 20v1",
+    bag: "M6 10a6 6 0 0 1 12 0v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2zM9.5 5.5V4a2.5 2.5 0 0 1 5 0v1.5M9 15h6",
+    sun: "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4",
+    door: "M6 21V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v17M4 21h16M14.5 12v.5",
+    temp: "M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z",
+    plug: "M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0zM12 17v5",
+    drop: "M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z",
+    moon: "M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z",
+    gym: "M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12",
+    sparkle: "M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z",
+    shop: "M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2",
+    plane: "M3 12.5L21 4l-5 17-4.5-6.5zM11.5 14.5L21 4",
+    calendar: "M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM4 10h16M8 2v4M16 2v4",
+    reset: "M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4",
+    cloud: "M7 18a4 4 0 0 1-.5-8 6 6 0 0 1 11.5 1.5A3.5 3.5 0 0 1 17.5 18zM4 4l16 16",
+    note: "M12 8v.5M12 11v5M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z",
+  };
+  const ic = (n) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="${P[n] || P.note}"/></svg>`;
+  const DOTS = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.7" fill="currentColor" stroke="none"/></svg>';
+
+  const $ = (s) => document.querySelector(s);
+  const view = $("#view");
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
+  const clone = (v) => JSON.parse(JSON.stringify(v));
+  function merge(t, s) {
+    for (const k of Object.keys(s)) {
+      if (isObj(s[k]) && isObj(t[k])) merge(t[k], s[k]);
+      else t[k] = isObj(s[k]) ? clone(s[k]) : s[k];
+    }
+    return t;
+  }
+  const normal = (p) => ({ done: {}, answers: {}, dismissed: {}, kept: {}, added: {}, ...(isObj(p) ? clone(p) : {}) });
+
+  /* ---------- State ---------- */
+  let cache = {};
+  try { cache = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+  let plan = isObj(cache.plan) && Array.isArray(cache.plan.steps) ? cache.plan : null;
+  let prog = normal(cache.progress);
+  let tab = cache.tab === "days" ? "days" : "pack";
+  let at = typeof cache.at === "string" ? cache.at : null; // step on screen, or "__done"
+  let qi = Number.isInteger(cache.qi) ? cache.qi : 0;      // which question, in the decide step
+  let outbox = isObj(cache.outbox) ? cache.outbox : null;  // changes the account hasn't confirmed yet
+  let typing = false, ideasOpen = false, confirming = false;
+  const saveLocal = () => { try { localStorage.setItem(KEY, JSON.stringify({ plan, progress: prog, outbox, tab, at, qi })); } catch (e) {} };
+
+  const answer = (id) => String(prog.answers[id] || "").trim();
+  const hidden = (it) => Array.isArray(it.hideIf) && answer(it.hideIf[0]) === it.hideIf[1];
+  const added = (stepId) => Object.entries(prog.added)
+    .filter(([, a]) => isObj(a) && !a.gone && a.step === stepId)
+    .sort((a, b) => (a[1].at || 0) - (b[1].at || 0))
+    .map(([id, a]) => ({ id, name: a.name, note: a.note, mine: true }));
+  // What counts in a step: its things, ideas you chose to keep, and what you added. Ideas you haven't looked at don't count.
+  const items = (step) => [...step.items.filter((it) => !hidden(it) && (!it.sug || prog.kept[it.id])), ...added(step.id)];
+  const ideas = (step) => step.items.filter((it) => it.sug && !prog.kept[it.id] && !prog.dismissed[it.id]);
+  const isDone = (it) => it.kind === "decide" ? !!answer(it.id) : !!prog.done[it.id];
+  const count = (step) => { const all = items(step); return { done: all.filter(isDone).length, total: all.length }; };
+  const complete = (step) => { const c = count(step); return c.done === c.total; };
+  const questions = (step) => step.items.filter((it) => it.kind === "decide");
+  const allItems = () => plan ? plan.steps.flatMap((s) => s.items) : [];
+  const byId = (id) => allItems().find((it) => it.id === id);
+  const stepIndex = () => {
+    if (!plan) return 0;
+    if (at === "__done") return plan.steps.length;
+    const i = plan.steps.findIndex((s) => s.id === at);
+    if (i >= 0) return i;
+    const first = plan.steps.findIndex((s) => !complete(s));
+    return first < 0 ? plan.steps.length : first;
+  };
+  const isQuestions = (s) => s && questions(s).length > 0;
+
+  /* ---------- Writing progress ----------
+     Each change is a small nested patch merged into the progress doc, so ticks from two devices
+     at once don't overwrite each other. One write at a time. */
+  let progRef = null, writing = false, flushTimer = null;
+  function patch(p, later) {
+    merge(prog, p);
+    outbox = merge(outbox || {}, p);
+    saveLocal();
+    clearTimeout(flushTimer);
+    if (later) flushTimer = setTimeout(flush, 600); else flush();
+  }
+  async function flush() {
+    if (writing || !outbox || !progRef) return;
+    writing = true;
+    const sent = JSON.stringify(outbox);
+    try {
+      await progRef.update(JSON.parse(sent));
+      if (JSON.stringify(outbox) === sent) outbox = null;
+      saveLocal(); setSync("on");
+    } catch (e) {
+      const code = e && e.code;
+      if (code === "invalid_argument") { try { await progRef.set(clone(prog)); outbox = null; saveLocal(); } catch (e2) {} }
+      else { setSync("offline"); setTimeout(() => { writing = false; flush(); }, 4000); return; }
+    }
+    writing = false;
+    if (outbox) flush();
+  }
+
+  /* ---------- Rendering ---------- */
+  const fmtDay = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+  const todayIso = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+  let ctaRun = null;
+
+  function setDock(label, primary, run) {
+    const b = $("#cta");
+    if (!label) { $("#dock").hidden = true; ctaRun = null; return; }
+    $("#dock").hidden = false; b.textContent = label; b.classList.toggle("primary", !!primary); ctaRun = run;
+  }
+
+  function render() {
+    if (!plan) {
+      $("#top").hidden = true; setDock(null);
+      view.innerHTML = emptyHTML();
+      return;
+    }
+    $("#top").hidden = false;
+    if (tab === "days") { renderDays(); return; }
+    const i = stepIndex();
+    const s = plan.steps[i];
+    renderTop(i);
+    const banner = sync === "offline" ? `<p class="banner">${ic("cloud")}Offline. Your ticks are saved here and sync later.</p>` : "";
+    if (!s) { view.innerHTML = banner + doneHTML(); setDock("See your days", false, () => go({ tab: "days" })); return; }
+    if (isQuestions(s)) renderQuestion(s, i, banner);
+    else renderStep(s, i, banner);
+  }
+
+  function renderTop(i) {
+    const steps = plan.steps;
+    $("#back").innerHTML = ic("back");
+    $("#back").disabled = i === 0 && qi === 0 && tab === "pack";
+    $("#more").innerHTML = DOTS;
+    const bar = $("#prog");
+    bar.innerHTML = steps.map((st, n) => {
+      const c = count(st);
+      const pct = c.total ? Math.round(c.done / c.total * 100) : 100;
+      return `<span class="${n === i ? "cur" : ""}"><i style="width:${pct}%"></i></span>`;
+    }).join("");
+    const cur = steps[i];
+    bar.setAttribute("aria-label", cur ? `Step ${i + 1} of ${steps.length}, ${SHORT[cur.id] || cur.title}. Show all steps` : "All packed. Show all steps");
+  }
+
+  function renderQuestion(s, i, banner) {
+    const qs = questions(s);
+    if (qi >= qs.length) qi = qs.length - 1;
+    if (qi < 0) qi = 0;
+    const it = qs[qi];
+    const a = answer(it.id);
+    const opts = it.options || [];
+    const own = a && !opts.includes(a);
+    const showText = !opts.length || own || typing;
+    view.innerHTML = `${banner}
+      <section data-id="${esc(it.id)}">
+        <p class="meta">${ic(s.icon)}${esc(SHORT[s.id] || s.title)} · ${qi + 1} of ${qs.length}</p>
+        <h1 id="q-title">${esc(it.q || it.name)}</h1>
+        ${it.tip || it.hint ? `<p class="tip">${esc(it.tip != null ? it.tip : it.hint)}</p>` : ""}
+        ${opts.length ? `<div class="choices" role="group" aria-labelledby="q-title">
+          ${opts.map((o) => `<button class="choice" data-act="opt" data-val="${esc(o)}" aria-pressed="${a === o}"><span>${esc(o)}</span><span class="dot">${ic("check")}</span></button>`).join("")}
+          ${showText ? "" : `<button class="choice other" data-act="other"><span>Something else</span>${ic("chev")}</button>`}
+        </div>` : ""}
+        ${showText ? `<textarea class="answer" data-act="answer" rows="3" placeholder="Type, or tap the mic on your keyboard" aria-labelledby="q-title">${esc(own ? a : "")}</textarea>` : ""}
+      </section>`;
+    view.querySelectorAll(".answer").forEach(autosize);
+    if (typing) { const ta = view.querySelector(".answer"); if (ta) ta.focus(); }
+    questionDock();
+  }
+  function questionDock() {
+    const s = plan.steps[stepIndex()];
+    const it = questions(s)[qi];
+    setDock(answer(it.id) ? "Next" : "Skip for now", !!answer(it.id), nextQuestion);
+  }
+  function nextQuestion() {
+    const i = stepIndex(); const s = plan.steps[i];
+    typing = false;
+    if (qi < questions(s).length - 1) { qi++; saveLocal(); show(); }
+    else goStep(i + 1);
+  }
+
+  function renderStep(s, i, banner) {
+    const list = items(s);
+    const idl = ideas(s);
+    const next = plan.steps[i + 1];
+    view.innerHTML = `${banner}
+      <div class="glyph">${ic(s.icon)}</div>
+      <h1>${esc(s.do || s.title)}</h1>
+      ${s.tip ? `<p class="tip">${esc(s.tip)}</p>` : ""}
+      ${list.length ? `<ul class="items">${list.map(rowHTML).join("")}</ul>` : ""}
+      ${idl.length ? `<details class="ideas" ${ideasOpen ? "open" : ""}>
+        <summary>${ic("sparkle")}${idl.length} ${idl.length === 1 ? "idea" : "ideas"} you didn't mention${ic("chev").replace('class="i"', 'class="i chev"')}</summary>
+        <ul class="idea-list">${idl.map((it) => `<li class="idea" data-id="${esc(it.id)}">
+          <span class="txt"><span class="name">${esc(it.name)}</span><span class="sub">${esc(it.sug)}</span></span>
+          <button class="pill" data-act="keep" aria-label="Add ${esc(it.name)}">Add</button>
+          <button class="side" data-act="skip-idea" aria-label="Not needed: ${esc(it.name)}">${ic("close")}</button>
+        </li>`).join("")}</ul>
+      </details>` : ""}`;
+    const done = complete(s);
+    setDock(next ? `Next: ${SHORT[next.id] || next.title}` : "Finish", done, () => goStep(i + 1));
+  }
+
+  function rowHTML(it) {
+    const on = isDone(it);
+    let sub = it.note || "", unset = false;
+    if (it.from) { const a = answer(it.from); if (a) sub = a; else unset = true; }
+    const side = unset ? `<button class="side decide" data-act="ask" data-q="${esc(it.from)}">Decide</button>`
+      : (it.mine || it.sug) ? `<button class="side" data-act="drop" aria-label="Remove ${esc(it.name)}">${ic("close")}</button>` : "";
+    return `<li class="item ${on ? "on" : ""}" data-id="${esc(it.id)}">
+      <button class="tick" data-act="tick" aria-pressed="${on}">
+        <span class="check">${ic("check")}</span>
+        <span class="txt"><span class="name">${esc(it.name)}</span>${sub ? `<span class="sub">${esc(sub)}</span>` : ""}</span>
+        ${it.qty ? `<span class="qty">${esc(it.qty)}</span>` : ""}
+      </button>${side}
+    </li>`;
+  }
+
+  function doneHTML() {
+    return `<div class="centre">
+      <div class="big">${ic("check")}</div>
+      <h1>All packed</h1>
+      <p>Have a good trip.</p>
+    </div>`;
+  }
+
+  function emptyHTML() {
+    const inClaude = sync !== "elsewhere";
+    const h = !inClaude ? "Your trip lives in Claude" : sync === "connecting" ? "Getting your trip…" : sync === "offline" ? "Can't reach your trip" : sync === "signed-out" ? "Sign in to see your trip" : "No trip yet";
+    const p = !inClaude ? (ARTIFACT_URL ? `<a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Open Packed in Claude</a>` : "Open Packed in Claude to see it.")
+      : sync === "connecting" ? "" : sync === "offline" ? "Check your connection. Once it has loaded, it works offline too."
+      : sync === "signed-out" ? "Your trip is saved to your Claude account." : "Tell Claude where you're going and what you need. It sets up the steps here.";
+    return `<div class="centre"><h1>${h}</h1>${p ? `<p>${p}</p>` : ""}</div>`;
+  }
+
+  function renderDays() {
+    $("#back").innerHTML = ic("back"); $("#back").disabled = false;
+    $("#more").innerHTML = DOTS;
+    const pr = $("#prog"); pr.innerHTML = `<span class="top-title" style="flex:1;height:auto;background:none">Your days</span>`; pr.setAttribute("aria-label", "Your days. Show all steps");
+    setDock(null);
+    const today = todayIso();
+    const eventDay = answer("d-eventday");
+    const boots = answer("d-boots");
+    const tips = (plan.tips || []).length ? `<section class="tips" aria-label="Good to know"><p class="meta">Good to know</p>
+      <ul class="lines">${plan.tips.map((t) => `<li>${ic(t.icon)}<span>${esc(t.text)}</span></li>`).join("")}</ul></section>` : "";
+    const cards = (plan.days || []).map((d) => {
+      const rows = [];
+      const uses = [...(d.uses || [])];
+      if (d.wear) { const w = answer(d.wear), it = byId(d.wear); rows.push(["shirt", w || `${it ? it.name : "Outfit"}: not decided`, !w]); }
+      if (d.event && eventDay === d.event) {
+        const ev = answer("d-event");
+        rows.push(["sparkle", "Event: " + (ev || "outfit not decided"), !ev]);
+        uses.push("w-event"); if (boots !== "Buy in Barcelona on Sat 7") uses.push("w-boots");
+      } else if (d.event && !eventDay) rows.push(["sparkle", "The event, if it's today", true]);
+      if (d.ifBoots && boots === "Buy in Barcelona on Sat 7") rows.push(["shop", "Buy dress boots", false]);
+      (d.lines || []).forEach((l) => rows.push([/^on the plane/i.test(l) ? "plane" : "note", l, false]));
+      if (d.gym) { rows.push(["gym", `Gym: set ${d.gym}`, false]); uses.push("w-gym", "w-gymshoes", "w-gymsocks"); }
+      if (d.night) { rows.push(["moon", `Pyjamas, set ${d.night}`, false]); uses.push("w-pj"); }
+      const need = [...new Set(uses)].map(byId).filter((it) => it && !hidden(it));
+      const left = need.filter((it) => !isDone(it)).length;
+      return `<section class="day ${d.date === today ? "today" : ""}">
+        <div class="day-head">
+          <div><p class="meta">${esc(fmtDay(d.date))}${d.date === today ? " · Today" : ""}</p><h2>${esc(d.plan)}</h2></div>
+          ${need.length ? (left ? `<span class="badge">${left} to pack</span>` : `<span class="badge ok">${ic("check")}Packed</span>`) : ""}
+        </div>
+        <ul class="lines">${rows.map(([icon, t, unset]) => `<li>${ic(icon)}<span class="${unset ? "unset" : ""}">${esc(t)}</span></li>`).join("")}</ul>
+      </section>`;
+    }).join("");
+    view.innerHTML = tips + cards;
+  }
+
+  function autosize(ta) { ta.style.height = "auto"; ta.style.height = Math.max(120, ta.scrollHeight + 2) + "px"; }
+
+  /* ---------- Moving around ---------- */
+  function show() { render(); window.scrollTo({ top: 0 }); }
+  function go(o) { if (o.tab) tab = o.tab; saveLocal(); show(); }
+  function goStep(n) {
+    typing = false; ideasOpen = false;
+    if (n >= plan.steps.length) {
+      const open = plan.steps.findIndex((s) => !complete(s));
+      if (open >= 0) { toast(`${SHORT[plan.steps[open].id] || plan.steps[open].title} still has things left`); n = open; }
+      else { at = "__done"; tab = "pack"; saveLocal(); show(); return; }
+    }
+    const s = plan.steps[n];
+    at = s.id; tab = "pack";
+    if (isQuestions(s)) { const qs = questions(s); const first = qs.findIndex((it) => !answer(it.id)); qi = first < 0 ? 0 : first; }
+    saveLocal(); show();
+  }
+  function goBack() {
+    if (tab === "days") { tab = "pack"; saveLocal(); show(); return; }
+    typing = false;
+    const i = stepIndex(); const s = plan.steps[i];
+    if (s && isQuestions(s) && qi > 0) { qi--; saveLocal(); show(); return; }
+    const prev = plan.steps[Math.min(i, plan.steps.length) - 1];
+    if (!prev) return;
+    at = prev.id; ideasOpen = false;
+    if (isQuestions(prev)) qi = questions(prev).length - 1;
+    saveLocal(); show();
+  }
+  function ask(id) {
+    const n = plan.steps.findIndex((s) => questions(s).some((q) => q.id === id));
+    if (n < 0) return;
+    at = plan.steps[n].id; qi = questions(plan.steps[n]).findIndex((q) => q.id === id); tab = "pack"; typing = false;
+    saveLocal(); show();
+  }
+
+  $("#back").onclick = goBack;
+  $("#cta").onclick = () => { if (ctaRun) ctaRun(); };
+  $("#prog").onclick = () => openMenu();
+  $("#more").onclick = () => openMenu();
+
+  /* ---------- Actions on the screen ---------- */
+  function tickRow(id) {
+    const on = !prog.done[id];
+    patch({ done: { [id]: on } });
+    const row = view.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
+    if (row) { row.classList.toggle("on", on); row.querySelector(".tick").setAttribute("aria-pressed", on); }
+    const i = stepIndex(); const s = plan.steps[i];
+    renderTop(i);
+    $("#cta").classList.toggle("primary", complete(s));
+  }
+
+  let advanceTimer = null;
+  view.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-act]");
+    if (!el) return;
+    const holder = el.closest("[data-id]");
+    const id = holder && holder.dataset.id;
+    switch (el.dataset.act) {
+      case "tick": tickRow(id); break;
+      case "opt": {
+        const val = el.dataset.val;
+        const nv = answer(id) === val ? "" : val;
+        typing = false;
+        patch({ answers: { [id]: nv } });
+        render();
+        clearTimeout(advanceTimer);
+        // A choice moves you on by itself, after a beat so you see it land.
+        if (nv) { const here = qi; advanceTimer = setTimeout(() => { if (qi === here && answer(id) === nv && tab === "pack") nextQuestion(); }, 420); }
+        break;
+      }
+      case "other": typing = true; render(); break;
+      case "ask": ask(el.dataset.q); break;
+      case "keep": patch({ kept: { [id]: true } }); render(); toast(`Added ${byId(id).name}`); break;
+      case "skip-idea": {
+        patch({ dismissed: { [id]: true } }); render();
+        toast(`Not taking ${byId(id).name}`, () => { patch({ dismissed: { [id]: false } }); render(); });
+        break;
+      }
+      case "drop": {
+        const mine = !!prog.added[id];
+        const name = mine ? prog.added[id].name : byId(id).name;
+        if (mine) patch({ added: { [id]: { gone: true } } }); else patch({ kept: { [id]: false } });
+        render();
+        toast(`Removed ${name}`, () => { if (mine) patch({ added: { [id]: { gone: false } } }); else patch({ kept: { [id]: true } }); render(); });
+        break;
+      }
+    }
+  });
+  view.addEventListener("toggle", (e) => { if (e.target.matches(".ideas")) ideasOpen = e.target.open; }, true);
+
+  // Typed answers: kept on the device at once, sent to the account after a pause.
+  view.addEventListener("input", (e) => {
+    const ta = e.target.closest('[data-act="answer"]');
+    if (!ta) return;
+    autosize(ta);
+    const id = ta.closest("[data-id]").dataset.id;
+    clearTimeout(advanceTimer);
+    view.querySelectorAll(".choice[aria-pressed]").forEach((b) => b.setAttribute("aria-pressed", "false"));
+    patch({ answers: { [id]: ta.value } }, true);
+    renderTop(stepIndex());
+    questionDock();
+  });
+
+  /* ---------- Menu ---------- */
+  const menu = $("#menu");
+  function menuHTML() {
+    const i = stepIndex();
+    const steps = plan ? plan.steps : [];
+    return `<div class="grab" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <div><h2 id="menu-title">${esc(plan ? plan.title : "Packed")}</h2>${plan && plan.sub ? `<p class="tip">${esc(plan.sub)}</p>` : ""}</div>
+        <button class="close" data-act="close" aria-label="Close">${ic("close")}</button>
+      </div>
+      ${plan ? `<button class="cta primary" data-act="add">Add something</button>
+      <ul class="group" aria-label="Steps">${steps.map((s, n) => {
+        const c = count(s), ok = complete(s);
+        return `<li><button data-act="step" data-n="${n}" ${n === i && tab === "pack" ? 'aria-current="step"' : ""}>${ic(s.icon)}<span>${esc(SHORT[s.id] || s.title)}</span>
+          <span class="left ${ok ? "ok" : ""}">${ok ? ic("check") : `${c.total - c.done} left`}</span></button></li>`;
+      }).join("")}</ul>
+      <ul class="group"><li><button data-act="days">${ic("calendar")}<span>Your days</span><span class="left">${ic("chev")}</span></button></li></ul>
+      ${confirming ? `<div class="confirm"><p>Clear every tick and answer? The things you added stay, ready for the next trip.</p>
+          <div class="row2"><button class="cta" data-act="reset-no">Keep</button><button class="cta danger" data-act="reset-yes">Clear</button></div></div>`
+        : `<ul class="group"><li><button class="danger" data-act="reset">${ic("reset")}<span>Start packing again</span></button></li></ul>`}` : ""}
+      <p class="status" id="sync-note">${syncText()}</p>`;
+  }
+  function openMenu() { confirming = false; $("#menu-body").innerHTML = menuHTML(); if (!menu.open) menu.showModal(); }
+  menu.addEventListener("click", (e) => {
+    if (e.target === menu) { menu.close(); return; }
+    const el = e.target.closest("[data-act]");
+    if (!el) return;
+    switch (el.dataset.act) {
+      case "close": menu.close(); break;
+      case "add": menu.close(); openAdd(); break;
+      case "step": menu.close(); goStep(+el.dataset.n); break;
+      case "days": menu.close(); go({ tab: "days" }); break;
+      case "reset": confirming = true; $("#menu-body").innerHTML = menuHTML(); break;
+      case "reset-no": confirming = false; $("#menu-body").innerHTML = menuHTML(); break;
+      case "reset-yes": {
+        confirming = false;
+        clearTimeout(flushTimer);
+        prog = normal({ added: prog.added, dismissed: prog.dismissed, kept: prog.kept }); at = null; qi = 0; tab = "pack"; outbox = null; saveLocal();
+        if (progRef) progRef.set(clone(prog)).catch(() => setSync("offline"));
+        menu.close(); show(); toast("Cleared. Ready for the next trip.");
+        break;
+      }
+    }
+  });
+
+  /* ---------- Add something (Claude sorts it into steps) ---------- */
+  let sample = null, sorted = null;
+  const addDlg = $("#add");
+  const packSteps = () => plan.steps.filter((s) => !isQuestions(s));
+  const here = () => { const s = plan.steps[stepIndex()]; return s && !isQuestions(s) ? s : packSteps()[0]; };
+  function openAdd() {
+    sorted = null;
+    $("#add-text").value = ""; $("#add-text").hidden = false; $("#add-out").hidden = true; $("#add-msg").hidden = true;
+    $("#add-go").textContent = "Add"; $("#add-go").disabled = false;
+    addDlg.showModal(); $("#add-text").focus();
+  }
+  addDlg.addEventListener("click", (e) => { if (e.target === addDlg) addDlg.close(); });
+  const have = () => new Set(allItems().filter((it) => it.kind !== "decide").map((it) => it.name)
+    .concat(Object.values(prog.added).filter((a) => isObj(a) && !a.gone).map((a) => a.name)).map((n) => n.trim().toLowerCase()));
+  const newId = () => "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const addAll = (list) => list.forEach((s, n) => patch({ added: { [newId()]: { name: s.name, step: s.step, note: s.note || "", at: Date.now() + n } } }));
+  const addMsg = (t) => { const m = $("#add-msg"); m.textContent = t; m.hidden = false; };
+
+  $("#add-go").onclick = async () => {
+    if (sorted) { addAll(sorted); addDlg.close(); render(); toast(`Added ${sorted.length} ${sorted.length === 1 ? "thing" : "things"}`); return; }
+    const text = $("#add-text").value.trim();
+    if (!text) return;
+    const known = have();
+    if (!sample) {
+      // Without Claude: each line or comma is one thing, added to the step on screen.
+      const names = text.split(/\n|,(?![^(]*\))/).map((s) => s.trim()).filter(Boolean).map((s) => s[0].toUpperCase() + s.slice(1));
+      const fresh = names.filter((n) => !known.has(n.toLowerCase()) && known.add(n.toLowerCase()));
+      if (!fresh.length) { addMsg("That's already in your list."); return; }
+      const st = here();
+      addAll(fresh.map((name) => ({ name, step: st.id })));
+      addDlg.close(); render(); toast(`Added to ${SHORT[st.id] || st.title}`);
+      return;
+    }
+    const btn = $("#add-go"); btn.disabled = true; btn.textContent = "Sorting…";
+    const steps = packSteps().map((s) => `- ${s.id}: ${s.title}. ${s.why || ""}`).join("\n");
+    const prompt = `You help someone pack for a trip (${plan.title}, ${plan.sub || ""}). They said the text below out loud, so it rambles. ` +
+      `Pull out each separate thing to pack or do, give it a short name (2–5 words, sentence case), and put it in the best step. ` +
+      `Skip anything already in their list. Skip chatter that isn't a thing to pack or do. Add a short note only if they said something specific about it (how many, which one).\n\n` +
+      `Steps (use the id):\n${steps}\n\nAlready in their list: ${[...known].join(", ")}\n\n` +
+      `Reply with only a JSON array like [{"name":"Phone tripod","step":"cabin","note":""}]. Reply [] if there's nothing new.\n\nWhat they said:\n${text}`;
+    try {
+      const out = await sample.json(prompt, { modelTier: "default" });
+      const ids = new Set(packSteps().map((s) => s.id));
+      sorted = (Array.isArray(out) ? out : []).filter((s) => s && typeof s.name === "string" && s.name.trim() && !known.has(s.name.trim().toLowerCase()) && known.add(s.name.trim().toLowerCase()))
+        .map((s) => ({ name: s.name.trim().slice(0, 80), step: ids.has(s.step) ? s.step : here().id, note: typeof s.note === "string" ? s.note.slice(0, 120) : "" }));
+      btn.disabled = false;
+      if (!sorted.length) { sorted = null; btn.textContent = "Add"; addMsg("Nothing new in that. It's all in your list already."); return; }
+      $("#add-text").hidden = true;
+      $("#add-out").innerHTML = sorted.map((s) => `<li><span>${esc(s.name)}</span><small>${esc(SHORT[s.step] || s.step)}</small></li>`).join("");
+      $("#add-out").hidden = false; $("#add-msg").hidden = true;
+      btn.textContent = `Add ${sorted.length}`;
+    } catch (e) {
+      btn.disabled = false; btn.textContent = "Add";
+      addMsg(e && e.code === "rate_limited" ? "Claude is busy. Try again in a minute." : e && e.code === "not_granted" ? "Claude needs your permission to sort this." : "That didn't work. Try again.");
+    }
+  };
+
+  /* ---------- Toast ---------- */
+  let toastTimer, undo = null;
+  function toast(text, action) {
+    const el = $("#toast"), btn = $("#toast-btn");
+    $("#toast-text").textContent = text;
+    btn.hidden = !action; el.classList.toggle("has-action", !!action);
+    undo = action || null;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.classList.remove("show"); undo = null; }, action ? 5000 : 2400);
+  }
+  $("#toast-btn").onclick = () => { if (undo) undo(); undo = null; $("#toast").classList.remove("show"); };
+
+  /* ---------- Sync with the Claude account ----------
+     The plan (written by Claude) and progress (ticks, answers, additions) are two docs in this
+     artifact's private per-person store. The last copy is kept on the device, so it works offline. */
+  let sync = outsideClaude ? "elsewhere" : "connecting"; // elsewhere | connecting | on | offline | signed-out
+  function syncText() {
+    switch (sync) {
+      case "on": return "Saved to your Claude account.";
+      case "connecting": return "Connecting…";
+      case "offline": return "Offline. Ticks are saved on this device.";
+      case "signed-out": return "Sign in to Claude to save your trip.";
+      default: return "Open Packed in Claude to save your trip.";
+    }
+  }
+  function setSync(s) {
+    if (sync === s) return;
+    const was = sync; sync = s;
+    if (!plan || was === "offline" || s === "offline") { rerender(); }
+    document.querySelectorAll("#sync-note").forEach((el) => { el.textContent = syncText(); });
+  }
+  const busy = () => { const a = document.activeElement; return !!(a && (a.tagName === "TEXTAREA" || a.tagName === "INPUT")) || menu.open || addDlg.open; };
+  let held = false;
+  // An update that arrived while you were typing is applied as soon as you stop.
+  const release = () => setTimeout(() => { if (held && !busy()) { held = false; rerender(); } }, 0);
+  view.addEventListener("focusout", release);
+  document.addEventListener("pointerup", release);
+  document.addEventListener("visibilitychange", release);
+  menu.addEventListener("close", release);
+  addDlg.addEventListener("close", release);
+  const rerender = () => { if (busy()) { held = true; return; } const y = window.scrollY; render(); window.scrollTo(0, y); };
+
+  (async () => {
+    if (sync === "elsewhere") { render(); return; }
+    for (let i = 0; i < 30 && !(window.claude && window.claude.use); i++) await new Promise((r) => setTimeout(r, 100));
+    if (!(window.claude && window.claude.use)) { sync = "elsewhere"; rerender(); return; }
+    const [db, user, smp] = await Promise.all([window.claude.use("db"), window.claude.use("user"), window.claude.use("sample")]);
+    sample = smp;
+    const id = user ? await user.id() : null;
+    if (!db || !id) { sync = "signed-out"; rerender(); return; }
+    const base = "data/users/" + id + "/";
+    const planRef = db.doc(base + "plan");
+    progRef = db.doc(base + "progress");
+    const slow = setTimeout(() => { if (sync === "connecting") setSync("offline"); }, 10000);
+    planRef.onSnapshot((snap) => {
+      if (snap.metadata.fromCache) return;
+      clearTimeout(slow);
+      const data = snap.exists ? snap.data() : null;
+      const next = data && Array.isArray(data.steps) ? data : null;
+      if (JSON.stringify(next) !== JSON.stringify(plan)) { sync = "on"; plan = next; saveLocal(); rerender(); }
+      else setSync("on");
+    }, () => { clearTimeout(slow); setSync("offline"); });
+    let first = true;
+    progRef.onSnapshot((snap) => {
+      if (snap.metadata.hasPendingWrites || snap.metadata.fromCache) return;
+      const data = snap.exists ? snap.data() : null;
+      if (!data) { progRef.set(clone(prog)).then(() => { outbox = null; saveLocal(); }, () => {}); return; }
+      // The account's copy wins, plus anything this device changed that hasn't reached it yet.
+      if (writing && !first) return;
+      first = false;
+      const next = normal(data);
+      if (outbox) { merge(next, outbox); flush(); }
+      if (JSON.stringify(next) === JSON.stringify(prog)) return;
+      prog = next; saveLocal(); rerender();
+    }, () => setSync("offline"));
+  })();
+
+  render();
+})();
+</script>
+</body>
+</html>

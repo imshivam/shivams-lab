@@ -2,6 +2,40 @@
 
 Newest first.
 
+## 4.0 · 1 November 2026 · One thing per screen (in packing/v4, next to 3.0.2)
+
+Version 3 was overwhelming: every feature showed at once, and the biggest words ("Barcelona", "Decide what you'll wear") didn't say what to do. Version 4 is a redesign built on written principles (DESIGN.md), drawn from GOV.UK "one thing per page", W3C COGA (cognitive accessibility), NN/g and real apps on Mobbin. 3.0.2 is kept as it was, so the two can be compared.
+
+| First screen, iPhone width | 3.0.2 | 4.0 |
+| --- | --- | --- |
+| Questions shown | 13 | 1 |
+| Buttons and fields | 39 | 5 |
+| Words | 342 | 23 |
+| Page height | 3.9 screens | 1 screen |
+| Text styles | 15 | 4 |
+
+- Each question gets its own screen, worded as a question ("What will you wear to the airport?"). Choices are big rows, and tapping one moves you on. "Something else" opens a box to type or dictate.
+- Each packing step shows one instruction, one short hint and the things to tick. One button at the bottom fills in when the step is done.
+- A seven-part bar at the top shows where you are, replacing the step rail and the "Step 1 of 7 · 0 of 13 done" line.
+- These moved into one menu, which also shows the trip name:
+  - adding things
+  - the steps
+  - your days
+  - starting again
+- Ideas you didn't mention are folded into one row. You can add or skip each one, and they no longer count against a step until you add them.
+- "Add something" replaces both the add box and "Thought of something?". Claude sorts what you say into the right steps.
+- One symbol per step, plus symbols for wear, gym, night and the event in Your days.
+- The sync status only shows when you're offline.
+- The trip plan has shorter wording (`q`, `tip`, `do`, `icon`, `tips`), which version 3 ignores.
+- Tested at 320px and 375px, light and dark:
+  - questions and auto-advance
+  - ticking
+  - ideas, and adding with and without Claude
+  - offline and back
+  - reset
+  - signed out, outside Claude, and no answer
+  - back and forward across steps
+
 ## 3.0.2 · 1 November 2026 · QA fixes
 
 A full QA pass: 22 checks in test/QA.md, run at 320px and 375px in light and dark mode. Fixed:

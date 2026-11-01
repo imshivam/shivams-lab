@@ -15,19 +15,20 @@ window.PROJECTS = [
     about:
       "Tell Claude everything you need for a trip, out loud and in any order, and it turns that into a packing run. Packed shows one step at a time, in the order things should happen: decide what you'll wear, charge, lay out, big bag, cabin bag, the morning you leave, and the door. Things you didn't mention are kept apart as suggestions you can dismiss. Days shows each day of the trip and whether its things are packed. It's saved to your Claude account, so it's the same on every device, and your items stay for the next trip.",
     highlights: [
-      "One step on screen at a time, in packing order",
-      "Decisions first, as blanks to fill",
+      "One question or one short list on screen at a time",
+      "Big choices you tap, one main button at the bottom",
       "Say a thought and Claude puts it in the right step",
       "Each day of the trip, checked against the bag",
     ],
     made: "October 2026",
     updated: "2026-11-01",
-    version: "3.0.2",
+    version: "4.0",
     stack: "HTML, CSS, JavaScript, Claude artifact storage and sampling",
     where: "shivams-lab/packing",
     icon: "packed",
     links: [
-      { label: "Open Packed", url: "https://claude.ai/artifact/B6fncirqAZDzv2kv8ckzdi", primary: true },
+      { label: "Open Packed 4", url: "https://claude.ai/artifact/KV5TuPgEUfo9iqi7FwQZPo", primary: true },
+      { label: "Open Packed 3", url: "https://claude.ai/artifact/B6fncirqAZDzv2kv8ckzdi" },
     ],
   },
   {
