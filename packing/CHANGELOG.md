@@ -2,6 +2,19 @@
 
 Newest first.
 
+## 4.5 · 1 November 2026 · A calmer options sheet
+
+The options for one thing looked like the whole page had changed: no visible motion, the same colour as the page, eight choices at once, and a green focus ring on the close button.
+- Sheets now slide up from the bottom over a dimmed page and slide down when closed. Sheets are a lighter surface than the page in dark mode. This applies to the options, the menu and Add something. With reduced motion turned on, they appear and close without sliding.
+- Options for one thing are cut to four:
+  - Pack it in the morning / Pack it tonight instead
+  - Buy it there instead / Pack it after all
+  - Move to another bag ›
+  - Not taking it
+  Each label says what happens, and the header says where the thing is now.
+- The list of bags and pouches only appears after "Move to another bag", on its own panel with Back. The current one reads "Here now".
+- No focus ring on open.
+
 ## 4.4 · 1 November 2026 · Morning, buy there, move
 
 From six comments left while packing. Some things are still in use or charging, some will be bought on arrival, some belong in another bag, and several toiletries seemed to be missing (they were hidden in the morning step).

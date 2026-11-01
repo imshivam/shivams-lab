@@ -18,6 +18,8 @@
   --fill: rgba(118, 122, 132, 0.12);
   --ring: rgba(60, 64, 72, 0.32);
   --bar: rgba(242, 243, 245, 0.86);
+  --sheet: #F2F3F5;
+  --sheet-row: #FFFFFF;
   --accent: #0A7A72;
   --accent-soft: rgba(10, 122, 114, 0.12);
   --on-accent: #FFFFFF;
@@ -35,7 +37,7 @@
   :root:not([data-theme="light"]) {
     --bg: #000000; --card: #1C1C1E; --fg: #F5F5F7; --muted: #98989F;
     --sep: rgba(84, 84, 88, 0.5); --fill: rgba(118, 118, 128, 0.24); --ring: rgba(235, 235, 245, 0.34);
-    --bar: rgba(0, 0, 0, 0.8); --accent: #3CCBBE; --accent-soft: rgba(60, 203, 190, 0.16); --on-accent: #00201D;
+    --bar: rgba(0, 0, 0, 0.8); --sheet: #1C1C1E; --sheet-row: #2C2C2E; --accent: #3CCBBE; --accent-soft: rgba(60, 203, 190, 0.16); --on-accent: #00201D;
     --warn: #FFC861; --danger: #FF453A; --toast: #F5F5F7; --on-toast: #1D1D1F; --toast-act: #0A7A72;
     color-scheme: dark;
   }
@@ -43,7 +45,7 @@
 :root[data-theme="dark"] {
   --bg: #000000; --card: #1C1C1E; --fg: #F5F5F7; --muted: #98989F;
   --sep: rgba(84, 84, 88, 0.5); --fill: rgba(118, 118, 128, 0.24); --ring: rgba(235, 235, 245, 0.34);
-  --bar: rgba(0, 0, 0, 0.8); --accent: #3CCBBE; --accent-soft: rgba(60, 203, 190, 0.16); --on-accent: #00201D;
+  --bar: rgba(0, 0, 0, 0.8); --sheet: #1C1C1E; --sheet-row: #2C2C2E; --accent: #3CCBBE; --accent-soft: rgba(60, 203, 190, 0.16); --on-accent: #00201D;
   --warn: #FFC861; --danger: #FF453A; --toast: #F5F5F7; --on-toast: #1D1D1F; --toast-act: #0A7A72;
   color-scheme: dark;
 }
@@ -206,13 +208,26 @@ h1 { margin: 0; font: 700 30px/1.15 var(--font-round); letter-spacing: -0.01em; 
 
 /* Sheets: menu and add */
 dialog {
-  border: 0; padding: 0; background: var(--bg); color: var(--fg);
+  border: 0; padding: 0; background: var(--sheet); color: var(--fg);
   width: 100%; max-width: 600px; margin: auto auto 0; border-radius: 22px 22px 0 0;
   max-height: calc(100dvh - 40px); overflow: auto;
 }
-dialog[open] { animation: up 0.3s cubic-bezier(0.2, 0.9, 0.3, 1); }
-@keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
-dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
+/* Sheets rise from the bottom over the dimmed page, so it's clear they sit on top of your list, and sink away when closed */
+dialog[open] { animation: sheet-in 0.42s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.25); }
+dialog[open]::backdrop { background: rgba(0, 0, 0, 0.5); animation: fade-in 0.3s ease; }
+dialog.closing { animation: sheet-out 0.22s ease-in forwards; }
+dialog.closing::backdrop { animation: fade-out 0.22s ease-in forwards; }
+@keyframes sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes sheet-out { to { transform: translateY(100%); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes fade-out { to { opacity: 0; } }
+.sheet:focus { outline: none; }
+.panel-in { animation: panel-in 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes panel-in { from { transform: translateX(24px); opacity: 0; } }
+dialog .group, dialog .confirm, dialog .sorted, dialog .answer { background: var(--sheet-row); }
+.sheet-head .back { width: 32px; height: 32px; margin-left: -6px; border: 0; background: transparent; color: var(--accent); display: grid; place-items: center; padding: 0; }
+.head-l { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.group .now { margin-left: auto; font-size: 15px; color: var(--muted); }
 .sheet { padding: 8px var(--gutter) calc(20px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; }
 .grab { width: 36px; height: 5px; border-radius: 3px; background: var(--ring); margin: 0 auto 4px; }
 .sheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
@@ -268,9 +283,9 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   <div class="dock" id="dock" hidden><div class="dock-in"><button class="cta" id="cta"></button></div></div>
 </div>
 
-<dialog id="menu" aria-labelledby="menu-title"><div class="sheet" id="menu-body"></div></dialog>
+<dialog id="menu" aria-labelledby="menu-title"><div class="sheet" id="menu-body" tabindex="-1" autofocus></div></dialog>
 
-<dialog id="item" aria-labelledby="item-title"><div class="sheet" id="item-body"></div></dialog>
+<dialog id="item" aria-labelledby="item-title"><div class="sheet" id="item-body" tabindex="-1" autofocus></div></dialog>
 
 <dialog id="add" aria-labelledby="add-title">
   <form class="sheet" method="dialog" id="add-form">
@@ -280,7 +295,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     <ul class="sorted" id="add-out" hidden></ul>
     <p class="tip" id="add-msg" hidden></p>
     <div class="acts">
-      <button class="cta" value="cancel" formnovalidate>Cancel</button>
+      <button class="cta" type="button" id="add-cancel">Cancel</button>
       <button class="cta primary" id="add-go" type="button">Add</button>
     </div>
   </form>
@@ -809,37 +824,48 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   const bags = () => plan.steps.filter((x) => x.bag).flatMap((st) => [{ step: st.id, group: null, name: nm(st), icon: st.icon },
     ...(st.groups || []).map((g) => ({ step: st.id, group: g.id, name: g.name }))]);
   const find = (id) => everything().find((x) => x.id === id);
+  let itemPanel = "main";
   function itemHTML(it) {
     const pl = placeOf(it), later = isLater(it), buy = isBuy(it);
     const inBag = plan.steps.some((x) => x.bag && x.id === pl.step);
-    const opt = (act, icon, label, sub, on) => `<li><button data-act="${act}" aria-pressed="${on}">${ic(icon)}<span class="txt"><span>${label}</span><span class="sub">${sub}</span></span><span class="left ok">${on ? ic("check") : ""}</span></button></li>`;
-    return `<div class="grab" aria-hidden="true"></div>
-      <div class="sheet-head"><div><h2 id="item-title">${esc(it.name)}</h2>${inBag ? `<p class="tip">In the ${esc(placeName(pl).toLowerCase())}</p>` : ""}</div>
-        <button class="close" data-act="close" aria-label="Close">${ic("close")}</button></div>
+    const where = inBag ? `In the ${esc(placeName(pl).toLowerCase())}` : "";
+    const state = buy ? "Buying it there" : later ? "Packing it in the morning" : "";
+    const head = (title, sub, backBtn) => `<div class="grab" aria-hidden="true"></div>
+      <div class="sheet-head"><div class="head-l">${backBtn ? `<button class="back" data-act="main" aria-label="Back">${ic("back")}</button>` : ""}<div>
+        <h2 id="item-title">${title}</h2>${sub ? `<p class="tip">${sub}</p>` : ""}</div></div>
+        <button class="close" data-act="close" aria-label="Close">${ic("close")}</button></div>`;
+    if (itemPanel === "move") {
+      return `<div class="panel-in">${head(`Move ${esc(it.name)}`, "", true)}
+        <ul class="group" style="margin-top:14px">${bags().map((c) => {
+          const here = c.step === pl.step && (c.group || null) === (pl.group || null);
+          return `<li><button data-act="move" data-step="${esc(c.step)}" data-group="${esc(c.group || "")}" class="${c.group ? "indent" : ""}" ${here ? "disabled" : ""}>${c.group ? "" : ic(c.icon)}<span>${esc(c.name)}</span>${here ? `<span class="now">Here now</span>` : ""}</button></li>`;
+        }).join("")}</ul></div>`;
+    }
+    const row = (act, icon, label, cls) => `<li><button data-act="${act}" class="${cls || ""}">${ic(icon)}<span>${label}</span>${act === "to-move" ? `<span class="left">${ic("chev")}</span>` : ""}</button></li>`;
+    return `${head(esc(it.name), [where, state].filter(Boolean).join(" · "))}
       <ul class="group">
-        ${opt("later", "sun", "Pack it in the morning", "Once you've used it, or it's charged", later)}
-        ${opt("buy", "shop", "Buy it there", `At the airport or in ${esc(plan.title)}`, buy)}
+        ${row("later", "sun", later ? "Pack it tonight instead" : "Pack it in the morning")}
+        ${row("buy", "shop", buy ? "Pack it after all" : "Buy it there instead")}
+        ${inBag ? row("to-move", "bag", "Move to another bag") : ""}
       </ul>
-      ${inBag ? `<p class="meta" style="margin:4px 0 -6px">Goes in</p><ul class="group">${bags().map((c) => {
-        const here = c.step === pl.step && (c.group || null) === (pl.group || null);
-        return `<li><button data-act="move" data-step="${esc(c.step)}" data-group="${esc(c.group || "")}" class="${c.group ? "indent" : ""}" aria-pressed="${here}">${c.group ? "" : ic(c.icon)}<span>${esc(c.name)}</span><span class="left ok">${here ? ic("check") : ""}</span></button></li>`;
-      }).join("")}</ul>` : ""}
-      <ul class="group"><li><button class="danger" data-act="skip">${ic("close")}<span>${it.mine ? "Remove it" : "Not taking it"}</span></button></li></ul>`;
+      <ul class="group">${row("skip", "close", it.mine ? "Remove it" : "Not taking it", "danger")}</ul>`;
   }
   function openItem(id) {
     const it = find(id); if (!it) return;
-    sheetId = id; $("#item-body").innerHTML = itemHTML(it);
+    sheetId = id; itemPanel = "main"; $("#item-body").innerHTML = itemHTML(it);
     if (!itemDlg.open) itemDlg.showModal();
   }
   itemDlg.addEventListener("click", (e) => {
-    if (e.target === itemDlg) { itemDlg.close(); return; }
+    if (e.target === itemDlg) { closeSheet(itemDlg); return; }
     const el = e.target.closest("[data-act]");
     const it = el && find(sheetId);
     if (!it) return;
-    const id = it.id, done = (msg, undo) => { itemDlg.close(); stay(); toast(msg, undo); };
+    const id = it.id, done = (msg, undo) => { closeSheet(itemDlg); stay(); toast(msg, undo); };
     switch (el.dataset.act) {
-      case "close": itemDlg.close(); break;
-      case "later": { const was = isLater(it); patch({ later: { [id]: !was } }); done(!was ? `${it.name}: in the morning` : `${it.name}: packing it now`); break; }
+      case "close": closeSheet(itemDlg); break;
+      case "to-move": itemPanel = "move"; $("#item-body").innerHTML = itemHTML(it); break;
+      case "main": itemPanel = "main"; $("#item-body").innerHTML = itemHTML(it); break;
+      case "later": { const was = isLater(it); patch({ later: { [id]: !was } }); done(!was ? `${it.name}: in the morning` : `${it.name}: packing it tonight`); break; }
       case "buy": { const was = isBuy(it); patch({ buy: { [id]: !was } }); done(!was ? `${it.name}: buying it there` : `${it.name}: packing it`); break; }
       case "move": {
         const prev = placeOf(it), to = { step: el.dataset.step, group: el.dataset.group || null };
@@ -855,6 +881,16 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       }
     }
   });
+
+  // Close a sheet by sliding it down first (straight away if you prefer reduced motion).
+  const still = matchMedia("(prefers-reduced-motion: reduce)");
+  function closeSheet(d) {
+    if (!d.open || d.classList.contains("closing")) return;
+    if (still.matches) { d.close(); return; }
+    d.classList.add("closing");
+    setTimeout(() => { d.classList.remove("closing"); d.close(); }, 210);
+  }
+  for (const d of document.querySelectorAll("dialog")) d.addEventListener("cancel", (e) => { e.preventDefault(); closeSheet(d); });
 
   /* ---------- Menu ---------- */
   const menu = $("#menu");
@@ -881,14 +917,14 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   }
   function openMenu() { confirming = false; $("#menu-body").innerHTML = menuHTML(); if (!menu.open) menu.showModal(); }
   menu.addEventListener("click", (e) => {
-    if (e.target === menu) { menu.close(); return; }
+    if (e.target === menu) { closeSheet(menu); return; }
     const el = e.target.closest("[data-act]");
     if (!el) return;
     switch (el.dataset.act) {
-      case "close": menu.close(); break;
-      case "add": menu.close(); openAdd(); break;
-      case "step": menu.close(); goStep(+el.dataset.n); break;
-      case "days": menu.close(); go({ tab: "days" }); break;
+      case "close": closeSheet(menu); break;
+      case "add": closeSheet(menu); openAdd(); break;
+      case "step": closeSheet(menu); goStep(+el.dataset.n); break;
+      case "days": closeSheet(menu); go({ tab: "days" }); break;
       case "reset": confirming = true; $("#menu-body").innerHTML = menuHTML(); break;
       case "reset-no": confirming = false; $("#menu-body").innerHTML = menuHTML(); break;
       case "reset-yes": {
@@ -896,7 +932,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
         clearTimeout(flushTimer);
         prog = normal({ added: prog.added, dismissed: prog.dismissed, kept: prog.kept, where: prog.where, skip: prog.skip }); at = null; qi = 0; tab = "pack"; outbox = null; saveLocal();
         if (progRef) progRef.set(clone(prog)).catch(() => setSync("offline"));
-        menu.close(); show(); toast("Cleared. Ready for the next trip.");
+        closeSheet(menu); show(); toast("Cleared. Ready for the next trip.");
         break;
       }
     }
@@ -913,7 +949,9 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     $("#add-go").textContent = "Add"; $("#add-go").disabled = false;
     addDlg.showModal(); $("#add-text").focus();
   }
-  addDlg.addEventListener("click", (e) => { if (e.target === addDlg) addDlg.close(); });
+  addDlg.addEventListener("click", (e) => { if (e.target === addDlg) closeSheet(addDlg); });
+  $("#add-cancel").onclick = () => closeSheet(addDlg);
+  $("#add-form").addEventListener("submit", (e) => e.preventDefault());
   const have = () => new Set(allItems().filter((it) => it.kind !== "decide").map((it) => it.name)
     .concat(Object.values(prog.added).filter((a) => isObj(a) && !a.gone).map((a) => a.name)).map((n) => n.trim().toLowerCase()));
   const newId = () => "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -921,7 +959,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   const addMsg = (t) => { const m = $("#add-msg"); m.textContent = t; m.hidden = false; };
 
   $("#add-go").onclick = async () => {
-    if (sorted) { addAll(sorted); addDlg.close(); render(); toast(`Added ${sorted.length} ${sorted.length === 1 ? "thing" : "things"}`); return; }
+    if (sorted) { addAll(sorted); closeSheet(addDlg); render(); toast(`Added ${sorted.length} ${sorted.length === 1 ? "thing" : "things"}`); return; }
     const text = $("#add-text").value.trim();
     if (!text) return;
     const known = have();
@@ -932,7 +970,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       if (!fresh.length) { addMsg("That's already in your list."); return; }
       const st = here();
       addAll(fresh.map((name) => ({ name, step: st.id })));
-      addDlg.close(); render(); toast(`Added to ${nm(st)}`);
+      closeSheet(addDlg); render(); toast(`Added to ${nm(st)}`);
       return;
     }
     const btn = $("#add-go"); btn.disabled = true; btn.textContent = "Sorting…";
