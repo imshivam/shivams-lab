@@ -2,6 +2,19 @@
 
 Newest first.
 
+## 3.0.2 · 1 November 2026 · QA fixes
+
+A full QA pass: 22 checks in test/QA.md, run at 320px and 375px in light and dark mode. Fixed:
+- "Start packing again" deleted the things you'd added yourself. It now clears only ticks and answers, as it says.
+- A typed answer could be lost if you closed the app within half a second. It's now kept on the device straight away.
+- An update from your other device that arrived while you were typing could be held back until you typed again. It now applies when you leave the box, tap anywhere, or come back to the app.
+- The same thing could be added twice, by typing it or through Claude's sorting. Duplicates are skipped, with a note.
+- With no saved trip, being offline or signed out told you to "tell Claude about your trip". It now says what's actually wrong.
+- Outside Claude, the same message appeared twice.
+- The step rail could hide the current step off to the side. It now scrolls it into view.
+- Long answers showed one line after a reload. The box now grows to fit.
+- The step rail now reads as navigation to VoiceOver, and there's no empty badge on a day with nothing to pack.
+
 ## 3.0.1 · 1 November 2026 · Sync note fix
 
 - The note under the list could stay on "Connecting…" when this device already had the latest plan. It now says the plan is saved to your account.

@@ -344,12 +344,13 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
   /* ---------- Writing progress ----------
      Each change is a small nested patch merged into the progress doc, so ticks from the
      iPad and the iPhone at the same time don't overwrite each other. One write at a time. */
-  let progRef = null, writing = false;
-  function patch(p) {
+  let progRef = null, writing = false, flushTimer = null;
+  function patch(p, later) {
     merge(prog, p);
     outbox = merge(outbox || {}, p);
     saveLocal();
-    flush();
+    clearTimeout(flushTimer);
+    if (later) flushTimer = setTimeout(flush, 600); else flush();
   }
   async function flush() {
     if (writing || !outbox || !progRef) return;
@@ -369,6 +370,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
   }
 
   /* ---------- Rendering ---------- */
+  function autosize(ta) { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
   const fmtDay = (iso, long) => {
     const d = new Date(iso + "T12:00:00");
     return d.toLocaleDateString("en-GB", long ? { weekday: "long", day: "numeric", month: "long" } : { weekday: "short", day: "numeric", month: "short" });
@@ -380,6 +382,9 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
     $("#tab-days").setAttribute("aria-pressed", tab === "days");
     if (!plan) { view.innerHTML = emptyHTML(); return; }
     view.innerHTML = tab === "pack" ? packHTML() : daysHTML();
+    view.querySelectorAll(".answer-in").forEach(autosize);
+    const rail = view.querySelector(".rail"), cur = view.querySelector('.rail [aria-current="step"]');
+    if (rail && cur) rail.scrollLeft += cur.getBoundingClientRect().left - rail.getBoundingClientRect().left - (rail.clientWidth - cur.offsetWidth) / 2;
   }
 
   function emptyHTML() {
@@ -387,12 +392,12 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
     return `
       <div class="head"><h1>Packed</h1></div>
       <div class="card empty">
-        <h2>${inClaude && sync === "connecting" ? "Getting your trip…" : "Your trip lives in Claude"}</h2>
+        <h2>${!inClaude ? "Your trip lives in Claude" : sync === "connecting" ? "Getting your trip…" : sync === "offline" ? "Can't reach your trip" : sync === "signed-out" ? "Sign in to see your trip" : "No trip yet"}</h2>
         <p>${inClaude
-          ? (sync === "connecting" ? "One moment." : "Tell Claude where you're going and everything you'll need, and it'll set up the steps here.")
+          ? (sync === "connecting" ? "One moment." : sync === "offline" ? "Check your connection. Once it has loaded, your trip also works offline." : sync === "signed-out" ? "Your trip is saved to your Claude account." : "Tell Claude where you're going and everything you'll need, and it'll set up the steps here.")
           : `Your plan is kept in your Claude account. <a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Open Packed in Claude</a>.`}</p>
       </div>
-      <p class="small" id="sync-note">${syncText()}</p>`;
+      ${sync === "connecting" ? `<p class="small" id="sync-note">${syncText()}</p>` : ""}`;
   }
 
   function header() {
@@ -402,10 +407,10 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
   function packHTML() {
     const steps = plan.steps;
     const i = stepIndex();
-    const rail = `<div class="rail" role="list">${steps.map((s, n) => `
-      <button role="listitem" data-act="go" data-step="${esc(s.id)}" class="${complete(s) ? "done" : ""}" ${n === i ? 'aria-current="step"' : ""}>
+    const rail = `<nav class="rail" aria-label="Steps">${steps.map((s, n) => `
+      <button data-act="go" data-step="${esc(s.id)}" class="${complete(s) ? "done" : ""}" ${n === i ? 'aria-current="step"' : ""}>
         <span class="n">${complete(s) ? TICK : n + 1}</span>${esc(SHORT[s.id] || s.title)}
-      </button>`).join("")}</div>`;
+      </button>`).join("")}</nav>`;
 
     if (i >= steps.length) {
       return `${header()}${rail}
@@ -511,7 +516,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
       return `<section class="card day ${d.date === today ? "today" : ""}">
         <div class="day-top">
           <div><div class="eyebrow">${esc(fmtDay(d.date))}${d.date === today ? " · Today" : ""}</div><h3>${esc(d.plan)}</h3></div>
-          <span class="pill ${left ? "" : "ok"}">${need.length ? (left ? `${left} to pack` : "Packed") : ""}</span>
+          ${need.length ? `<span class="pill ${left ? "" : "ok"}">${left ? `${left} to pack` : "Packed"}</span>` : ""}
         </div>
         <dl class="lines">${rows.map(([k, v, unset]) => `<dt>${esc(k)}</dt><dd class="${unset ? "unset" : ""}">${esc(v)}</dd>`).join("")}</dl>
       </section>`;
@@ -588,17 +593,16 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
       case "reset-no": confirming = false; render(); break;
       case "reset-yes": {
         confirming = false;
-        prog = normal({}); at = null; saveLocal();
-        outbox = null; saveLocal();
-        if (progRef) progRef.set(clone(prog)).catch(() => {});
+        clearTimeout(flushTimer);
+        prog = normal({ added: prog.added, dismissed: prog.dismissed }); at = null; outbox = null; saveLocal();
+        if (progRef) progRef.set(clone(prog)).catch(() => setSync("offline"));
         render(); window.scrollTo({ top: 0 }); toast("Cleared. Ready for the next trip.");
         break;
       }
     }
   });
 
-  // Typed answers: save as you go, one write per pause.
-  const answerTimers = {};
+  // Typed answers: kept on the device at once, sent to the account after a pause.
   view.addEventListener("input", (e) => {
     const ta = e.target.closest('[data-act="answer"]');
     if (ta) {
@@ -608,15 +612,13 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
       const dec = ta.closest(".dec");
       dec.classList.toggle("on", !!val.trim());
       dec.querySelectorAll(".opts button").forEach((b) => b.setAttribute("aria-pressed", "false"));
-      prog.answers[id] = val; saveLocal(); refreshCounts();
-      clearTimeout(answerTimers[id]);
-      answerTimers[id] = setTimeout(() => patch({ answers: { [id]: val } }), 600);
+      patch({ answers: { [id]: val } }, true);
+      refreshCounts();
       return;
     }
     const add = e.target.closest(".add");
     if (add) add.querySelector(".go").hidden = !e.target.value.trim();
   });
-  const autosize = (ta) => { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; };
 
   view.addEventListener("submit", (e) => {
     const form = e.target.closest(".add");
@@ -625,10 +627,15 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
     const input = form.querySelector("input");
     const names = input.value.split(/\n|,(?![^(]*\))/).map((s) => s.trim()).filter(Boolean).map((s) => s[0].toUpperCase() + s.slice(1));
     if (!names.length) return;
-    names.forEach((name, n) => patch({ added: { [newId()]: { name, step: form.dataset.step, at: Date.now() + n } } }));
+    const known = have(), fresh = names.filter((n) => !known.has(n.toLowerCase()) && known.add(n.toLowerCase()));
+    fresh.forEach((name, n) => patch({ added: { [newId()]: { name, step: form.dataset.step, at: Date.now() + n } } }));
     render();
     const again = view.querySelector(".add input"); if (again) again.focus();
+    if (fresh.length < names.length) toast(fresh.length ? "Added. The rest are already in your list." : "That's already in your list.");
   });
+  // Names already in the trip (plan items and your additions), to avoid adding the same thing twice.
+  const have = () => new Set(allItems().filter((it) => it.kind !== "decide").map((it) => it.name)
+    .concat(Object.values(prog.added).filter((a) => isObj(a) && !a.gone).map((a) => a.name)).map((n) => n.trim().toLowerCase()));
   const newId = () => "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
   $("#tab-pack").onclick = () => { tab = "pack"; saveLocal(); render(); };
@@ -654,16 +661,16 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
     if (!text || !sample) return;
     const btn = $("#dump-go"); btn.disabled = true; btn.textContent = "Sorting…";
     const steps = plan.steps.map((s) => `- ${s.id}: ${s.title}. ${s.why || ""}`).join("\n");
-    const have = allItems().filter((it) => it.kind !== "decide").map((it) => it.name).concat(Object.values(prog.added).filter((a) => isObj(a) && !a.gone).map((a) => a.name));
+    const known = have();
     const prompt = `You help someone pack for a trip (${plan.title}, ${plan.sub || ""}). They said the text below out loud, so it rambles. ` +
       `Pull out each separate thing to pack or do, give it a short name (2–5 words, sentence case), and put it in the best step. ` +
       `Skip anything already in their list. Skip chatter that isn't a thing to pack or do. Add a short note only if they said something specific about it (how many, which one).\n\n` +
-      `Steps (use the id):\n${steps}\n\nAlready in their list: ${have.join(", ")}\n\n` +
+      `Steps (use the id):\n${steps}\n\nAlready in their list: ${[...known].join(", ")}\n\n` +
       `Reply with only a JSON array like [{"name":"Phone tripod","step":"cabin","note":""}]. Reply [] if there's nothing new.\n\nWhat they said:\n${text}`;
     try {
       const out = await sample.json(prompt, { modelTier: "default" });
       const ids = new Set(plan.steps.map((s) => s.id));
-      sorted = (Array.isArray(out) ? out : []).filter((s) => s && typeof s.name === "string" && s.name.trim())
+      sorted = (Array.isArray(out) ? out : []).filter((s) => s && typeof s.name === "string" && s.name.trim() && !known.has(s.name.trim().toLowerCase()) && known.add(s.name.trim().toLowerCase()))
         .map((s) => ({ name: s.name.trim().slice(0, 80), step: ids.has(s.step) ? s.step : plan.steps[stepIndex()]?.id || plan.steps[0].id, note: typeof s.note === "string" ? s.note.slice(0, 120) : "" }));
       if (!sorted.length) { sorted = null; btn.disabled = false; btn.textContent = "Sort it"; msg("Nothing new in that. It's all in your list already."); return; }
       $("#dump-text").hidden = true;
@@ -705,24 +712,33 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
       default: return `<a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Open Packed in Claude</a> to see your trip.`;
     }
   }
-  function setSync(s) { if (sync === s) return; sync = s; document.querySelectorAll("#sync-note").forEach((el) => { el.innerHTML = syncText(); }); }
+  function setSync(s) {
+    if (sync === s) return;
+    sync = s;
+    if (!plan) { rerender(); return; }
+    document.querySelectorAll("#sync-note").forEach((el) => { el.innerHTML = syncText(); });
+  }
   const busy = () => { const a = document.activeElement; return !!(a && (a.tagName === "TEXTAREA" || a.tagName === "INPUT") && view.contains(a)); };
   let held = false;
-  view.addEventListener("focusout", () => setTimeout(() => { if (held && !busy()) { held = false; rerender(); } }, 0));
+  // An update that arrived while you were typing is applied as soon as you stop: leaving the box, tapping elsewhere, or coming back to the page.
+  const release = () => setTimeout(() => { if (held && !busy()) { held = false; rerender(); } }, 0);
+  view.addEventListener("focusout", release);
+  document.addEventListener("pointerup", release);
+  document.addEventListener("visibilitychange", release);
   const rerender = () => { if (busy()) { held = true; return; } const y = window.scrollY; render(); window.scrollTo(0, y); };
 
   (async () => {
     if (sync === "elsewhere") { render(); return; }
     for (let i = 0; i < 30 && !(window.claude && window.claude.use); i++) await new Promise((r) => setTimeout(r, 100));
-    if (!(window.claude && window.claude.use)) { sync = "elsewhere"; render(); return; }
+    if (!(window.claude && window.claude.use)) { sync = "elsewhere"; rerender(); return; }
     const [db, user, smp] = await Promise.all([window.claude.use("db"), window.claude.use("user"), window.claude.use("sample")]);
     sample = smp; canSort = !!smp;
     const id = user ? await user.id() : null;
-    if (!db || !id) { sync = "signed-out"; render(); return; }
+    if (!db || !id) { sync = "signed-out"; rerender(); return; }
     const base = "data/users/" + id + "/";
     const planRef = db.doc(base + "plan");
     progRef = db.doc(base + "progress");
-    const slow = setTimeout(() => { if (sync === "connecting") { sync = "offline"; render(); } }, 10000);
+    const slow = setTimeout(() => { if (sync === "connecting") setSync("offline"); }, 10000);
     planRef.onSnapshot((snap) => {
       if (snap.metadata.fromCache) return;
       clearTimeout(slow);
