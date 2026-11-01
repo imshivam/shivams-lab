@@ -2,6 +2,23 @@
 
 Newest first.
 
+## 4.3 · 1 November 2026 · Pouches
+
+Small things were listed one by one ("Shampoo", "Conditioner", "Body wash"…), but they actually go into a pouch first and then into the bag. A plan can now group things by the pouch they go in. Each pouch works like an outfit:
+- one pouch is open at a time
+- you tick its pieces
+- it folds away when done, and the next one opens
+- ticking a pouch's circle ticks everything in it
+- Suitcase:
+  - toiletry bag, with a note to leave room for the morning things
+  - medicine pouch
+  - glasses kit
+  - towel, mints, book and bottle stay as single rows
+- Backpack: jewellery pouch (watches, Apple Watch straps, rings, necklaces), after the laptop, iPad, power banks and AirPods.
+- An idea you add joins its pouch (deodorant joins the toiletry bag).
+- The morning step now says to put each thing in the toiletry bag after you use it.
+- Under the hood, outfits and pouches are one kind of group, `step.groups` with `item.group`.
+
 ## 4.2 · 1 November 2026 · Suitcase and backpack
 
 The plan assumed a cabin bag, but the trip has one checked suitcase and a backpack. That made it unclear whether the big-bag step meant "pack now".

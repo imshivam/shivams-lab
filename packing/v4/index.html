@@ -498,7 +498,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
       <div class="glyph">${ic(s.icon)}</div>
       <h1>${esc(s.do || s.title)}</h1>
       ${s.tip ? `<p class="tip">${esc(s.tip)}</p>` : ""}
-      ${list.length ? `<ul class="items">${list.map(rowHTML).join("")}</ul>` : ""}
+      ${list.length ? `<ul class="items">${blocks(s).map((b) => b.pieces ? groupHTML(b, b.id === shownGroup) : rowHTML(b.it)).join("")}</ul>` : ""}
       ${idl.length ? `<details class="ideas" ${ideasOpen ? "open" : ""}>
         <summary>${ic("sparkle")}${idl.length} ${idl.length === 1 ? "idea" : "ideas"} you didn't mention${ic("chev").replace('class="i"', 'class="i chev"')}</summary>
         <ul class="idea-list">${idl.map((it) => `<li class="idea" data-id="${esc(it.id)}">
@@ -511,34 +511,54 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     setDock(next ? `Next: ${nm(next)}` : "Finish", done, () => goStep(i + 1));
   }
 
-  let openGroup = null; // the outfit whose pieces are showing
-  const groups = (s) => items(s).filter((it) => it.from && partsOf(it.from));
+  /* What a packing step shows, in order. A plain thing is one row. A group is a header with its pieces underneath:
+     an outfit typed as several pieces, or things the plan puts in one pouch (step.groups and item.group).
+     One group is open at a time; when it's complete, the next one opens. */
+  let openGroup = null;
+  function blocks(s) {
+    const out = [], seen = new Set();
+    const defs = Object.fromEntries((s.groups || []).map((g) => [g.id, g]));
+    const list = items(s);
+    for (const it of list) {
+      if (it.from && partsOf(it.from)) { out.push({ id: it.id, name: it.name, note: "", pieces: partsOf(it.from) }); continue; }
+      const g = it.group && defs[it.group];
+      if (!g) { out.push({ it }); continue; }
+      if (seen.has(g.id)) continue;
+      seen.add(g.id);
+      out.push({ id: g.id, name: g.name, note: g.note || "", pieces: list.filter((x) => x.group === g.id)
+        .map((x) => ({ key: x.id, name: x.name, note: x.note || "", qty: x.qty, removable: !!(x.mine || x.sug) })) });
+    }
+    return out;
+  }
+  const groups = (s) => blocks(s).filter((b) => b.pieces);
+  const groupDone = (b) => b.pieces.every((p) => prog.done[p.key]);
   const currentGroup = (s) => {
-    const gs = groups(s);
     if (openGroup === "__none") return null;
+    const gs = groups(s);
     if (openGroup && gs.some((g) => g.id === openGroup)) return openGroup;
-    const g = gs.find((g) => !isDone(g));
+    const g = gs.find((g) => !groupDone(g));
     return g ? g.id : null;
   };
-  function groupHTML(it, open) {
-    const ps = partsOf(it.from);
+  const openNext = (s, fallback) => { const nx = groups(s).find((x) => !groupDone(x)); openGroup = nx ? nx.id : fallback; };
+  function groupHTML(b, open) {
+    const ps = b.pieces;
     const n = ps.filter((p) => prog.done[p.key]).length;
     const on = n === ps.length;
-    return `<li class="item grp ${on ? "on" : ""} ${open ? "expanded" : ""}" data-id="${esc(it.id)}">
-      <button class="tick" data-act="tick-group" aria-pressed="${on}" aria-label="${esc(it.name)}: tick all ${ps.length}">
+    return `<li class="item grp ${on ? "on" : ""} ${open ? "expanded" : ""}" data-id="${esc(b.id)}">
+      <button class="tick" data-act="tick-group" aria-pressed="${on}" aria-label="${esc(b.name)}: tick all ${ps.length}">
         <span class="check">${ic("check")}</span>
-        <span class="txt"><span class="name">${esc(it.name)}</span><span class="sub">${on ? "All packed" : `${n} of ${ps.length}`}</span></span>
+        <span class="txt"><span class="name">${esc(b.name)}</span><span class="sub">${on ? "All packed" : `${n} of ${ps.length}`}</span>${open && !on && b.note ? `<span class="sub">${esc(b.note)}</span>` : ""}</span>
       </button>
-      <button class="open" data-act="open-group" aria-expanded="${open}" aria-label="${open ? "Hide" : "Show"} the pieces">${ic("chev")}</button>
+      <button class="open" data-act="open-group" aria-expanded="${open}" aria-label="${open ? "Hide" : "Show"} what goes in ${esc(b.name)}">${ic("chev")}</button>
     </li>${open ? ps.map((p) => `<li class="item part ${prog.done[p.key] ? "on" : ""}" data-id="${esc(p.key)}">
       <button class="tick" data-act="tick" aria-pressed="${!!prog.done[p.key]}">
         <span class="check">${ic("check")}</span>
         <span class="txt"><span class="name">${esc(p.name)}</span>${p.note ? `<span class="sub">${esc(p.note)}</span>` : ""}</span>
-      </button></li>`).join("") : ""}`;
+        ${p.qty ? `<span class="qty">${esc(p.qty)}</span>` : ""}
+      </button>${p.removable ? `<button class="side" data-act="drop" aria-label="Remove ${esc(p.name)}">${ic("close")}</button>` : ""}</li>`).join("") : ""}`;
   }
 
   function rowHTML(it) {
-    if (it.from && partsOf(it.from)) return groupHTML(it, it.id === shownGroup);
     const on = isDone(it);
     let sub = it.note || "", unset = false;
     let clamp = false;
@@ -653,12 +673,15 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
   function tickRow(id) {
     const on = !prog.done[id];
     patch({ done: { [id]: on } });
-    if (id.includes("~")) {
-      // A piece of an outfit: redraw in place, and once the outfit is complete, open the next one.
-      const s = plan.steps[stepIndex()];
-      const g = groups(s).find((g) => g.id === shownGroup);
+    const s0 = plan.steps[stepIndex()];
+    const g = s0 && !isQuestions(s0) && groups(s0).find((b) => b.pieces.some((p) => p.key === id));
+    if (g) {
+      // A piece of a group: redraw in place, and once the group is complete, open the next one.
       stay();
-      if (on && g && isDone(g)) setTimeout(() => { if (shownGroup === g.id && isDone(g)) { openGroup = null; const nx = groups(s).find((x) => !isDone(x)); openGroup = nx ? nx.id : g.id; stay(); } }, 450);
+      if (on) setTimeout(() => {
+        const now = groups(s0).find((b) => b.id === g.id);
+        if (shownGroup === g.id && now && groupDone(now)) { openNext(s0, g.id); stay(); }
+      }, 450);
       return;
     }
     const row = view.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
@@ -677,10 +700,12 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.36); }
     switch (el.dataset.act) {
       case "tick": tickRow(id); break;
       case "tick-group": {
-        const it = byId(id); const ps = partsOf(it.from); const on = !isDone(it);
-        const d = {}; ps.forEach((p) => { d[p.key] = on; });
+        const s = plan.steps[stepIndex()]; const b = groups(s).find((x) => x.id === id);
+        if (!b) break;
+        const on = !groupDone(b);
+        const d = {}; b.pieces.forEach((p) => { d[p.key] = on; });
         patch({ done: d });
-        if (on && shownGroup === id) { const nx = groups(plan.steps[stepIndex()]).find((x) => !isDone(x)); openGroup = nx ? nx.id : id; }
+        if (on && shownGroup === id) openNext(s, id);
         stay(); break;
       }
       case "open-group": openGroup = shownGroup === id ? "__none" : id; stay(); break;
