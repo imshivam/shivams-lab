@@ -7,6 +7,7 @@
     { id: "app", label: "Apps" },
     { id: "web", label: "Websites" },
     { id: "artifact", label: "Artifacts" },
+    { id: "video", label: "Videos" },
   ];
 
   const $ = (s, el = document) => el.querySelector(s);
@@ -117,7 +118,7 @@
 
   // ---------- Timeline ----------
   function tileHTML(p) {
-    const kind = { app: "App", web: "Website", artifact: "Artifact" }[p.kind];
+    const kind = { app: "App", web: "Website", artifact: "Artifact", video: "Video" }[p.kind];
     const meta = [kind, p.version ? "Version " + p.version : null].filter(Boolean).join(" · ");
     return `<li><a class="tile" href="#/${esc(p.id)}" data-id="${esc(p.id)}">
       <span class="tile-art" style="${tintVars(p)}">${window.iconSVG(p.icon)}</span>

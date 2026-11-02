@@ -148,6 +148,133 @@
         <path class="pm-play" d="M44 39.5v21c0 1.6 1.7 2.5 3 1.7l16.5-10.5c1.2-.8 1.2-2.6 0-3.4L47 37.8c-1.3-.8-3 .1-3 1.7z" fill="#151512"/>
         <rect class="pm-bar" x="26" y="65" width="48" height="2.5" rx="1.25" fill="#151512" opacity=".55"/>
       </g>`,
+
+    myWeek: (u) => `
+      <defs>${lg(u + "b", "#E9805C", "#C2532F", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect x="14" y="38" width="72" height="24" rx="12" fill="#fff" fill-opacity=".28" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
+      <rect x="19" y="43" width="16" height="14" rx="7" fill="#BDC1F2"/>
+      <rect x="37" y="43" width="20" height="14" rx="4" fill="#A3C7E2"/>
+      <rect x="59" y="43" width="10" height="14" rx="4" fill="#A0D7AF"/>
+      <rect x="71" y="43" width="10" height="14" rx="7" fill="#F0B89E"/>
+      <rect x="48" y="30" width="3" height="40" rx="1.5" fill="#fff"/>`,
+
+    wishList: (u) => `
+      <defs>${lg(u + "b", "#FFE3EC", "#F7B8CC")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect x="24" y="44" width="52" height="34" rx="5" fill="#fff"/>
+      <rect x="20" y="34" width="60" height="13" rx="4" fill="#fff"/>
+      <rect x="46" y="34" width="8" height="44" fill="#E2476F"/>
+      <path d="M50 34c-6-10-18-10-16-3 1 4 10 4 16 3zm0 0c6-10 18-10 16-3-1 4-10 4-16 3z" fill="none" stroke="#E2476F" stroke-width="4" stroke-linejoin="round"/>`,
+
+    gameShelf: (u) => `
+      <defs>${lg(u + "b", "#1B2350", "#070A1E", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <circle cx="74" cy="24" r="9" fill="#7CF6FF" opacity=".85"/>
+      <path d="M28 24h34l8 8v46H28z" fill="#B9BCB2"/>
+      <rect x="34" y="38" width="30" height="28" fill="#EF7A68"/>
+      <rect x="44" y="46" width="10" height="4" fill="#1B1B2F"/><rect x="47" y="43" width="4" height="10" fill="#1B1B2F"/>
+      <rect x="22" y="80" width="56" height="5" rx="2" fill="#A86B3C"/>`,
+
+    reels: (u) => `
+      <defs>${lg(u + "b", "#26262A", "#0B0B0C")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect x="32" y="16" width="36" height="68" rx="8" fill="#F4F1EA"/>
+      <rect x="37" y="26" width="26" height="14" rx="3" fill="none" stroke="#FF8A3D" stroke-width="3"/>
+      <rect x="37" y="46" width="26" height="4" rx="2" fill="#26262A" opacity=".25"/>
+      <rect x="37" y="54" width="18" height="4" rx="2" fill="#26262A" opacity=".25"/>
+      <path d="M46 64v12l10-6z" fill="#26262A"/>`,
+
+    styleAtlas: (u) => `
+      <rect width="100" height="100" fill="#141414"/>
+      <rect x="0" y="0" width="54" height="44" fill="#D7261E"/>
+      <rect x="58" y="0" width="42" height="44" fill="#F4F1EA"/>
+      <rect x="0" y="48" width="30" height="52" fill="#F4F1EA"/>
+      <rect x="34" y="48" width="66" height="30" fill="#1F3C99"/>
+      <rect x="34" y="82" width="40" height="18" fill="#F6C900"/>
+      <rect x="78" y="82" width="22" height="18" fill="#F4F1EA"/>`,
+
+    handloom: (u) => `
+      <defs>${lg(u + "b", "#F4EEDF", "#E3D6B8")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <g stroke-width="7" stroke-linecap="round">
+        <path d="M30 20v60M50 20v60M70 20v60" stroke="#1D2756"/>
+        <path d="M20 32h60M20 50h60M20 68h60" stroke="#A2262B"/>
+        <path d="M30 32v0M50 50v0M70 68v0M70 32v0M30 68v0" stroke="#1D2756"/>
+      </g>
+      <rect x="18" y="82" width="64" height="5" rx="2.5" fill="#D18A10"/>`,
+
+    playground3d: (u) => `
+      <defs>${lg(u + "b", "#1D2440", "#0E1220", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <path d="M50 18 78 34 50 50 22 34z" fill="#FFB08F"/>
+      <path d="M22 34 50 50v32L22 66z" fill="#FF9466"/>
+      <path d="M78 34 50 50v32l28-16z" fill="#7C9CFF"/>`,
+
+    incomeBridge: (u) => `
+      <defs>${lg(u + "b", "#3A63D8", "#2347AE", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <path d="M14 60c12-22 60-22 72 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+      <path d="M10 60h80" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+      <path d="M32 50v10M50 46v14M68 50v10" stroke="#fff" stroke-width="4"/>
+      <path d="M18 72q8 5 16 0t16 0 16 0 16 0" fill="none" stroke="#9FB8FF" stroke-width="4" stroke-linecap="round"/>`,
+
+    fragrance: (u) => `
+      <defs>${lg(u + "b", "#2A1F2E", "#130E15", 1, 1)}${lg(u + "g", "#F3CF8E", "#C98A35")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect x="40" y="16" width="20" height="10" rx="3" fill="#C98A35"/>
+      <rect x="45" y="26" width="10" height="8" fill="#E9B86D"/>
+      <rect x="26" y="34" width="48" height="50" rx="12" fill="url(#${u}g)"/>
+      <rect x="34" y="52" width="32" height="14" rx="3" fill="#130E15" opacity=".35"/>`,
+
+    concierge: (u) => `
+      <defs>${lg(u + "b", "#2F3A33", "#18201B", 1, 1)}${lg(u + "g", "#F4D58A", "#C8962E")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <path d="M20 66a30 30 0 0 1 60 0z" fill="url(#${u}g)"/>
+      <rect x="44" y="28" width="12" height="8" rx="4" fill="#F4D58A"/>
+      <rect x="16" y="68" width="68" height="8" rx="4" fill="#F4D58A"/>`,
+
+    lifeList: (u) => `
+      <defs>${lg(u + "b", "#3E8C74", "#2E6A59", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect x="24" y="18" width="52" height="66" rx="8" fill="#fff"/>
+      <path d="M32 34l5 5 9-9M32 52l5 5 9-9" fill="none" stroke="#2E6A59" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="52" y="32" width="16" height="4" rx="2" fill="#2E6A59" opacity=".4"/>
+      <rect x="52" y="50" width="16" height="4" rx="2" fill="#2E6A59" opacity=".4"/>
+      <rect x="32" y="68" width="36" height="4" rx="2" fill="#2E6A59" opacity=".25"/>`,
+
+    referralMap: (u) => `
+      <defs>${lg(u + "b", "#E6F0F4", "#C9DEE8")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <path d="M30 66 50 34l20 32M30 66h40" fill="none" stroke="#1F5C7A" stroke-width="4"/>
+      <circle cx="50" cy="34" r="11" fill="#1F5C7A"/>
+      <circle cx="30" cy="66" r="9" fill="#1E7A4C"/>
+      <circle cx="70" cy="66" r="9" fill="#8A5A00"/>`,
+
+    barcelona: (u) => `
+      <defs>${lg(u + "b", "#FFD9A0", "#F29E5A")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <circle cx="50" cy="44" r="18" fill="#FFF3D6"/>
+      <rect x="0" y="62" width="100" height="38" fill="#2D6FA3"/>
+      <path d="M8 72q10-6 21 0t21 0 21 0 21 0M8 84q10-6 21 0t21 0 21 0 21 0" fill="none" stroke="#9CCBEA" stroke-width="4" stroke-linecap="round"/>`,
+
+    writingCal: (u) => `
+      <defs>${lg(u + "b", "#FFFFFF", "#ECEDEF")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect x="20" y="26" width="44" height="6" rx="3" fill="#1C1C1E"/>
+      <rect x="20" y="40" width="34" height="6" rx="3" fill="#1C1C1E" opacity=".5"/>
+      <rect x="20" y="54" width="40" height="6" rx="3" fill="#1C1C1E" opacity=".5"/>
+      <circle cx="70" cy="68" r="15" fill="#2E8B57"/>
+      <path d="M63 68l5 5 9-10" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`,
+
+    deck: (u) => `
+      <defs>${lg(u + "b", "#FF9F6E", "#E5623A", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect x="18" y="26" width="64" height="42" rx="5" fill="#fff"/>
+      <rect x="26" y="34" width="28" height="5" rx="2.5" fill="#E5623A"/>
+      <rect x="26" y="44" width="20" height="16" rx="2" fill="#FFD2BF"/>
+      <rect x="50" y="44" width="24" height="16" rx="2" fill="#FFD2BF"/>
+      <path d="M50 68v10M40 82h20" stroke="#fff" stroke-width="4" stroke-linecap="round"/>`,
   };
 
   let seq = 0;

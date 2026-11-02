@@ -2,6 +2,26 @@
 
 window.VERSIONS = [
   {
+    version: "2.2",
+    date: "2026-11-02",
+    title: "Everything, not just the code",
+    summary:
+      "The Lab only listed projects made in Claude Code. It now also lists what was made in Claude chat and Cowork: 15 more, for 27 in all.",
+    changes: [
+      "Added Game Shelf, Style Atlas, The Handloom Trail, 3D Playground, The Fragrance Canon, Income Bridge London, Weekly Life List, Referral Map, Barcelona, Off the Tourist Map, Personal Concierge and Writing Calibration.",
+      "Added the What Were They Thinking explainer reels, My Week (the iPhone app called In a day on TestFlight), the Wish List page and a Cowork slide deck.",
+      "A new Videos filter holds the two explainers.",
+      "Joint Finances now links to its States and References boards.",
+      "Each new project has its own icon. Names of other people are left out, because this page is public.",
+    ],
+    why:
+      "You said the game shelf and the explainer video were missing. The Lab had only looked at Claude Code projects, so anything made in chat or Cowork never reached it.",
+    shots: [
+      { src: "assets/changelog/v2.2/phone.jpg", alt: "v2.2 on iPhone: November and October with the new projects", kind: "phone" },
+      { src: "assets/changelog/v2.2/desktop.jpg", alt: "v2.2 on Mac", kind: "wide" },
+    ],
+  },
+  {
     version: "2.1",
     date: "2026-10-14",
     title: "A second look at the magic",
