@@ -2,6 +2,19 @@
 
 window.VERSIONS = [
   {
+    version: "2.3",
+    date: "2026-11-02",
+    title: "Private projects",
+    summary: "Personal projects stay on the Lab, but only Shivam can open them.",
+    changes: [
+      "A Private label with a lock on personal projects: Income Bridge London, Referral Map, Weekly Life List, Barcelona and the Cowork deck.",
+      "Their links go to claude.ai pages that are private, so anyone else gets a sign-in page.",
+      "Their descriptions no longer mention people or personal details.",
+    ],
+    why: "Shivam wants one page listing everything, without exposing anything personal to visitors.",
+    shots: [],
+  },
+  {
     version: "2.2",
     date: "2026-11-02",
     title: "Everything, not just the code",

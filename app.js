@@ -17,6 +17,7 @@
   const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const CHECK = '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5 7.2 13 14.5 5"/></svg>';
+  const LOCK = '<svg class="lock" viewBox="0 0 12 14" aria-hidden="true"><rect x="1" y="6" width="10" height="7.5" rx="2"/><path d="M3.5 6V4.2a2.5 2.5 0 0 1 5 0V6"/></svg>';
   const ARROW = '<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M4.5 10.5 10.5 4.5M5.5 4.5h5v5"/></svg>';
 
   // "September 2026" → "2026-09", so projects can be grouped and sorted by the month they were made.
@@ -120,10 +121,11 @@
   function tileHTML(p) {
     const kind = { app: "App", web: "Website", artifact: "Artifact", video: "Video" }[p.kind];
     const meta = [kind, p.version ? "Version " + p.version : null].filter(Boolean).join(" · ");
+    const lock = p.private ? `${LOCK}<span>Private</span> · ` : "";
     return `<li><a class="tile" href="#/${esc(p.id)}" data-id="${esc(p.id)}">
       <span class="tile-art" style="${tintVars(p)}">${window.iconSVG(p.icon)}</span>
       <span class="tile-text"><span class="tile-name">${esc(p.name)}</span>
-        <span class="tile-meta">${esc(meta)}</span>
+        <span class="tile-meta">${lock}${esc(meta)}</span>
         <span class="tile-line">${esc(p.tagline)}</span></span></a></li>`;
   }
 
@@ -310,7 +312,7 @@
       <div class="detail-head"><p class="detail-kind">${esc(p.platform)} · ${esc(p.made)}</p>
         <h2 class="t-title1 detail-name" id="sheetTitle">${esc(p.name)}</h2>
         <p class="detail-tagline">${esc(p.tagline)}</p></div>
-      ${primary ? `<div class="actions"><a class="btn btn-primary" href="${esc(primary.url)}" target="_blank" rel="noopener">${esc(primary.label)}${ARROW}</a></div>`
+      ${primary ? `<div class="actions"><a class="btn btn-primary" href="${esc(primary.url)}" target="_blank" rel="noopener">${esc(primary.label)}${ARROW}</a></div>${p.private ? `<p class="private-note">${LOCK}Private. This link opens only for Shivam, signed in to Claude. Anyone else sees a sign-in page.</p>` : ""}`
         : `<p class="local-note">There’s no link for this one yet. It lives on your Mac, in the folder shown under Information.</p>`}
       ${p.shot ? `<figure class="shot"><img src="${esc(p.shot.src)}" width="${p.shot.w}" height="${p.shot.h}" alt="${esc(p.shot.alt)}" decoding="async"></figure>` : ""}
       <section class="detail-section" aria-labelledby="about-h"><h3 id="about-h">About</h3><p class="detail-about">${esc(p.about)}</p></section>

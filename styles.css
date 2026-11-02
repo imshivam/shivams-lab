@@ -506,6 +506,9 @@ main:focus { outline: none; }
 @media (hover: hover) { .links a:hover { background: color-mix(in srgb, var(--highlight) 45%, transparent); } }
 .links a:focus-visible { outline-offset: -3px; }
 
+.lock { display: inline-block; width: 0.75em; height: 0.85em; margin-right: 4px; vertical-align: -0.05em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.private-note { display: flex; gap: 6px; align-items: baseline; margin: 10px 4px 0; font-size: 0.882rem; line-height: 1.333; color: var(--label-2); }
+.private-note .lock { flex: none; }
 .local-note { margin: 18px 0 0; padding: 14px 16px; border-radius: 18px; background: var(--sheet-cell); font-size: 0.882rem; line-height: 1.333; color: var(--label-2); }
 
 .shot { margin: 22px 0 0; border-radius: 22px; overflow: hidden; background: var(--bg-3); box-shadow: 0 0 0 0.5px var(--separator); }
