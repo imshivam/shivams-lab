@@ -2,6 +2,18 @@
 
 window.VERSIONS = [
   {
+    version: "2.4",
+    date: "2026-11-08",
+    title: "Barcelona planners",
+    summary: "The Barcelona entry now holds the two planners made alongside the trip guide.",
+    changes: [
+      "Barcelona links to two more private pages: After Hours, for evenings out, and Inspiration Week, which shows what's open right now.",
+      "Its description and highlights cover all three pages, still without dates or personal details.",
+    ],
+    why: "The weekly check found two new Barcelona pages in Claude. They belong to the same trip, so they sit under that entry instead of becoming new ones.",
+    shots: [],
+  },
+  {
     version: "2.3",
     date: "2026-11-02",
     title: "Private projects",

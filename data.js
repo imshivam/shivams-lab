@@ -1,7 +1,7 @@
 // Everything in the Lab. To add a project, copy one entry, change it, and keep the list newest first.
 // kind: "app" | "web" | "artifact". icon: a key in ICONS (icons.js). shot: optional image in assets/shots.
 
-window.LAB_UPDATED = "2026-11-02";
+window.LAB_UPDATED = "2026-11-08";
 
 window.PROJECTS = [
   {
@@ -28,14 +28,19 @@ window.PROJECTS = [
     tintDark: ["#3A2A1C", "#2A1E15"],
     name: "Barcelona, Off the Tourist Map",
     kind: "artifact",
-    platform: "Claude doc",
+    platform: "Claude doc and artifacts",
     tagline: "A trip guide to Barcelona away from the usual sights.",
-    about: "A trip guide to Barcelona, focused on places outside the main tourist routes.",
+    about: "A trip guide to Barcelona, focused on places outside the main tourist routes, with two planners alongside it: one for evenings out, and one that shows what's open right now and a walk for each weekend day.",
+    highlights: ["A guide away from the main tourist routes", "Evening picks by mood: sound, making, or something weird", "What's open now, with a map link for each place"],
     made: "October 2026",
-    updated: "2026-10-31",
-    stack: "Claude Docs",
+    updated: "2026-11-06",
+    stack: "Claude Docs, HTML, JavaScript",
     icon: "barcelona",
-    links: [{ label: "Open", url: "https://claude.ai/artifact/N3CzvMV1TcxLexHMMHo1hD", primary: true }],
+    links: [
+      { label: "Open the Guide", url: "https://claude.ai/artifact/N3CzvMV1TcxLexHMMHo1hD", primary: true },
+      { label: "After Hours", url: "https://claude.ai/artifact/2uRDG6E2Zofa5FTwtcLvd8" },
+      { label: "Inspiration Week", url: "https://claude.ai/artifact/WGpFUycWg3Pu94cqx6zayH" },
+    ],
   },
   {
     id: "weekly-life-list",
