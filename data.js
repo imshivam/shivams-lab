@@ -1,9 +1,26 @@
 // Everything in the Lab. To add a project, copy one entry, change it, and keep the list newest first.
 // kind: "app" | "web" | "artifact". icon: a key in ICONS (icons.js). shot: optional image in assets/shots.
 
-window.LAB_UPDATED = "2026-11-08";
+window.LAB_UPDATED = "2026-11-15";
 
 window.PROJECTS = [
+  {
+    id: "india-culture-map",
+    private: true,
+    tint: ["#FFE0C2", "#F2A65A"],
+    tintDark: ["#3A2616", "#2A1C12"],
+    name: "India Culture Map",
+    kind: "artifact",
+    platform: "Claude doc",
+    tagline: "A guide to India's living arts, and where to find them.",
+    about: "A trip guide to Indian culture: the classical arts mapped by region, what's on during the visit, things that can be seen on any day, and a suggested route that ties them together, with a checklist of next steps.",
+    highlights: ["Classical arts mapped by region", "What's on, and what you can see any day", "A suggested route and next steps"],
+    made: "November 2026",
+    updated: "2026-11-09",
+    stack: "Claude Docs",
+    icon: "indiaCulture",
+    links: [{ label: "Open the Guide", url: "https://claude.ai/artifact/WFjFncdGDAjbueu1hBG1mJ", primary: true }],
+  },
   {
     id: "writing-calibration",
     tint: ["#FFFFFF", "#ECEDEF"],
@@ -323,13 +340,14 @@ window.PROJECTS = [
       "Picks saved where Claude can read them",
     ],
     made: "October 2026",
-    updated: "2026-10-31",
+    updated: "2026-11-09",
     version: "0.1",
     stack: "Python, yt-dlp, ffmpeg, HTML",
     where: "~/Documents/references",
     icon: "referenceKit",
     links: [
       { label: "Card Game Board", url: "https://claude.ai/artifact/5odjRkw1ivwmXGFKZ8AuDR", primary: true },
+      { label: "Pink and Black Board", url: "https://claude.ai/artifact/1zQaHbQxy6B2rNn8176MZr" },
     ],
   },
   {

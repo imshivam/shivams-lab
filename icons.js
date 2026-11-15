@@ -275,6 +275,16 @@
       <rect x="26" y="44" width="20" height="16" rx="2" fill="#FFD2BF"/>
       <rect x="50" y="44" width="24" height="16" rx="2" fill="#FFD2BF"/>
       <path d="M50 68v10M40 82h20" stroke="#fff" stroke-width="4" stroke-linecap="round"/>`,
+
+    indiaCulture: (u) => `
+      <defs>${lg(u + "b", "#FFC98A", "#E8743B")}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <circle cx="50" cy="50" r="26" fill="none" stroke="#FFF3E0" stroke-width="5"/>
+      <g fill="#FFF3E0">
+        <ellipse cx="50" cy="30" rx="6" ry="11"/><ellipse cx="50" cy="70" rx="6" ry="11"/>
+        <ellipse cx="30" cy="50" rx="11" ry="6"/><ellipse cx="70" cy="50" rx="11" ry="6"/>
+      </g>
+      <circle cx="50" cy="50" r="7" fill="#B8322A"/>`,
   };
 
   let seq = 0;

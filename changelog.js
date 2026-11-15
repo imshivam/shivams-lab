@@ -2,6 +2,18 @@
 
 window.VERSIONS = [
   {
+    version: "2.5",
+    date: "2026-11-15",
+    title: "India Culture Map",
+    summary: "A new private guide, and one more board under Reference Kit.",
+    changes: [
+      "Added India Culture Map, a private trip guide to India's classical arts, with its own icon.",
+      "Reference Kit now links to the Pink and Black board, a Keep / Drop board of outfits.",
+    ],
+    why: "The weekly check found both in Claude. The guide is about a trip, so it's private and leaves out dates. The board was made with the Reference Kit, so it sits under that entry.",
+    shots: [],
+  },
+  {
     version: "2.4",
     date: "2026-11-08",
     title: "Barcelona planners",
