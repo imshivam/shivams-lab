@@ -2,6 +2,18 @@
 
 window.VERSIONS = [
   {
+    version: "2.6",
+    date: "2026-11-21",
+    title: "Tidier privacy",
+    summary: "Writing Calibration is off the Lab, and Packed and Joint Finances are now marked private.",
+    changes: [
+      "Removed Writing Calibration.",
+      "Packed and Joint Finances show the Private label. Their links already opened only for Shivam.",
+    ],
+    why: "Shivam asked which projects are really public, and wanted personal ones labelled private.",
+    shots: [],
+  },
+  {
     version: "2.5",
     date: "2026-11-15",
     title: "India Culture Map",

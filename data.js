@@ -1,7 +1,7 @@
 // Everything in the Lab. To add a project, copy one entry, change it, and keep the list newest first.
 // kind: "app" | "web" | "artifact". icon: a key in ICONS (icons.js). shot: optional image in assets/shots.
 
-window.LAB_UPDATED = "2026-11-15";
+window.LAB_UPDATED = "2026-11-21";
 
 window.PROJECTS = [
   {
@@ -20,23 +20,6 @@ window.PROJECTS = [
     stack: "Claude Docs",
     icon: "indiaCulture",
     links: [{ label: "Open the Guide", url: "https://claude.ai/artifact/WFjFncdGDAjbueu1hBG1mJ", primary: true }],
-  },
-  {
-    id: "writing-calibration",
-    tint: ["#FFFFFF", "#ECEDEF"],
-    tintDark: ["#24262A", "#1A1B1E"],
-    name: "Writing Calibration",
-    kind: "artifact",
-    platform: "Claude artifact",
-    tagline: "Mark pieces of copy Go or No-go, so Claude learns your style.",
-    about:
-      "A column of cards, each holding a piece of copy. You mark each one Go or No-go and add a note. Your picks are saved where Claude can read them, so the next round of writing matches how you like things said.",
-    highlights: ["Go / No-go on each piece of copy", "A note on any card", "Picks saved for Claude to read"],
-    made: "November 2026",
-    updated: "2026-11-01",
-    stack: "HTML, Claude artifact storage",
-    icon: "writingCal",
-    links: [{ label: "Open", url: "https://claude.ai/artifact/RvbwyzEGqFcqc6DvXX81UV", primary: true }],
   },
   {
     id: "barcelona",
@@ -298,6 +281,7 @@ window.PROJECTS = [
   },
   {
     id: "packed",
+    private: true,
     tint: ["#D6F2EE", "#B4E3DC"],
     tintDark: ["#16302D", "#122522"],
     name: "Packed",
@@ -407,6 +391,7 @@ window.PROJECTS = [
   },
   {
     id: "joint-finances",
+    private: true,
     tint: ["#E6F7EC", "#C2EAD2"],
     tintDark: ["#1F3A2B", "#16291F"],
     name: "Joint Finances",
