@@ -2,6 +2,17 @@
 
 window.VERSIONS = [
   {
+    version: "2.7",
+    date: "2026-11-22",
+    title: "Warm Jackets",
+    summary: "A new private shopping guide.",
+    changes: [
+      "Added Warm Jackets, a private guide to the warmest jackets from London menswear brands, with its own icon.",
+    ],
+    why: "The weekly check found it in Claude. It's about shopping and prices, so it's private and its description leaves out sizes and amounts.",
+    shots: [],
+  },
+  {
     version: "2.6",
     date: "2026-11-21",
     title: "Tidier privacy",

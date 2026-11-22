@@ -1,9 +1,26 @@
 // Everything in the Lab. To add a project, copy one entry, change it, and keep the list newest first.
 // kind: "app" | "web" | "artifact". icon: a key in ICONS (icons.js). shot: optional image in assets/shots.
 
-window.LAB_UPDATED = "2026-11-21";
+window.LAB_UPDATED = "2026-11-22";
 
 window.PROJECTS = [
+  {
+    id: "warm-jackets",
+    private: true,
+    tint: ["#E4E7EC", "#B9C2CF"],
+    tintDark: ["#232830", "#181C22"],
+    name: "Warm Jackets",
+    kind: "artifact",
+    platform: "Claude doc",
+    tagline: "The warmest jackets from London menswear brands with their own shops.",
+    about: "A shopping guide to design-led menswear brands with shops in London: each brand's three warmest jackets, ranked from what the product pages say about fill and lining, with a link straight to the right size, plus a few good brands you can only buy online.",
+    highlights: ["Eighteen brands with London shops", "Three warmest jackets per brand, warmest first", "Each jacket links to the right size", "Sources checked on each brand's own pages"],
+    made: "November 2026",
+    updated: "2026-11-18",
+    stack: "Claude Docs",
+    icon: "warmJackets",
+    links: [{ label: "Open the Guide", url: "https://claude.ai/artifact/RUAqbXDR4f1iUdg88MAUjQ", primary: true }],
+  },
   {
     id: "india-culture-map",
     private: true,

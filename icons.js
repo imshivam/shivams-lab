@@ -285,6 +285,13 @@
         <ellipse cx="30" cy="50" rx="11" ry="6"/><ellipse cx="70" cy="50" rx="11" ry="6"/>
       </g>
       <circle cx="50" cy="50" r="7" fill="#B8322A"/>`,
+    warmJackets: (u) => `
+      <defs>${lg(u + "b", "#5B6B82", "#2F3A4C", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <path d="M38 22h24l18 12v44H64V48v30H36V48v30H20V34z" fill="#EDE6DA"/>
+      <path d="M50 26v52" stroke="#2F3A4C" stroke-width="3"/>
+      <path d="M38 22l12 10 12-10" fill="#C9A77C"/>
+      <path d="M36 44h28M36 60h28" stroke="#2F3A4C" stroke-width="2.5" opacity=".35"/>`,
   };
 
   let seq = 0;
