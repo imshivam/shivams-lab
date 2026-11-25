@@ -1,9 +1,27 @@
 // Everything in the Lab. To add a project, copy one entry, change it, and keep the list newest first.
 // kind: "app" | "web" | "artifact". icon: a key in ICONS (icons.js). shot: optional image in assets/shots.
 
-window.LAB_UPDATED = "2026-11-22";
+window.LAB_UPDATED = "2026-11-25";
 
 window.PROJECTS = [
+  {
+    id: "subtitled",
+    tint: ["#D6E6FF", "#8DB6F5"],
+    tintDark: ["#16233A", "#0D1626"],
+    name: "Subtitled films",
+    kind: "web",
+    platform: "Web page, phone and Mac",
+    tagline: "Subtitled film shows in London you can actually make, and how far each one is.",
+    about: "Reads Your Local Cinema's listings of subtitled and captioned screenings every morning and keeps only the London-area shows that fit: weekday evenings from 5pm, any time at weekends and on bank holidays. Each show gives one travel time to decide with, plus public transport and walking distance, measured from work on weekdays and from home at weekends.",
+    highlights: ["Only shows at times that work", "Nearest cinemas first, far ones tucked away", "One travel time, plus transport and walking", "Listings refresh every morning"],
+    made: "November 2026",
+    updated: "2026-11-25",
+    version: "1.0",
+    stack: "HTML, CSS, JavaScript, Python, GitHub Actions, TfL Journey Planner, OpenStreetMap",
+    where: "shivams-lab/subtitled",
+    icon: "subtitled",
+    links: [{ label: "Open Subtitled films", url: "https://imshivam.github.io/shivams-lab/subtitled/", primary: true }],
+  },
   {
     id: "warm-jackets",
     private: true,

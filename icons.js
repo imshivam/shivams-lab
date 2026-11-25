@@ -285,6 +285,14 @@
         <ellipse cx="30" cy="50" rx="11" ry="6"/><ellipse cx="70" cy="50" rx="11" ry="6"/>
       </g>
       <circle cx="50" cy="50" r="7" fill="#B8322A"/>`,
+    subtitled: (u) => `
+      <defs>${lg(u + "b", "#2D7FF0", "#0B3E95", 1, 1)}</defs>
+      <rect width="100" height="100" fill="url(#${u}b)"/>
+      <rect x="18" y="24" width="64" height="44" rx="7" fill="none" stroke="#fff" stroke-width="6"/>
+      <rect class="rk-t" x="28" y="54" width="26" height="6" rx="3" fill="#fff"/>
+      <rect class="rk-t rk-2" x="58" y="54" width="14" height="6" rx="3" fill="#fff" opacity=".7"/>
+      <rect x="36" y="76" width="28" height="6" rx="3" fill="#fff"/>`,
+
     warmJackets: (u) => `
       <defs>${lg(u + "b", "#5B6B82", "#2F3A4C", 1, 1)}</defs>
       <rect width="100" height="100" fill="url(#${u}b)"/>

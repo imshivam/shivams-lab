@@ -1,0 +1,444 @@
+{
+ "Acton Act One": {
+  "lat": 51.5066,
+  "lon": -0.26841
+ },
+ "Acton Odeon": {
+  "lat": 51.52576,
+  "lon": -0.28136
+ },
+ "Aldgate Curzon": {
+  "lat": 51.51382,
+  "lon": -0.06892
+ },
+ "Baker Street Everyman": {
+  "lat": 51.5205,
+  "lon": -0.15656
+ },
+ "Barbican Centre Barbican": {
+  "lat": 51.52102,
+  "lon": -0.09286,
+  "name": "Barbican Cinema"
+ },
+ "Barnet Everyman": {
+  "lat": 51.64635,
+  "lon": -0.1879
+ },
+ "Belsize Park Everyman": {
+  "lat": 51.55081,
+  "lon": -0.16578
+ },
+ "Bexleyheath Cineworld": {
+  "lat": 51.45615,
+  "lon": 0.15031
+ },
+ "Bluewater Showcase": {
+  "lat": 51.43684,
+  "lon": 0.27008
+ },
+ "Borough Everyman": {
+  "lat": 51.50564,
+  "lon": -0.0922
+ },
+ "Brixton Picturehouse": {
+  "lat": 51.46115,
+  "lon": -0.11496,
+  "name": "Ritzy Picturehouse, Brixton"
+ },
+ "Bromley Vue": {
+  "lat": 51.39982,
+  "lon": 0.01513
+ },
+ "Camden Curzon": {
+  "lat": 51.54223,
+  "lon": -0.14347
+ },
+ "Canary Wharf Everyman": {
+  "lat": 51.50613,
+  "lon": -0.01783
+ },
+ "Chelsea Everyman": {
+  "lat": 51.48559,
+  "lon": -0.17315
+ },
+ "Chiswick Cinema": {
+  "lat": 51.49309,
+  "lon": -0.25101
+ },
+ "Clapham Picturehouse": {
+  "lat": 51.4625,
+  "lon": -0.13815
+ },
+ "Crouch End Arthouse": {
+  "lat": 51.58189,
+  "lon": -0.12005
+ },
+ "Crouch End Picturehouse": {
+  "lat": 51.58164,
+  "lon": -0.12082
+ },
+ "Croydon Valley Park Leisure Vue": {
+  "lat": 51.37804,
+  "lon": -0.12464,
+  "name": "Croydon Purley Way Vue"
+ },
+ "Crystal Palace Everyman": {
+  "lat": 51.41909,
+  "lon": -0.07913
+ },
+ "Dalston Rio": {
+  "lat": 51.54965,
+  "lon": -0.07558
+ },
+ "Dulwich Picturehouse": {
+  "lat": 51.45647,
+  "lon": -0.07631,
+  "name": "East Dulwich Picturehouse"
+ },
+ "Ealing Picturehouse": {
+  "lat": 51.51199,
+  "lon": -0.30688
+ },
+ "Edmonton Lee Valley Odeon": {
+  "lat": 51.63316,
+  "lon": -0.03726
+ },
+ "Egham Everyman": {
+  "lat": 51.43093,
+  "lon": -0.54802
+ },
+ "Eltham Vue": {
+  "lat": 51.45061,
+  "lon": 0.05681
+ },
+ "Enfield Cineworld": {
+  "lat": 51.65022,
+  "lon": -0.06096
+ },
+ "Epsom Odeon": {
+  "lat": 51.33393,
+  "lon": -0.26232
+ },
+ "Epsom Picturehouse": {
+  "lat": 51.33427,
+  "lon": -0.26582
+ },
+ "Esher Everyman": {
+  "lat": 51.37074,
+  "lon": -0.36396
+ },
+ "Feltham Cineworld": {
+  "lat": 51.44386,
+  "lon": -0.40463
+ },
+ "Finchley North Vue": {
+  "lat": 51.60386,
+  "lon": -0.17321
+ },
+ "Finchley PhoenixFinchley": {
+  "lat": 51.58851,
+  "lon": -0.16371,
+  "name": "Phoenix, East Finchley"
+ },
+ "Finchley Road O2 Vue": {
+  "lat": 51.54812,
+  "lon": -0.18157
+ },
+ "Finsbury Everyman": {
+  "lat": 51.51965,
+  "lon": -0.0846,
+  "name": "Everyman Broadgate"
+ },
+ "Finsbury Picturehouse": {
+  "lat": 51.56507,
+  "lon": -0.10747,
+  "name": "Finsbury Park Picturehouse"
+ },
+ "Fulham Broadway Vue": {
+  "lat": 51.4808,
+  "lon": -0.19442
+ },
+ "Gerrards Cross Everyman": {
+  "lat": 51.58899,
+  "lon": -0.55309
+ },
+ "Greenwich O2 Cineworld": {
+  "lat": 51.50303,
+  "lon": 0.00435
+ },
+ "Greenwich Odeon": {
+  "lat": 51.4906,
+  "lon": 0.01278
+ },
+ "Greenwich Picturehouse": {
+  "lat": 51.47945,
+  "lon": -0.00969
+ },
+ "Hackney Castle": {
+  "lat": 51.55133,
+  "lon": -0.04319
+ },
+ "Hackney Picturehouse": {
+  "lat": 51.54481,
+  "lon": -0.05494
+ },
+ "Hampstead Everyman": {
+  "lat": 51.55635,
+  "lon": -0.17899
+ },
+ "Harrow Vue": {
+  "lat": 51.5815,
+  "lon": -0.33899
+ },
+ "Hatfield Odeon": {
+  "lat": 51.76279,
+  "lon": -0.23842
+ },
+ "Haymarket Odeon": {
+  "lat": 51.50957,
+  "lon": -0.13122
+ },
+ "Hertford Beam The Wash": {
+  "lat": 51.79625,
+  "lon": -0.07973,
+  "name": "Beam, Hertford"
+ },
+ "Holloway Odeon": {
+  "lat": 51.55866,
+  "lon": -0.1214
+ },
+ "Hounslow Cineworld": {
+  "lat": 51.46959,
+  "lon": -0.36268
+ },
+ "Hoxton Curzon": {
+  "lat": 51.52888,
+  "lon": -0.0838
+ },
+ "Ilford Cineworld": {
+  "lat": 51.55748,
+  "lon": 0.0739
+ },
+ "Islington Odeon": {
+  "lat": 51.53864,
+  "lon": -0.10357
+ },
+ "Islington Screen On The Green Everyman": {
+  "lat": 51.53685,
+  "lon": -0.10366,
+  "name": "Everyman Screen on the Green"
+ },
+ "Islington Vue": {
+  "lat": 51.53438,
+  "lon": -0.10583
+ },
+ "Kensal Rise Lexi": {
+  "lat": 51.53753,
+  "lon": -0.22248
+ },
+ "Kilburn Kiln Cinema NW6": {
+  "lat": 51.54373,
+  "lon": -0.20039,
+  "name": "Kiln Cinema, Kilburn"
+ },
+ "King's Cross Everyman": {
+  "lat": 51.53753,
+  "lon": -0.12406
+ },
+ "Kingston Curzon": {
+  "lat": 51.41104,
+  "lon": -0.30494
+ },
+ "Kingston Odeon": {
+  "lat": 51.41193,
+  "lon": -0.2993
+ },
+ "Leicester Square Cineworld": {
+  "lat": 51.51093,
+  "lon": -0.13041
+ },
+ "Leicester Square Odeon": {
+  "lat": 51.5105,
+  "lon": -0.1291
+ },
+ "Leicester Square Vue": {
+  "lat": 51.51124,
+  "lon": -0.12937
+ },
+ "Maida Vale Everyman": {
+  "lat": 51.52803,
+  "lon": -0.18171
+ },
+ "Muswell Hill Everyman": {
+  "lat": 51.58959,
+  "lon": -0.14621
+ },
+ "Norwood Picturehouse": {
+  "lat": 51.43307,
+  "lon": -0.10296,
+  "name": "West Norwood Picturehouse"
+ },
+ "Notting Hill Electric": {
+  "lat": 51.51553,
+  "lon": -0.20507
+ },
+ "Notting Hill Picturehouse": {
+  "lat": 51.50869,
+  "lon": -0.19735,
+  "name": "Gate Picturehouse, Notting Hill"
+ },
+ "PeckhamPlex": {
+  "lat": 51.47085,
+  "lon": -0.06791
+ },
+ "Piccadilly Circus Vue": {
+  "lat": 51.50894,
+  "lon": -0.13434
+ },
+ "Putney Odeon": {
+  "lat": 51.46518,
+  "lon": -0.21392
+ },
+ "Regent Street Cinema": {
+  "lat": 51.51682,
+  "lon": -0.14285
+ },
+ "Richmond Curzon": {
+  "lat": 51.45924,
+  "lon": -0.307
+ },
+ "Richmond Odeon": {
+  "lat": 51.45851,
+  "lon": -0.30519
+ },
+ "Ruislip Cineworld": {
+  "lat": 51.5589,
+  "lon": -0.40058
+ },
+ "Shaftesbury Avenue Picturehouse": {
+  "lat": 51.51071,
+  "lon": -0.13372,
+  "name": "Picturehouse Central"
+ },
+ "Shepherds Bush Westfield Vue": {
+  "lat": 51.50772,
+  "lon": -0.22218
+ },
+ "Sidcup Castle": {
+  "lat": 51.42608,
+  "lon": 0.10112
+ },
+ "Soho Curzon": {
+  "lat": 51.51266,
+  "lon": -0.13061
+ },
+ "South Woodford Odeon": {
+  "lat": 51.5945,
+  "lon": 0.023
+ },
+ "Staines Vue": {
+  "lat": 51.43427,
+  "lon": -0.51364
+ },
+ "Stratford International Everyman": {
+  "lat": 51.54244,
+  "lon": -0.01054
+ },
+ "Stratford Westfield Vue": {
+  "lat": 51.54361,
+  "lon": -0.00654
+ },
+ "Streatham Odeon": {
+  "lat": 51.4322,
+  "lon": -0.12837
+ },
+ "Sutton Surrey Omniplex": {
+  "lat": 51.36477,
+  "lon": -0.19531,
+  "name": "Sutton Omniplex"
+ },
+ "Swiss Cottage Odeon": {
+  "lat": 51.54254,
+  "lon": -0.17458
+ },
+ "The Whiteley W1 Everyman": {
+  "lat": 51.51444,
+  "lon": -0.18834,
+  "name": "Everyman The Whiteley"
+ },
+ "Thurrock Vue": {
+  "lat": 51.48792,
+  "lon": 0.28074
+ },
+ "Tottenham Court Rd Odeon": {
+  "lat": 51.51836,
+  "lon": -0.13258,
+  "name": "Tottenham Court Road Odeon"
+ },
+ "Uxbridge Odeon": {
+  "lat": 51.54531,
+  "lon": -0.47551
+ },
+ "Victoria Curzon": {
+  "lat": 51.49753,
+  "lon": -0.13658
+ },
+ "Walthamstow Forest Cinema": {
+  "lat": 51.58495,
+  "lon": -0.02019
+ },
+ "Walton On Thames Everyman": {
+  "lat": 51.38386,
+  "lon": -0.41655
+ },
+ "Wandsworth Cineworld": {
+  "lat": 51.45415,
+  "lon": -0.19341
+ },
+ "Waterloo BFI IMAX": {
+  "lat": 51.50482,
+  "lon": -0.11363,
+  "name": "BFI IMAX, Waterloo"
+ },
+ "Waterloo BFI Southbank": {
+  "lat": 51.50673,
+  "lon": -0.11521,
+  "name": "BFI Southbank"
+ },
+ "Watford Cineworld": {
+  "lat": 51.65606,
+  "lon": -0.39651
+ },
+ "Watford Vue": {
+  "lat": 51.69259,
+  "lon": -0.3948
+ },
+ "West End Odeon": {
+  "lat": 51.50991,
+  "lon": -0.13022
+ },
+ "West India Quay Cineworld": {
+  "lat": 51.50785,
+  "lon": -0.0225
+ },
+ "Whitechapel Genesis": {
+  "lat": 51.52133,
+  "lon": -0.05121
+ },
+ "Wimbledon Curzon": {
+  "lat": 51.42036,
+  "lon": -0.20525
+ },
+ "Wimbledon Odeon": {
+  "lat": 51.41981,
+  "lon": -0.20488
+ },
+ "Wood Green Cineworld": {
+  "lat": 51.59458,
+  "lon": -0.10952
+ },
+ "Wood Green Vue": {
+  "lat": 51.59688,
+  "lon": -0.10865
+ }
+}

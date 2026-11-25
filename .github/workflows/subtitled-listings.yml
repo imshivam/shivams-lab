@@ -1,0 +1,39 @@
+# Keeps Subtitled films current: reads yourlocalcinema.com every morning and saves the London-area
+# shows to subtitled/listings.json. If the site can't be read or looks different, the run fails and
+# the old listings stay. When it finishes, "Publish site" (pages.yml) publishes the result.
+name: Subtitled listings
+
+on:
+  schedule:
+    - cron: "23 5 * * *"  # 05:23 UTC every day
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: subtitled-listings
+  cancel-in-progress: false
+
+jobs:
+  listings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Read the listings
+        run: python3 subtitled/scrape.py subtitled/listings.json
+      - name: Commit changes
+        run: |
+          git add subtitled/listings.json
+          if git diff --cached --quiet; then echo "Nothing changed."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898900+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Subtitled: update listings"
+          git pull --rebase -X theirs origin main  # on a clash, this run's files win
+          git push

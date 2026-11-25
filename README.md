@@ -25,3 +25,12 @@ When you change the site, add an entry to `changelog.js`. It feeds the Version H
 - If a shop blocks automated visits, set `photoFrom` on the wish to another shop's page for the same product. If a page's photo is wrong, set `image` to the right photo's address.
 - The page has its own copy of the Lab's design system (`wishlist/base.css`), so changes to the Lab's `styles.css` can't break it.
 - Its look follows the Opal app (dark only, green aurora, glass cards, mint accents, an iridescent stone): the theme lives in `wishlist/wishlist.css`.
+
+## Subtitled films
+
+`subtitled/` is a separate page: subtitled film shows at London-area cinemas that fit weekday evenings and weekends, with travel times, at https://imshivam.github.io/shivams-lab/subtitled/
+
+- `subtitled/scrape.py` reads yourlocalcinema.com and writes `subtitled/listings.json`. GitHub Actions runs it every morning (`.github/workflows/subtitled-listings.yml`). If the site can't be read, the run fails and the old listings stay.
+- `subtitled/venues.json` holds each cinema's location. When a new cinema appears in the listings, add it there (OpenStreetMap has most of them), or the page leaves its shows out.
+- Home and work postcodes are saved in the browser on each device, never in this repository. Travel times are worked out in the browser (TfL Journey Planner, OpenStreetMap walking routes).
+- Design notes: `subtitled/DESIGN.md`. Changes: `subtitled/CHANGELOG.md`.

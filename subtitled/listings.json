@@ -1,0 +1,2890 @@
+{
+ "updated": "2026-11-25T17:20+00:00",
+ "source": "https://www.yourlocalcinema.com/",
+ "films": [
+  {
+   "id": "avengersdoomsday",
+   "page": "https://www.yourlocalcinema.com/-avengersdoomsday.html",
+   "poster": "https://www.yourlocalcinema.com/-avengersdoomsday.jpg",
+   "trailer": "https://www.youtube.com/watch?v=irVNGjRFZGk",
+   "rating": "12A",
+   "runtime": "2h 45m",
+   "blurb": "Avengers, Fantastic Four and more must save the multiverse from the evil Doctor Doom",
+   "shows": [
+    {
+     "venue": "Acton Odeon",
+     "times": [
+      "2026-12-16T10:20",
+      "2026-12-17T17:10",
+      "2026-12-20T09:30",
+      "2026-12-22T21:00"
+     ]
+    },
+    {
+     "venue": "Bluewater Showcase",
+     "times": [
+      "2026-12-17T12:10",
+      "2026-12-22T16:20",
+      "2026-12-23T20:00"
+     ]
+    },
+    {
+     "venue": "Brixton Picturehouse",
+     "times": [
+      "2026-12-19T12:00"
+     ]
+    },
+    {
+     "venue": "Dulwich Picturehouse",
+     "times": [
+      "2026-12-19T12:20",
+      "2026-12-20T19:50",
+      "2026-12-21T16:10",
+      "2026-12-22T13:20",
+      "2026-12-26T19:40",
+      "2026-12-30T19:40"
+     ]
+    },
+    {
+     "venue": "Edmonton Lee Valley Odeon",
+     "times": [
+      "2026-12-16T10:20",
+      "2026-12-17T17:10",
+      "2026-12-20T11:30",
+      "2026-12-22T21:00"
+     ]
+    },
+    {
+     "venue": "Epsom Odeon",
+     "times": [
+      "2026-12-17T17:10",
+      "2026-12-20T09:30",
+      "2026-12-22T21:00"
+     ]
+    },
+    {
+     "venue": "Finsbury Picturehouse",
+     "times": [
+      "2026-12-20T18:15",
+      "2026-12-22T12:20",
+      "2026-12-23T12:20",
+      "2026-12-24T16:00"
+     ]
+    },
+    {
+     "venue": "Greenwich Odeon",
+     "times": [
+      "2026-12-16T10:20",
+      "2026-12-17T17:15",
+      "2026-12-20T11:20"
+     ]
+    },
+    {
+     "venue": "Greenwich Picturehouse",
+     "times": [
+      "2026-12-16T15:15",
+      "2026-12-17T19:00"
+     ]
+    },
+    {
+     "venue": "Hatfield Odeon",
+     "times": [
+      "2026-12-16T10:20",
+      "2026-12-17T17:10",
+      "2026-12-20T09:30",
+      "2026-12-21T20:00",
+      "2026-12-23T19:00"
+     ]
+    },
+    {
+     "venue": "Holloway Odeon",
+     "times": [
+      "2026-12-20T09:30",
+      "2026-12-22T21:00"
+     ]
+    },
+    {
+     "venue": "Kingston Odeon",
+     "times": [
+      "2026-12-16T10:30",
+      "2026-12-17T17:30",
+      "2026-12-20T09:30",
+      "2026-12-20T10:30",
+      "2026-12-22T20:45",
+      "2026-12-23T18:00"
+     ]
+    },
+    {
+     "venue": "Richmond Odeon",
+     "times": [
+      "2026-12-20T09:30"
+     ]
+    },
+    {
+     "venue": "South Woodford Odeon",
+     "times": [
+      "2026-12-20T09:30"
+     ]
+    },
+    {
+     "venue": "Streatham Odeon",
+     "times": [
+      "2026-12-17T17:10",
+      "2026-12-20T09:30"
+     ]
+    },
+    {
+     "venue": "Swiss Cottage Odeon",
+     "times": [
+      "2026-12-20T09:50",
+      "2026-12-21T21:00"
+     ]
+    },
+    {
+     "venue": "Uxbridge Odeon",
+     "times": [
+      "2026-12-16T10:20",
+      "2026-12-17T17:10",
+      "2026-12-20T09:30",
+      "2026-12-22T20:45"
+     ]
+    },
+    {
+     "venue": "Whitechapel Genesis",
+     "times": [
+      "2026-12-17T17:05"
+     ]
+    },
+    {
+     "venue": "Wimbledon Odeon",
+     "times": [
+      "2026-12-16T10:20",
+      "2026-12-17T17:10",
+      "2026-12-20T09:30",
+      "2026-12-22T20:45"
+     ]
+    }
+   ],
+   "title": "Avengers: Doomsday"
+  },
+  {
+   "id": "dune3",
+   "page": "https://www.yourlocalcinema.com/dune3.html",
+   "poster": "https://www.yourlocalcinema.com/dune3.jpg",
+   "trailer": "https://www.youtube.com/watch?v=uJqaGLmZpGo",
+   "rating": "12A",
+   "runtime": "2h 30m",
+   "blurb": "Paul increases his power across the galaxy, but there remains powerful resistance to his leadership from those closest to him",
+   "shows": [
+    {
+     "venue": "Acton Act One",
+     "times": [
+      "2026-12-23T17:10"
+     ]
+    },
+    {
+     "venue": "Acton Odeon",
+     "times": [
+      "2026-12-20T20:50"
+     ]
+    },
+    {
+     "venue": "Chiswick Cinema",
+     "times": [
+      "2026-12-29T19:50"
+     ]
+    },
+    {
+     "venue": "Dulwich Picturehouse",
+     "times": [
+      "2026-12-18T10:00",
+      "2026-12-19T16:15",
+      "2026-12-22T17:10",
+      "2026-12-24T18:40",
+      "2026-12-31T18:25"
+     ]
+    },
+    {
+     "venue": "Edmonton Lee Valley Odeon",
+     "times": [
+      "2026-12-20T20:50"
+     ]
+    },
+    {
+     "venue": "Epsom Odeon",
+     "times": [
+      "2026-12-20T19:20"
+     ]
+    },
+    {
+     "venue": "Finsbury Picturehouse",
+     "times": [
+      "2026-12-20T11:00",
+      "2026-12-21T15:30",
+      "2026-12-22T15:30",
+      "2026-12-23T15:30",
+      "2026-12-24T12:45",
+      "2026-12-24T16:20",
+      "2026-12-26T16:00"
+     ]
+    },
+    {
+     "venue": "Greenwich Odeon",
+     "times": [
+      "2026-12-20T19:10"
+     ]
+    },
+    {
+     "venue": "Hatfield Odeon",
+     "times": [
+      "2026-12-20T20:20"
+     ]
+    },
+    {
+     "venue": "Kingston Odeon",
+     "times": [
+      "2026-12-20T20:15"
+     ]
+    },
+    {
+     "venue": "Regent Street Cinema",
+     "times": [
+      "2026-12-23T15:50",
+      "2026-12-23T19:15",
+      "2026-12-30T15:50",
+      "2026-12-30T19:15"
+     ]
+    },
+    {
+     "venue": "Richmond Odeon",
+     "times": [
+      "2026-12-20T20:20"
+     ]
+    },
+    {
+     "venue": "South Woodford Odeon",
+     "times": [
+      "2026-12-20T20:20"
+     ]
+    },
+    {
+     "venue": "Streatham Odeon",
+     "times": [
+      "2026-12-20T19:20"
+     ]
+    },
+    {
+     "venue": "Uxbridge Odeon",
+     "times": [
+      "2026-12-20T21:20"
+     ]
+    },
+    {
+     "venue": "Waterloo BFI IMAX",
+     "times": [
+      "2026-12-28T17:00",
+      "2027-01-06T17:00",
+      "2027-01-12T17:00"
+     ]
+    },
+    {
+     "venue": "Wimbledon Odeon",
+     "times": [
+      "2026-12-20T21:20"
+     ]
+    }
+   ],
+   "title": "Dune: Part Three"
+  },
+  {
+   "id": "hexed",
+   "page": "https://www.yourlocalcinema.com/hexed.html",
+   "poster": "https://www.yourlocalcinema.com/hexed.jpg",
+   "trailer": "https://www.youtube.com/watch?v=KXO21xZdUaM",
+   "rating": "PG",
+   "runtime": "1h 49m",
+   "blurb": "Billie discovers magical powers that take her into Hexe, the world of witches",
+   "shows": [
+    {
+     "venue": "Acton Odeon",
+     "times": [
+      "2026-11-29T10:00",
+      "2026-12-02T18:00"
+     ]
+    },
+    {
+     "venue": "Barnet Everyman",
+     "times": [
+      "2026-11-29T10:15"
+     ]
+    },
+    {
+     "venue": "Bluewater Showcase",
+     "times": [
+      "2026-12-01T16:35",
+      "2026-12-03T10:30",
+      "2026-12-17T10:25"
+     ]
+    },
+    {
+     "venue": "Bromley Vue",
+     "times": [
+      "2026-11-29T15:40"
+     ]
+    },
+    {
+     "venue": "Chiswick Cinema",
+     "times": [
+      "2026-11-29T10:30"
+     ]
+    },
+    {
+     "venue": "Croydon Valley Park Leisure Vue",
+     "times": [
+      "2026-11-29T15:25"
+     ]
+    },
+    {
+     "venue": "Crystal Palace Everyman",
+     "times": [
+      "2026-12-02T10:00",
+      "2026-12-03T10:30"
+     ]
+    },
+    {
+     "venue": "Dulwich Picturehouse",
+     "times": [
+      "2026-11-28T14:10",
+      "2026-12-02T17:30"
+     ]
+    },
+    {
+     "venue": "Edmonton Lee Valley Odeon",
+     "times": [
+      "2026-11-29T10:00",
+      "2026-12-02T18:00"
+     ]
+    },
+    {
+     "venue": "Egham Everyman",
+     "times": [
+      "2026-12-01T12:45"
+     ]
+    },
+    {
+     "venue": "Eltham Vue",
+     "times": [
+      "2026-11-29T13:50"
+     ]
+    },
+    {
+     "venue": "Epsom Odeon",
+     "times": [
+      "2026-11-29T12:40",
+      "2026-12-02T18:00"
+     ]
+    },
+    {
+     "venue": "Epsom Picturehouse",
+     "times": [
+      "2026-11-28T20:00"
+     ]
+    },
+    {
+     "venue": "Esher Everyman",
+     "times": [
+      "2026-12-02T12:00"
+     ]
+    },
+    {
+     "venue": "Feltham Cineworld",
+     "times": [
+      "2026-11-29T15:30"
+     ]
+    },
+    {
+     "venue": "Finchley North Vue",
+     "times": [
+      "2026-11-29T13:45"
+     ]
+    },
+    {
+     "venue": "Greenwich Odeon",
+     "times": [
+      "2026-11-29T10:00",
+      "2026-12-02T18:20"
+     ]
+    },
+    {
+     "venue": "Greenwich O2 Cineworld",
+     "times": [
+      "2026-11-29T15:30",
+      "2026-11-30T15:20",
+      "2026-12-03T15:30"
+     ]
+    },
+    {
+     "venue": "Hatfield Odeon",
+     "times": [
+      "2026-11-29T10:00",
+      "2026-12-02T18:00"
+     ]
+    },
+    {
+     "venue": "Holloway Odeon",
+     "times": [
+      "2026-12-02T19:40"
+     ]
+    },
+    {
+     "venue": "Hounslow Cineworld",
+     "times": [
+      "2026-11-29T14:00"
+     ]
+    },
+    {
+     "venue": "Islington Vue",
+     "times": [
+      "2026-11-29T15:55"
+     ]
+    },
+    {
+     "venue": "Kingston Odeon",
+     "times": [
+      "2026-11-29T10:00",
+      "2026-12-02T18:00"
+     ]
+    },
+    {
+     "venue": "Leicester Square Odeon",
+     "times": [
+      "2026-11-29T13:40",
+      "2026-12-01T12:40"
+     ]
+    },
+    {
+     "venue": "Muswell Hill Everyman",
+     "times": [
+      "2026-12-01T09:20",
+      "2026-12-03T09:45"
+     ]
+    },
+    {
+     "venue": "Norwood Picturehouse",
+     "times": [
+      "2026-11-29T18:00"
+     ]
+    },
+    {
+     "venue": "Piccadilly Circus Vue",
+     "times": [
+      "2026-11-29T12:30"
+     ]
+    },
+    {
+     "venue": "Putney Odeon",
+     "times": [
+      "2026-11-30T17:40",
+      "2026-12-02T12:20"
+     ]
+    },
+    {
+     "venue": "Richmond Odeon",
+     "times": [
+      "2026-11-29T15:15"
+     ]
+    },
+    {
+     "venue": "Ruislip Cineworld",
+     "times": [
+      "2026-11-29T15:20"
+     ]
+    },
+    {
+     "venue": "Sidcup Castle",
+     "times": [
+      "2026-11-30T11:00"
+     ]
+    },
+    {
+     "venue": "South Woodford Odeon",
+     "times": [
+      "2026-11-29T10:00",
+      "2026-12-02T17:10"
+     ]
+    },
+    {
+     "venue": "Staines Vue",
+     "times": [
+      "2026-11-29T09:30"
+     ]
+    },
+    {
+     "venue": "Streatham Odeon",
+     "times": [
+      "2026-12-02T17:00"
+     ]
+    },
+    {
+     "venue": "Swiss Cottage Odeon",
+     "times": [
+      "2026-12-12T09:15",
+      "2026-12-13T09:30"
+     ]
+    },
+    {
+     "venue": "Thurrock Vue",
+     "times": [
+      "2026-11-29T12:00"
+     ]
+    },
+    {
+     "venue": "Tottenham Court Rd Odeon",
+     "times": [
+      "2026-11-29T12:20"
+     ]
+    },
+    {
+     "venue": "Uxbridge Odeon",
+     "times": [
+      "2026-11-29T09:25",
+      "2026-12-02T18:00"
+     ]
+    },
+    {
+     "venue": "Walthamstow Forest Cinema",
+     "times": [
+      "2026-11-30T19:30",
+      "2026-12-02T16:45"
+     ]
+    },
+    {
+     "venue": "Walton On Thames Everyman",
+     "times": [
+      "2026-11-29T10:15"
+     ]
+    },
+    {
+     "venue": "Wandsworth Cineworld",
+     "times": [
+      "2026-11-29T14:40"
+     ]
+    },
+    {
+     "venue": "Watford Cineworld",
+     "times": [
+      "2026-11-29T13:50"
+     ]
+    },
+    {
+     "venue": "Watford Vue",
+     "times": [
+      "2026-11-29T13:35"
+     ]
+    },
+    {
+     "venue": "Wimbledon Odeon",
+     "times": [
+      "2026-11-29T10:00",
+      "2026-12-02T17:10"
+     ]
+    },
+    {
+     "venue": "Wood Green Vue",
+     "times": [
+      "2026-11-29T14:45"
+     ]
+    }
+   ],
+   "title": "Disney's Hexed"
+  },
+  {
+   "id": "thehungergames",
+   "page": "https://www.yourlocalcinema.com/thehungergames.html",
+   "poster": "https://www.yourlocalcinema.com/thehungergames.jpg",
+   "trailer": "https://www.youtube.com/watch?v=utqe5NB5uwA",
+   "rating": "12A",
+   "runtime": "2h 38m",
+   "blurb": "Prequel set 24 years before the events of The Hunger Games",
+   "shows": [
+    {
+     "venue": "Acton Odeon",
+     "times": [
+      "2026-11-25T18:20",
+      "2026-11-29T19:50"
+     ]
+    },
+    {
+     "venue": "Aldgate Curzon",
+     "times": [
+      "2026-11-28T11:00"
+     ]
+    },
+    {
+     "venue": "Baker Street Everyman",
+     "times": [
+      "2026-11-25T17:00",
+      "2026-11-30T14:30"
+     ]
+    },
+    {
+     "venue": "Barnet Everyman",
+     "times": [
+      "2026-11-26T12:30",
+      "2026-12-01T12:45",
+      "2026-12-02T10:30"
+     ]
+    },
+    {
+     "venue": "Bluewater Showcase",
+     "times": [
+      "2026-11-25T18:00",
+      "2026-11-26T10:30",
+      "2026-11-27T16:00"
+     ]
+    },
+    {
+     "venue": "Brixton Picturehouse",
+     "times": [
+      "2026-11-28T10:10"
+     ]
+    },
+    {
+     "venue": "Bromley Vue",
+     "times": [
+      "2026-11-26T17:35",
+      "2026-12-03T18:20"
+     ]
+    },
+    {
+     "venue": "Canary Wharf Everyman",
+     "times": [
+      "2026-12-01T17:15",
+      "2026-12-03T09:45"
+     ]
+    },
+    {
+     "venue": "Chiswick Cinema",
+     "times": [
+      "2026-11-26T20:25"
+     ]
+    },
+    {
+     "venue": "Clapham Picturehouse",
+     "times": [
+      "2026-11-30T13:00"
+     ]
+    },
+    {
+     "venue": "Crouch End Picturehouse",
+     "times": [
+      "2026-11-26T19:45",
+      "2026-12-01T16:20"
+     ]
+    },
+    {
+     "venue": "Croydon Valley Park Leisure Vue",
+     "times": [
+      "2026-12-03T16:15"
+     ]
+    },
+    {
+     "venue": "Crystal Palace Everyman",
+     "times": [
+      "2026-11-25T14:30",
+      "2026-11-26T13:00",
+      "2026-11-26T17:30",
+      "2026-12-01T09:45",
+      "2026-12-03T09:30"
+     ]
+    },
+    {
+     "venue": "Dulwich Picturehouse",
+     "times": [
+      "2026-11-25T13:30",
+      "2026-11-27T16:20",
+      "2026-11-30T20:20",
+      "2026-12-03T10:00"
+     ]
+    },
+    {
+     "venue": "Edmonton Lee Valley Odeon",
+     "times": [
+      "2026-11-25T17:50",
+      "2026-11-29T20:20"
+     ]
+    },
+    {
+     "venue": "Egham Everyman",
+     "times": [
+      "2026-11-26T10:30",
+      "2026-12-01T20:15",
+      "2026-12-03T11:00"
+     ]
+    },
+    {
+     "venue": "Eltham Vue",
+     "times": [
+      "2026-12-03T15:50"
+     ]
+    },
+    {
+     "venue": "Enfield Cineworld",
+     "times": [
+      "2026-11-26T18:00"
+     ]
+    },
+    {
+     "venue": "Epsom Odeon",
+     "times": [
+      "2026-11-25T16:40",
+      "2026-11-29T19:50"
+     ]
+    },
+    {
+     "venue": "Epsom Picturehouse",
+     "times": [
+      "2026-11-30T13:50"
+     ]
+    },
+    {
+     "venue": "Esher Everyman",
+     "times": [
+      "2026-11-26T20:15",
+      "2026-12-01T10:30"
+     ]
+    },
+    {
+     "venue": "Finchley North Vue",
+     "times": [
+      "2026-12-03T14:05"
+     ]
+    },
+    {
+     "venue": "Finsbury Everyman",
+     "times": [
+      "2026-11-25T17:00"
+     ]
+    },
+    {
+     "venue": "Finsbury Picturehouse",
+     "times": [
+      "2026-11-27T13:10",
+      "2026-12-01T15:30"
+     ]
+    },
+    {
+     "venue": "Gerrards Cross Everyman",
+     "times": [
+      "2026-11-26T11:45",
+      "2026-11-29T09:00",
+      "2026-12-03T20:30"
+     ]
+    },
+    {
+     "venue": "Greenwich Odeon",
+     "times": [
+      "2026-11-25T16:40",
+      "2026-11-29T19:20"
+     ]
+    },
+    {
+     "venue": "Greenwich Picturehouse",
+     "times": [
+      "2026-11-26T16:30",
+      "2026-11-27T19:30",
+      "2026-11-28T12:30",
+      "2026-11-30T16:15",
+      "2026-12-02T19:45"
+     ]
+    },
+    {
+     "venue": "Greenwich O2 Cineworld",
+     "times": [
+      "2026-11-26T13:30"
+     ]
+    },
+    {
+     "venue": "Hackney Picturehouse",
+     "times": [
+      "2026-11-25T13:50",
+      "2026-12-02T13:20"
+     ]
+    },
+    {
+     "venue": "Hampstead Everyman",
+     "times": [
+      "2026-12-01T12:30"
+     ]
+    },
+    {
+     "venue": "Hatfield Odeon",
+     "times": [
+      "2026-11-25T18:40",
+      "2026-11-29T20:40"
+     ]
+    },
+    {
+     "venue": "Holloway Odeon",
+     "times": [
+      "2026-11-29T20:45"
+     ]
+    },
+    {
+     "venue": "Islington Odeon",
+     "times": [
+      "2026-11-29T11:10"
+     ]
+    },
+    {
+     "venue": "Islington Vue",
+     "times": [
+      "2026-12-03T18:05"
+     ]
+    },
+    {
+     "venue": "King's Cross Everyman",
+     "times": [
+      "2026-12-03T09:45"
+     ]
+    },
+    {
+     "venue": "Kingston Curzon",
+     "times": [
+      "2026-12-01T11:00"
+     ]
+    },
+    {
+     "venue": "Kingston Odeon",
+     "times": [
+      "2026-11-25T17:40",
+      "2026-11-29T21:00"
+     ]
+    },
+    {
+     "venue": "Leicester Square Vue",
+     "times": [
+      "2026-11-25T13:15"
+     ]
+    },
+    {
+     "venue": "Maida Vale Everyman",
+     "times": [
+      "2026-12-01T12:00",
+      "2026-12-01T20:15"
+     ]
+    },
+    {
+     "venue": "Muswell Hill Everyman",
+     "times": [
+      "2026-12-01T11:30",
+      "2026-12-03T19:45"
+     ]
+    },
+    {
+     "venue": "Norwood Picturehouse",
+     "times": [
+      "2026-11-25T19:30"
+     ]
+    },
+    {
+     "venue": "Piccadilly Circus Vue",
+     "times": [
+      "2026-11-26T19:30",
+      "2026-12-03T17:15"
+     ]
+    },
+    {
+     "venue": "Richmond Odeon",
+     "times": [
+      "2026-11-25T20:00",
+      "2026-11-29T20:20",
+      "2026-12-02T13:30"
+     ]
+    },
+    {
+     "venue": "Ruislip Cineworld",
+     "times": [
+      "2026-11-26T18:30"
+     ]
+    },
+    {
+     "venue": "South Woodford Odeon",
+     "times": [
+      "2026-11-25T17:00",
+      "2026-11-29T19:50"
+     ]
+    },
+    {
+     "venue": "Staines Vue",
+     "times": [
+      "2026-12-03T16:35"
+     ]
+    },
+    {
+     "venue": "Stratford International Everyman",
+     "times": [
+      "2026-11-26T11:15",
+      "2026-11-26T16:30",
+      "2026-12-01T13:20",
+      "2026-12-03T10:30"
+     ]
+    },
+    {
+     "venue": "Stratford Westfield Vue",
+     "times": [
+      "2026-11-30T19:30",
+      "2026-12-03T16:25"
+     ]
+    },
+    {
+     "venue": "Streatham Odeon",
+     "times": [
+      "2026-11-29T13:50"
+     ]
+    },
+    {
+     "venue": "Sutton Surrey Omniplex",
+     "times": [
+      "2026-11-30T16:40"
+     ]
+    },
+    {
+     "venue": "Swiss Cottage Odeon",
+     "times": [
+      "2026-11-30T21:10",
+      "2026-12-02T20:50",
+      "2026-12-03T21:00"
+     ]
+    },
+    {
+     "venue": "The Whiteley W1 Everyman",
+     "times": [
+      "2026-12-03T11:15"
+     ]
+    },
+    {
+     "venue": "Thurrock Vue",
+     "times": [
+      "2026-12-03T18:20"
+     ]
+    },
+    {
+     "venue": "Tottenham Court Rd Odeon",
+     "times": [
+      "2026-11-25T14:00"
+     ]
+    },
+    {
+     "venue": "Uxbridge Odeon",
+     "times": [
+      "2026-11-25T17:40",
+      "2026-11-29T19:00"
+     ]
+    },
+    {
+     "venue": "Victoria Curzon",
+     "times": [
+      "2026-11-30T20:30"
+     ]
+    },
+    {
+     "venue": "Walthamstow Forest Cinema",
+     "times": [
+      "2026-11-25T14:15",
+      "2026-11-27T15:40",
+      "2026-11-29T19:05"
+     ]
+    },
+    {
+     "venue": "Walton On Thames Everyman",
+     "times": [
+      "2026-11-25T17:00"
+     ]
+    },
+    {
+     "venue": "Watford Vue",
+     "times": [
+      "2026-12-03T18:35"
+     ]
+    },
+    {
+     "venue": "West End Odeon",
+     "times": [
+      "2026-11-26T20:50",
+      "2026-11-29T21:00"
+     ]
+    },
+    {
+     "venue": "West India Quay Cineworld",
+     "times": [
+      "2026-11-26T20:00"
+     ]
+    },
+    {
+     "venue": "Whitechapel Genesis",
+     "times": [
+      "2026-11-26T17:45",
+      "2026-12-01T17:45",
+      "2026-12-03T17:45"
+     ]
+    },
+    {
+     "venue": "Wimbledon Odeon",
+     "times": [
+      "2026-11-25T19:20",
+      "2026-11-29T21:00"
+     ]
+    },
+    {
+     "venue": "Wood Green Cineworld",
+     "times": [
+      "2026-11-26T16:50"
+     ]
+    },
+    {
+     "venue": "Wood Green Vue",
+     "times": [
+      "2026-12-03T18:40"
+     ]
+    }
+   ],
+   "title": "The Hunger Games: Sunrise on the Reaping"
+  },
+  {
+   "id": "fockerinlaw",
+   "page": "https://www.yourlocalcinema.com/fockerinlaw.html",
+   "poster": "https://www.yourlocalcinema.com/fockerinlaw.jpg",
+   "trailer": "https://www.youtube.com/watch?v=vyISuWUWcFs",
+   "rating": "12A",
+   "runtime": "1h 45m",
+   "blurb": "Comedy. FBI hostage negotiator Olivia joins the Focker family. Stars Ben Stiller, Robert De Niro and Ariana Grande",
+   "shows": [
+    {
+     "venue": "Acton Odeon",
+     "times": [
+      "2026-11-30T20:20",
+      "2026-12-02T20:20",
+      "2026-12-03T21:20"
+     ]
+    },
+    {
+     "venue": "Ealing Picturehouse",
+     "times": [
+      "2026-11-29T12:15",
+      "2026-12-01T17:45",
+      "2026-12-02T15:00"
+     ]
+    },
+    {
+     "venue": "Baker Street Everyman",
+     "times": [
+      "2026-12-03T21:15"
+     ]
+    },
+    {
+     "venue": "Barnet Everyman",
+     "times": [
+      "2026-12-01T10:00",
+      "2026-12-01T21:00"
+     ]
+    },
+    {
+     "venue": "Bexleyheath Cineworld",
+     "times": [
+      "2026-11-29T16:25",
+      "2026-11-30T16:20"
+     ]
+    },
+    {
+     "venue": "Bluewater Showcase",
+     "times": [
+      "2026-11-26T13:40",
+      "2026-11-28T11:55",
+      "2026-12-02T19:45"
+     ]
+    },
+    {
+     "venue": "Bromley Vue",
+     "times": [
+      "2026-11-28T11:10",
+      "2026-12-01T17:55"
+     ]
+    },
+    {
+     "venue": "Canary Wharf Everyman",
+     "times": [
+      "2026-12-01T10:15"
+     ]
+    },
+    {
+     "venue": "Chelsea Everyman",
+     "times": [
+      "2026-12-01T11:30",
+      "2026-12-01T18:00"
+     ]
+    },
+    {
+     "venue": "Croydon Valley Park Leisure Vue",
+     "times": [
+      "2026-12-01T12:40"
+     ]
+    },
+    {
+     "venue": "Crystal Palace Everyman",
+     "times": [
+      "2026-12-01T13:20",
+      "2026-12-01T21:15",
+      "2026-12-02T11:00",
+      "2026-12-03T13:00"
+     ]
+    },
+    {
+     "venue": "Edmonton Lee Valley Odeon",
+     "times": [
+      "2026-11-30T20:15",
+      "2026-12-03T21:20"
+     ]
+    },
+    {
+     "venue": "Egham Everyman",
+     "times": [
+      "2026-12-02T14:20",
+      "2026-12-03T10:30"
+     ]
+    },
+    {
+     "venue": "Eltham Vue",
+     "times": [
+      "2026-11-25T13:15",
+      "2026-12-01T16:40"
+     ]
+    },
+    {
+     "venue": "Enfield Cineworld",
+     "times": [
+      "2026-11-29T13:40",
+      "2026-11-30T18:00",
+      "2026-12-03T19:00"
+     ]
+    },
+    {
+     "venue": "Epsom Odeon",
+     "times": [
+      "2026-11-30T20:20",
+      "2026-12-03T20:20"
+     ]
+    },
+    {
+     "venue": "Epsom Picturehouse",
+     "times": [
+      "2026-11-30T20:30"
+     ]
+    },
+    {
+     "venue": "Esher Everyman",
+     "times": [
+      "2026-11-29T11:00",
+      "2026-12-01T14:00",
+      "2026-12-03T20:15"
+     ]
+    },
+    {
+     "venue": "Feltham Cineworld",
+     "times": [
+      "2026-11-29T17:50",
+      "2026-11-30T19:10",
+      "2026-12-03T17:50"
+     ]
+    },
+    {
+     "venue": "Finchley North Vue",
+     "times": [
+      "2026-11-25T14:10",
+      "2026-11-28T10:40",
+      "2026-12-01T16:35"
+     ]
+    },
+    {
+     "venue": "Finsbury Everyman",
+     "times": [
+      "2026-12-02T13:45",
+      "2026-12-02T18:30"
+     ]
+    },
+    {
+     "venue": "Finsbury Picturehouse",
+     "times": [
+      "2026-11-28T15:00",
+      "2026-11-30T13:00",
+      "2026-12-01T14:30"
+     ]
+    },
+    {
+     "venue": "Gerrards Cross Everyman",
+     "times": [
+      "2026-11-30T09:30",
+      "2026-12-01T12:30"
+     ]
+    },
+    {
+     "venue": "Greenwich Odeon",
+     "times": [
+      "2026-11-30T19:40",
+      "2026-12-03T21:20"
+     ]
+    },
+    {
+     "venue": "Greenwich O2 Cineworld",
+     "times": [
+      "2026-11-29T13:40"
+     ]
+    },
+    {
+     "venue": "Hampstead Everyman",
+     "times": [
+      "2026-12-01T18:00",
+      "2026-12-03T09:40"
+     ]
+    },
+    {
+     "venue": "Harrow Vue",
+     "times": [
+      "2026-11-25T14:50"
+     ]
+    },
+    {
+     "venue": "Hatfield Odeon",
+     "times": [
+      "2026-11-30T20:20",
+      "2026-12-03T21:20"
+     ]
+    },
+    {
+     "venue": "Holloway Odeon",
+     "times": [
+      "2026-11-29T10:30",
+      "2026-12-01T20:20"
+     ]
+    },
+    {
+     "venue": "Hounslow Cineworld",
+     "times": [
+      "2026-11-29T14:40",
+      "2026-11-30T17:00",
+      "2026-12-02T19:40"
+     ]
+    },
+    {
+     "venue": "Ilford Cineworld",
+     "times": [
+      "2026-11-29T11:40"
+     ]
+    },
+    {
+     "venue": "Islington Odeon",
+     "times": [
+      "2026-11-29T20:50",
+      "2026-12-02T21:00"
+     ]
+    },
+    {
+     "venue": "Islington Vue",
+     "times": [
+      "2026-11-28T15:20",
+      "2026-12-01T18:20"
+     ]
+    },
+    {
+     "venue": "King's Cross Everyman",
+     "times": [
+      "2026-12-01T10:00",
+      "2026-12-02T10:00",
+      "2026-12-03T21:00"
+     ]
+    },
+    {
+     "venue": "Kingston Odeon",
+     "times": [
+      "2026-11-30T19:10",
+      "2026-12-03T19:10"
+     ]
+    },
+    {
+     "venue": "Leicester Square Cineworld",
+     "times": [
+      "2026-11-29T12:30",
+      "2026-11-29T15:10",
+      "2026-11-30T17:50",
+      "2026-12-03T17:50"
+     ]
+    },
+    {
+     "venue": "Muswell Hill Everyman",
+     "times": [
+      "2026-11-26T09:45",
+      "2026-12-01T09:50"
+     ]
+    },
+    {
+     "venue": "Piccadilly Circus Vue",
+     "times": [
+      "2026-12-01T17:00"
+     ]
+    },
+    {
+     "venue": "Putney Odeon",
+     "times": [
+      "2026-11-26T20:30",
+      "2026-11-29T10:00"
+     ]
+    },
+    {
+     "venue": "Richmond Odeon",
+     "times": [
+      "2026-11-26T20:45",
+      "2026-12-03T20:15"
+     ]
+    },
+    {
+     "venue": "Ruislip Cineworld",
+     "times": [
+      "2026-11-29T14:20",
+      "2026-11-30T17:15"
+     ]
+    },
+    {
+     "venue": "Sidcup Castle",
+     "times": [
+      "2026-11-28T17:00"
+     ]
+    },
+    {
+     "venue": "South Woodford Odeon",
+     "times": [
+      "2026-11-30T20:20",
+      "2026-12-03T20:20"
+     ]
+    },
+    {
+     "venue": "Staines Vue",
+     "times": [
+      "2026-11-28T09:15",
+      "2026-12-01T16:05"
+     ]
+    },
+    {
+     "venue": "Stratford International Everyman",
+     "times": [
+      "2026-11-26T12:30",
+      "2026-12-01T10:45",
+      "2026-12-03T10:00",
+      "2026-12-03T12:40",
+      "2026-12-03T18:00"
+     ]
+    },
+    {
+     "venue": "Stratford Westfield Vue",
+     "times": [
+      "2026-11-28T13:10",
+      "2026-12-01T16:50"
+     ]
+    },
+    {
+     "venue": "Streatham Odeon",
+     "times": [
+      "2026-11-30T20:20"
+     ]
+    },
+    {
+     "venue": "Swiss Cottage Odeon",
+     "times": [
+      "2026-11-25T16:00",
+      "2026-11-26T11:00"
+     ]
+    },
+    {
+     "venue": "The Whiteley W1 Everyman",
+     "times": [
+      "2026-11-26T12:30",
+      "2026-12-01T10:15",
+      "2026-12-03T20:30"
+     ]
+    },
+    {
+     "venue": "Thurrock Vue",
+     "times": [
+      "2026-11-25T13:35",
+      "2026-11-26T17:30",
+      "2026-11-28T14:25",
+      "2026-11-28T17:15",
+      "2026-12-01T17:10"
+     ]
+    },
+    {
+     "venue": "Tottenham Court Rd Odeon",
+     "times": [
+      "2026-11-26T20:00",
+      "2026-12-02T14:30"
+     ]
+    },
+    {
+     "venue": "Uxbridge Odeon",
+     "times": [
+      "2026-11-30T20:20",
+      "2026-12-03T21:20"
+     ]
+    },
+    {
+     "venue": "Victoria Curzon",
+     "times": [
+      "2026-12-03T21:00"
+     ]
+    },
+    {
+     "venue": "Wandsworth Cineworld",
+     "times": [
+      "2026-11-26T19:00",
+      "2026-11-29T12:40",
+      "2026-11-30T18:00",
+      "2026-12-03T16:20"
+     ]
+    },
+    {
+     "venue": "Watford Cineworld",
+     "times": [
+      "2026-11-29T13:40",
+      "2026-11-30T18:00"
+     ]
+    },
+    {
+     "venue": "Watford Vue",
+     "times": [
+      "2026-11-28T11:00",
+      "2026-12-01T17:45"
+     ]
+    },
+    {
+     "venue": "West India Quay Cineworld",
+     "times": [
+      "2026-11-29T15:20",
+      "2026-11-30T18:00",
+      "2026-12-03T19:00"
+     ]
+    },
+    {
+     "venue": "Wimbledon Odeon",
+     "times": [
+      "2026-11-30T20:20",
+      "2026-12-02T20:20",
+      "2026-12-03T20:20"
+     ]
+    },
+    {
+     "venue": "Wood Green Cineworld",
+     "times": [
+      "2026-11-29T15:10",
+      "2026-11-30T17:50",
+      "2026-12-03T20:30"
+     ]
+    },
+    {
+     "venue": "Wood Green Vue",
+     "times": [
+      "2026-11-25T14:00",
+      "2026-11-26T18:20",
+      "2026-12-01T17:05"
+     ]
+    }
+   ],
+   "title": "Focker In-Law"
+  },
+  {
+   "id": "ebenezer",
+   "page": "https://www.yourlocalcinema.com/ebenezer.html",
+   "poster": "https://www.yourlocalcinema.com/ebenezer.jpg",
+   "trailer": "https://www.youtube.com/watch?v=A7lyvgnDuDE",
+   "rating": "12A",
+   "runtime": "1h 56m",
+   "blurb": "Johnny Depp is Ebenezer Scrooge in the classic Christmas tale - told like never before",
+   "shows": [
+    {
+     "venue": "Acton Odeon",
+     "times": [
+      "2026-12-01T14:10"
+     ]
+    },
+    {
+     "venue": "Barnet Everyman",
+     "times": [
+      "2026-11-26T09:45"
+     ]
+    },
+    {
+     "venue": "Bluewater Showcase",
+     "times": [
+      "2026-11-30T18:50"
+     ]
+    },
+    {
+     "venue": "Borough Everyman",
+     "times": [
+      "2026-12-03T21:00"
+     ]
+    },
+    {
+     "venue": "Bromley Vue",
+     "times": [
+      "2026-12-02T12:30"
+     ]
+    },
+    {
+     "venue": "Canary Wharf Everyman",
+     "times": [
+      "2026-11-25T16:30"
+     ]
+    },
+    {
+     "venue": "Chelsea Everyman",
+     "times": [
+      "2026-11-30T15:00"
+     ]
+    },
+    {
+     "venue": "Croydon Valley Park Leisure Vue",
+     "times": [
+      "2026-11-25T17:10",
+      "2026-12-02T15:30"
+     ]
+    },
+    {
+     "venue": "Egham Everyman",
+     "times": [
+      "2026-11-26T09:30",
+      "2026-11-26T12:20"
+     ]
+    },
+    {
+     "venue": "Eltham Vue",
+     "times": [
+      "2026-12-02T19:15"
+     ]
+    },
+    {
+     "venue": "Epsom Odeon",
+     "times": [
+      "2026-12-01T14:20"
+     ]
+    },
+    {
+     "venue": "Epsom Picturehouse",
+     "times": [
+      "2026-11-27T12:30"
+     ]
+    },
+    {
+     "venue": "Esher Everyman",
+     "times": [
+      "2026-11-26T09:30",
+      "2026-12-03T11:15"
+     ]
+    },
+    {
+     "venue": "Finchley North Vue",
+     "times": [
+      "2026-12-02T16:25"
+     ]
+    },
+    {
+     "venue": "Fulham Broadway Vue",
+     "times": [
+      "2026-11-25T16:55"
+     ]
+    },
+    {
+     "venue": "Gerrards Cross Everyman",
+     "times": [
+      "2026-11-26T10:00",
+      "2026-11-26T20:45",
+      "2026-12-01T09:30"
+     ]
+    },
+    {
+     "venue": "Greenwich Odeon",
+     "times": [
+      "2026-12-01T12:00"
+     ]
+    },
+    {
+     "venue": "Greenwich Picturehouse",
+     "times": [
+      "2026-11-29T16:30",
+      "2026-12-01T10:00",
+      "2026-12-03T17:20"
+     ]
+    },
+    {
+     "venue": "Hampstead Everyman",
+     "times": [
+      "2026-11-26T09:45",
+      "2026-12-01T09:40"
+     ]
+    },
+    {
+     "venue": "Hatfield Odeon",
+     "times": [
+      "2026-12-01T14:10"
+     ]
+    },
+    {
+     "venue": "Holloway Odeon",
+     "times": [
+      "2026-11-30T12:10"
+     ]
+    },
+    {
+     "venue": "Islington Odeon",
+     "times": [
+      "2026-11-25T14:50",
+      "2026-11-30T20:20",
+      "2026-12-01T14:15"
+     ]
+    },
+    {
+     "venue": "Islington Vue",
+     "times": [
+      "2026-12-02T13:55"
+     ]
+    },
+    {
+     "venue": "Kingston Odeon",
+     "times": [
+      "2026-12-01T17:50"
+     ]
+    },
+    {
+     "venue": "Leicester Square Cineworld",
+     "times": [
+      "2026-11-26T17:00"
+     ]
+    },
+    {
+     "venue": "Leicester Square Odeon",
+     "times": [
+      "2026-11-26T17:00",
+      "2026-11-30T20:30",
+      "2026-12-03T17:40"
+     ]
+    },
+    {
+     "venue": "Muswell Hill Everyman",
+     "times": [
+      "2026-11-26T17:20"
+     ]
+    },
+    {
+     "venue": "PeckhamPlex",
+     "times": [
+      "2026-11-28T12:10"
+     ]
+    },
+    {
+     "venue": "Piccadilly Circus Vue",
+     "times": [
+      "2026-11-25T18:00",
+      "2026-12-02T13:00"
+     ]
+    },
+    {
+     "venue": "Richmond Odeon",
+     "times": [
+      "2026-11-30T12:00",
+      "2026-12-01T20:45"
+     ]
+    },
+    {
+     "venue": "South Woodford Odeon",
+     "times": [
+      "2026-12-01T14:30"
+     ]
+    },
+    {
+     "venue": "Staines Vue",
+     "times": [
+      "2026-12-02T10:00"
+     ]
+    },
+    {
+     "venue": "Stratford International Everyman",
+     "times": [
+      "2026-11-26T09:30"
+     ]
+    },
+    {
+     "venue": "Stratford Westfield Vue",
+     "times": [
+      "2026-12-02T11:55"
+     ]
+    },
+    {
+     "venue": "Swiss Cottage Odeon",
+     "times": [
+      "2026-11-26T20:45"
+     ]
+    },
+    {
+     "venue": "Uxbridge Odeon",
+     "times": [
+      "2026-12-01T15:15"
+     ]
+    },
+    {
+     "venue": "Walthamstow Forest Cinema",
+     "times": [
+      "2026-11-28T14:10",
+      "2026-12-02T17:00"
+     ]
+    },
+    {
+     "venue": "Walton On Thames Everyman",
+     "times": [
+      "2026-12-01T12:30"
+     ]
+    },
+    {
+     "venue": "Watford Vue",
+     "times": [
+      "2026-12-02T13:10"
+     ]
+    },
+    {
+     "venue": "Wimbledon Odeon",
+     "times": [
+      "2026-12-01T12:00"
+     ]
+    },
+    {
+     "venue": "Wood Green Vue",
+     "times": [
+      "2026-12-02T16:55"
+     ]
+    }
+   ],
+   "title": "Ebenezer"
+  },
+  {
+   "id": "wicker",
+   "page": "https://www.yourlocalcinema.com/wicker.html",
+   "poster": "https://www.yourlocalcinema.com/wicker.jpg",
+   "trailer": "https://www.youtube.com/watch?v=HP0BWBWn14I",
+   "rating": "15",
+   "runtime": "1h 45m",
+   "blurb": "Comedy with Olivia Colman. A smelly Fisherwoman finds herself a husband made from wicker, which sparks outrage, jealousy and chaos in the village",
+   "shows": [
+    {
+     "venue": "Chelsea Everyman",
+     "times": [
+      "2026-11-26T09:45"
+     ]
+    },
+    {
+     "venue": "Islington Screen On The Green Everyman",
+     "times": [
+      "2026-11-26T14:15"
+     ]
+    },
+    {
+     "venue": "Leicester Square Vue",
+     "times": [
+      "2026-11-26T16:25"
+     ]
+    },
+    {
+     "venue": "Walthamstow Forest Cinema",
+     "times": [
+      "2026-11-28T17:35",
+      "2026-11-30T11:00"
+     ]
+    }
+   ],
+   "title": "Wicker"
+  },
+  {
+   "id": "thecatinthehat",
+   "page": "https://www.yourlocalcinema.com/thecatinthehat.html",
+   "poster": "https://www.yourlocalcinema.com/thecatinthehat.jpg",
+   "trailer": "https://www.youtube.com/watch?v=Vuv0kqGWjno",
+   "rating": "PG",
+   "runtime": "1h 47m",
+   "blurb": "A mischievous Cat takes on a mission to cheer up siblings Gabby and Sebastian",
+   "shows": [
+    {
+     "venue": "Bluewater Showcase",
+     "times": [
+      "2026-12-10T10:30"
+     ]
+    },
+    {
+     "venue": "Dulwich Picturehouse",
+     "times": [
+      "2026-12-05T10:00",
+      "2026-12-06T13:00"
+     ]
+    },
+    {
+     "venue": "Greenwich O2 Cineworld",
+     "times": [
+      "2026-12-06T13:10"
+     ]
+    },
+    {
+     "venue": "Hounslow Cineworld",
+     "times": [
+      "2026-12-06T14:20"
+     ]
+    },
+    {
+     "venue": "Ruislip Cineworld",
+     "times": [
+      "2026-12-06T14:20"
+     ]
+    },
+    {
+     "venue": "Wandsworth Cineworld",
+     "times": [
+      "2026-12-06T11:20"
+     ]
+    },
+    {
+     "venue": "Watford Cineworld",
+     "times": [
+      "2026-12-06T13:50"
+     ]
+    },
+    {
+     "venue": "West India Quay Cineworld",
+     "times": [
+      "2026-12-06T13:50"
+     ]
+    }
+   ],
+   "title": "The Cat in the Hat"
+  },
+  {
+   "id": "youcanseeeverything",
+   "page": "https://www.yourlocalcinema.com/youcanseeeverything.html",
+   "poster": "https://www.yourlocalcinema.com/youcanseeeverything.jpg",
+   "trailer": "https://www.youtube.com/watch?v=HvW_N5p1q44",
+   "rating": "15",
+   "runtime": "2h 54m",
+   "blurb": "Documentary. Before she's sent to prison, notorious Silicon Valley founder Elizabeth Holmes invites a skeptical film crew to document her every move",
+   "shows": [
+    {
+     "venue": "Acton Act One",
+     "times": [
+      "2026-11-26T16:00"
+     ]
+    },
+    {
+     "venue": "Acton Odeon",
+     "times": [
+      "2026-11-26T19:40"
+     ]
+    },
+    {
+     "venue": "Aldgate Curzon",
+     "times": [
+      "2026-12-03T16:00"
+     ]
+    },
+    {
+     "venue": "Baker Street Everyman",
+     "times": [
+      "2026-11-26T20:00"
+     ]
+    },
+    {
+     "venue": "Barbican Centre Barbican",
+     "times": [
+      "2026-11-27T12:00",
+      "2026-11-28T10:30",
+      "2026-11-28T12:30",
+      "2026-11-29T18:50",
+      "2026-11-30T10:30"
+     ]
+    },
+    {
+     "venue": "Barnet Everyman",
+     "times": [
+      "2026-11-26T10:45",
+      "2026-11-26T17:15",
+      "2026-12-01T11:40"
+     ]
+    },
+    {
+     "venue": "Belsize Park Everyman",
+     "times": [
+      "2026-11-26T10:00",
+      "2026-12-03T10:15",
+      "2026-12-03T20:30"
+     ]
+    },
+    {
+     "venue": "Bluewater Showcase",
+     "times": [
+      "2026-11-29T17:15"
+     ]
+    },
+    {
+     "venue": "Borough Everyman",
+     "times": [
+      "2026-11-26T10:15",
+      "2026-11-30T12:00",
+      "2026-12-01T12:00"
+     ]
+    },
+    {
+     "venue": "Brixton Picturehouse",
+     "times": [
+      "2026-11-28T13:20",
+      "2026-11-30T11:00"
+     ]
+    },
+    {
+     "venue": "Camden Curzon",
+     "times": [
+      "2026-11-26T17:40",
+      "2026-12-03T15:45"
+     ]
+    },
+    {
+     "venue": "Canary Wharf Everyman",
+     "times": [
+      "2026-12-01T13:00",
+      "2026-12-02T12:15"
+     ]
+    },
+    {
+     "venue": "Chelsea Everyman",
+     "times": [
+      "2026-11-30T10:30",
+      "2026-12-03T11:15"
+     ]
+    },
+    {
+     "venue": "Chiswick Cinema",
+     "times": [
+      "2026-12-03T20:00"
+     ]
+    },
+    {
+     "venue": "Clapham Picturehouse",
+     "times": [
+      "2026-11-25T18:45",
+      "2026-11-26T11:40",
+      "2026-12-03T10:45"
+     ]
+    },
+    {
+     "venue": "Crouch End Arthouse",
+     "times": [
+      "2026-12-02T13:00"
+     ]
+    },
+    {
+     "venue": "Crouch End Picturehouse",
+     "times": [
+      "2026-11-26T11:45",
+      "2026-11-29T12:30",
+      "2026-12-01T11:45",
+      "2026-12-03T18:30"
+     ]
+    },
+    {
+     "venue": "Croydon Valley Park Leisure Vue",
+     "times": [
+      "2026-11-26T20:20"
+     ]
+    },
+    {
+     "venue": "Crystal Palace Everyman",
+     "times": [
+      "2026-11-26T09:15",
+      "2026-12-02T12:45"
+     ]
+    },
+    {
+     "venue": "Dalston Rio",
+     "times": [
+      "2026-11-30T17:00"
+     ]
+    },
+    {
+     "venue": "Dulwich Picturehouse",
+     "times": [
+      "2026-11-26T11:50",
+      "2026-11-27T19:50",
+      "2026-11-28T15:40",
+      "2026-11-28T19:40",
+      "2026-11-29T15:40",
+      "2026-11-29T19:40",
+      "2026-12-01T14:10",
+      "2026-12-02T11:20"
+     ]
+    },
+    {
+     "venue": "Edmonton Lee Valley Odeon",
+     "times": [
+      "2026-11-26T19:30"
+     ]
+    },
+    {
+     "venue": "Eltham Vue",
+     "times": [
+      "2026-11-26T20:05"
+     ]
+    },
+    {
+     "venue": "Epsom Odeon",
+     "times": [
+      "2026-11-26T19:50"
+     ]
+    },
+    {
+     "venue": "Epsom Picturehouse",
+     "times": [
+      "2026-12-01T15:30"
+     ]
+    },
+    {
+     "venue": "Esher Everyman",
+     "times": [
+      "2026-12-03T13:00"
+     ]
+    },
+    {
+     "venue": "Finchley North Vue",
+     "times": [
+      "2026-11-26T19:45"
+     ]
+    },
+    {
+     "venue": "Finchley Road O2 Vue",
+     "times": [
+      "2026-11-26T19:45"
+     ]
+    },
+    {
+     "venue": "Finsbury Everyman",
+     "times": [
+      "2026-11-26T11:45",
+      "2026-11-30T12:45",
+      "2026-12-01T12:30",
+      "2026-12-03T11:45",
+      "2026-12-03T13:15"
+     ]
+    },
+    {
+     "venue": "Finsbury Picturehouse",
+     "times": [
+      "2026-11-27T12:00",
+      "2026-11-29T12:30",
+      "2026-12-03T12:30"
+     ]
+    },
+    {
+     "venue": "Fulham Broadway Vue",
+     "times": [
+      "2026-11-26T13:45"
+     ]
+    },
+    {
+     "venue": "Gerrards Cross Everyman",
+     "times": [
+      "2026-12-02T09:00",
+      "2026-12-03T12:30"
+     ]
+    },
+    {
+     "venue": "Greenwich Picturehouse",
+     "times": [
+      "2026-11-25T15:45",
+      "2026-11-27T13:00",
+      "2026-11-27T17:30",
+      "2026-11-30T18:00",
+      "2026-12-02T12:00"
+     ]
+    },
+    {
+     "venue": "Hackney Castle",
+     "times": [
+      "2026-11-30T14:00"
+     ]
+    },
+    {
+     "venue": "Hackney Picturehouse",
+     "times": [
+      "2026-12-01T13:15"
+     ]
+    },
+    {
+     "venue": "Hampstead Everyman",
+     "times": [
+      "2026-11-26T12:30",
+      "2026-12-03T12:15"
+     ]
+    },
+    {
+     "venue": "Harrow Vue",
+     "times": [
+      "2026-11-26T18:40"
+     ]
+    },
+    {
+     "venue": "Hatfield Odeon",
+     "times": [
+      "2026-11-26T19:00"
+     ]
+    },
+    {
+     "venue": "Hoxton Curzon",
+     "times": [
+      "2026-11-27T13:40"
+     ]
+    },
+    {
+     "venue": "Islington Vue",
+     "times": [
+      "2026-11-26T15:30"
+     ]
+    },
+    {
+     "venue": "Islington Screen On The Green Everyman",
+     "times": [
+      "2026-11-26T10:00",
+      "2026-12-01T10:30",
+      "2026-12-03T09:45"
+     ]
+    },
+    {
+     "venue": "Kensal Rise Lexi",
+     "times": [
+      "2026-11-29T13:15"
+     ]
+    },
+    {
+     "venue": "Kilburn Kiln Cinema NW6",
+     "times": [
+      "2026-12-05T14:50"
+     ]
+    },
+    {
+     "venue": "King's Cross Everyman",
+     "times": [
+      "2026-11-26T12:00",
+      "2026-12-01T14:15"
+     ]
+    },
+    {
+     "venue": "Kingston Curzon",
+     "times": [
+      "2026-12-02T18:00",
+      "2026-12-03T16:20"
+     ]
+    },
+    {
+     "venue": "Kingston Odeon",
+     "times": [
+      "2026-11-26T20:00"
+     ]
+    },
+    {
+     "venue": "Muswell Hill Everyman",
+     "times": [
+      "2026-11-29T10:30",
+      "2026-12-02T15:10"
+     ]
+    },
+    {
+     "venue": "Norwood Picturehouse",
+     "times": [
+      "2026-11-26T12:00",
+      "2026-11-27T12:30",
+      "2026-12-03T15:30"
+     ]
+    },
+    {
+     "venue": "Notting Hill Electric",
+     "times": [
+      "2026-11-26T13:00"
+     ]
+    },
+    {
+     "venue": "Notting Hill Picturehouse",
+     "times": [
+      "2026-11-25T13:35"
+     ]
+    },
+    {
+     "venue": "Regent Street Cinema",
+     "times": [
+      "2026-12-02T19:00"
+     ]
+    },
+    {
+     "venue": "Richmond Curzon",
+     "times": [
+      "2026-11-30T13:20",
+      "2026-12-03T13:20"
+     ]
+    },
+    {
+     "venue": "Shepherds Bush Westfield Vue",
+     "times": [
+      "2026-11-25T18:20"
+     ]
+    },
+    {
+     "venue": "Soho Curzon",
+     "times": [
+      "2026-11-26T12:20",
+      "2026-12-01T11:20"
+     ]
+    },
+    {
+     "venue": "South Woodford Odeon",
+     "times": [
+      "2026-11-26T19:40"
+     ]
+    },
+    {
+     "venue": "Staines Vue",
+     "times": [
+      "2026-11-26T15:30"
+     ]
+    },
+    {
+     "venue": "Stratford International Everyman",
+     "times": [
+      "2026-12-01T10:15"
+     ]
+    },
+    {
+     "venue": "Stratford Westfield Vue",
+     "times": [
+      "2026-11-26T18:10",
+      "2026-11-26T21:45",
+      "2026-11-27T15:30"
+     ]
+    },
+    {
+     "venue": "Streatham Odeon",
+     "times": [
+      "2026-11-26T19:30"
+     ]
+    },
+    {
+     "venue": "The Whiteley W1 Everyman",
+     "times": [
+      "2026-12-01T14:45",
+      "2026-12-02T11:00"
+     ]
+    },
+    {
+     "venue": "Uxbridge Odeon",
+     "times": [
+      "2026-11-26T20:00"
+     ]
+    },
+    {
+     "venue": "Victoria Curzon",
+     "times": [
+      "2026-11-27T14:00",
+      "2026-12-02T20:15"
+     ]
+    },
+    {
+     "venue": "Walthamstow Forest Cinema",
+     "times": [
+      "2026-12-02T14:15"
+     ]
+    },
+    {
+     "venue": "Watford Vue",
+     "times": [
+      "2026-11-26T14:15"
+     ]
+    },
+    {
+     "venue": "West End Odeon",
+     "times": [
+      "2026-11-30T13:10",
+      "2026-12-02T20:30"
+     ]
+    },
+    {
+     "venue": "Whitechapel Genesis",
+     "times": [
+      "2026-12-01T15:45"
+     ]
+    },
+    {
+     "venue": "Wimbledon Curzon",
+     "times": [
+      "2026-12-03T17:20"
+     ]
+    },
+    {
+     "venue": "Wimbledon Odeon",
+     "times": [
+      "2026-11-26T19:30"
+     ]
+    }
+   ],
+   "title": "You Can See Everything"
+  },
+  {
+   "id": "iplayrocky",
+   "page": "https://www.yourlocalcinema.com/iplayrocky.html",
+   "poster": "https://www.yourlocalcinema.com/iplayrocky.jpg",
+   "trailer": "https://www.youtube.com/watch?v=V_g_Ut0jO-0",
+   "rating": "12A",
+   "runtime": "2h 8m",
+   "blurb": "Drama. The amazing true story of Stallone, an unknown who believed he wasn't meant to just write Rocky, but to play the lead",
+   "shows": [
+    {
+     "venue": "Bluewater Showcase",
+     "times": [
+      "2026-12-03T14:45"
+     ]
+    },
+    {
+     "venue": "Bromley Vue",
+     "times": [
+      "2026-11-30T11:30"
+     ]
+    },
+    {
+     "venue": "Esher Everyman",
+     "times": [
+      "2026-12-01T12:30"
+     ]
+    },
+    {
+     "venue": "Feltham Cineworld",
+     "times": [
+      "2026-11-26T17:50"
+     ]
+    },
+    {
+     "venue": "Gerrards Cross Everyman",
+     "times": [
+      "2026-12-03T09:30"
+     ]
+    },
+    {
+     "venue": "Greenwich Odeon",
+     "times": [
+      "2026-11-26T20:00"
+     ]
+    },
+    {
+     "venue": "Holloway Odeon",
+     "times": [
+      "2026-11-25T15:00"
+     ]
+    },
+    {
+     "venue": "Kensal Rise Lexi",
+     "times": [
+      "2026-11-25T15:00"
+     ]
+    },
+    {
+     "venue": "Kilburn Kiln Cinema NW6",
+     "times": [
+      "2026-11-28T16:00",
+      "2026-12-02T10:50"
+     ]
+    }
+   ],
+   "title": "I Play Rocky"
+  },
+  {
+   "id": "wildhorsenine",
+   "page": "https://www.yourlocalcinema.com/wildhorsenine.html",
+   "poster": "https://www.yourlocalcinema.com/wildhorsenine.jpg",
+   "trailer": "https://www.youtube.com/watch?v=kqxuamKxRTo",
+   "rating": "15",
+   "runtime": "2h",
+   "blurb": "Dark comedy with John Malkovich and Sam Rockwell. A trio of CIA agents snipe and bicker as they await their latest mission",
+   "shows": [
+    {
+     "venue": "Barbican Centre Barbican",
+     "times": [
+      "2026-11-25T18:10",
+      "2026-12-03T17:55"
+     ]
+    },
+    {
+     "venue": "Barnet Everyman",
+     "times": [
+      "2026-11-30T10:45"
+     ]
+    },
+    {
+     "venue": "Belsize Park Everyman",
+     "times": [
+      "2026-12-02T10:00"
+     ]
+    },
+    {
+     "venue": "Borough Everyman",
+     "times": [
+      "2026-12-03T11:00"
+     ]
+    },
+    {
+     "venue": "Brixton Picturehouse",
+     "times": [
+      "2026-12-02T11:15"
+     ]
+    },
+    {
+     "venue": "Crouch End Picturehouse",
+     "times": [
+      "2026-11-29T16:30",
+      "2026-12-03T11:10"
+     ]
+    },
+    {
+     "venue": "Dulwich Picturehouse",
+     "times": [
+      "2026-11-26T17:30"
+     ]
+    },
+    {
+     "venue": "Egham Everyman",
+     "times": [
+      "2026-11-25T15:30"
+     ]
+    },
+    {
+     "venue": "Finchley PhoenixFinchley",
+     "times": [
+      "2026-11-25T17:00"
+     ]
+    },
+    {
+     "venue": "Finsbury Picturehouse",
+     "times": [
+      "2026-11-25T14:15",
+      "2026-11-29T10:15"
+     ]
+    },
+    {
+     "venue": "Greenwich Picturehouse",
+     "times": [
+      "2026-11-26T12:10",
+      "2026-11-28T21:00",
+      "2026-12-01T17:45",
+      "2026-12-02T10:45"
+     ]
+    },
+    {
+     "venue": "Haymarket Odeon",
+     "times": [
+      "2026-11-29T15:05"
+     ]
+    },
+    {
+     "venue": "Holloway Odeon",
+     "times": [
+      "2026-12-03T12:30"
+     ]
+    },
+    {
+     "venue": "Hoxton Curzon",
+     "times": [
+      "2026-11-26T21:10"
+     ]
+    },
+    {
+     "venue": "Islington Odeon",
+     "times": [
+      "2026-11-26T20:20"
+     ]
+    },
+    {
+     "venue": "Islington Screen On The Green Everyman",
+     "times": [
+      "2026-12-02T16:00"
+     ]
+    },
+    {
+     "venue": "King's Cross Everyman",
+     "times": [
+      "2026-11-26T17:00"
+     ]
+    },
+    {
+     "venue": "Kingston Curzon",
+     "times": [
+      "2026-11-26T15:20",
+      "2026-12-03T21:00"
+     ]
+    },
+    {
+     "venue": "Maida Vale Everyman",
+     "times": [
+      "2026-11-30T14:15"
+     ]
+    },
+    {
+     "venue": "Norwood Picturehouse",
+     "times": [
+      "2026-12-02T20:30"
+     ]
+    },
+    {
+     "venue": "PeckhamPlex",
+     "times": [
+      "2026-11-25T17:50"
+     ]
+    },
+    {
+     "venue": "Stratford International Everyman",
+     "times": [
+      "2026-12-02T12:30"
+     ]
+    },
+    {
+     "venue": "Walthamstow Forest Cinema",
+     "times": [
+      "2026-11-27T13:10",
+      "2026-12-01T16:25"
+     ]
+    }
+   ],
+   "title": "Wild Horse Nine"
+  },
+  {
+   "id": "primafacie",
+   "page": "https://www.yourlocalcinema.com/primafacie.html",
+   "poster": "https://www.yourlocalcinema.com/primafacie.jpg",
+   "trailer": "https://www.youtube.com/watch?v=tnhynwj29Ew",
+   "rating": "15",
+   "runtime": "1h 46m",
+   "blurb": "Just as her career is taking off, a lawyer faces a life-altering event that forces her to reckon with her belief in the judicial system",
+   "shows": [
+    {
+     "venue": "Haymarket Odeon",
+     "times": [
+      "2026-11-30T17:30"
+     ]
+    }
+   ],
+   "title": "Prima Facie"
+  },
+  {
+   "id": "primetime",
+   "page": "https://www.yourlocalcinema.com/primetime.html",
+   "poster": "https://www.yourlocalcinema.com/primetime.jpg",
+   "trailer": "https://www.youtube.com/watch?v=5fHXyqQOKL8",
+   "rating": "18",
+   "runtime": "1h 49m",
+   "blurb": "Thriller. Robert Pattinson stars as a journalist on reality TV series 'To Catch a Predator'",
+   "shows": [
+    {
+     "venue": "Aldgate Curzon",
+     "times": [
+      "2026-11-26T11:20"
+     ]
+    },
+    {
+     "venue": "Greenwich Picturehouse",
+     "times": [
+      "2026-11-25T14:30"
+     ]
+    },
+    {
+     "venue": "Haymarket Odeon",
+     "times": [
+      "2026-11-26T20:40",
+      "2026-12-01T20:30",
+      "2026-12-02T12:40"
+     ]
+    },
+    {
+     "venue": "Kilburn Kiln Cinema NW6",
+     "times": [
+      "2026-11-27T15:30",
+      "2026-11-28T13:00",
+      "2026-12-03T20:30"
+     ]
+    },
+    {
+     "venue": "PeckhamPlex",
+     "times": [
+      "2026-11-27T15:00"
+     ]
+    },
+    {
+     "venue": "Shaftesbury Avenue Picturehouse",
+     "times": [
+      "2026-11-26T20:10"
+     ]
+    },
+    {
+     "venue": "Walthamstow Forest Cinema",
+     "times": [
+      "2026-11-25T17:15"
+     ]
+    }
+   ],
+   "title": "Primetime"
+  },
+  {
+   "id": "atalentformurder",
+   "page": "https://www.yourlocalcinema.com/atalentformurder.html",
+   "poster": "https://www.yourlocalcinema.com/atalentformurder.jpg",
+   "trailer": "https://www.youtube.com/watch?v=IzFgGhFrx0o",
+   "rating": "15",
+   "runtime": "1h 46m",
+   "blurb": "Psychological thriller with Alden Ehrenreich and Helen Mirren",
+   "shows": [
+    {
+     "venue": "Acton Act One",
+     "times": [
+      "2026-11-30T16:50"
+     ]
+    },
+    {
+     "venue": "Clapham Picturehouse",
+     "times": [
+      "2026-12-03T14:40",
+      "2026-12-03T17:40"
+     ]
+    },
+    {
+     "venue": "Esher Everyman",
+     "times": [
+      "2026-11-30T11:15"
+     ]
+    },
+    {
+     "venue": "Greenwich Picturehouse",
+     "times": [
+      "2026-12-02T10:30"
+     ]
+    },
+    {
+     "venue": "Holloway Odeon",
+     "times": [
+      "2026-11-26T18:30"
+     ]
+    },
+    {
+     "venue": "Kensal Rise Lexi",
+     "times": [
+      "2026-12-01T18:10"
+     ]
+    },
+    {
+     "venue": "Kilburn Kiln Cinema NW6",
+     "times": [
+      "2026-12-05T12:30",
+      "2026-12-09T11:00",
+      "2026-12-09T17:00"
+     ]
+    }
+   ],
+   "title": "A Talent For Murder"
+  },
+  {
+   "id": "ghosts",
+   "page": "https://www.yourlocalcinema.com/ghosts.html",
+   "poster": "https://www.yourlocalcinema.com/ghosts.jpg",
+   "trailer": "https://www.youtube.com/watch?v=CPAuizBp8fY",
+   "rating": "PG",
+   "runtime": "1h 37m",
+   "blurb": "... The Possession of Button House. Comedy. A teenager is possessed by a ghost, with catastrophic consequences",
+   "shows": [
+    {
+     "venue": "Finchley Road O2 Vue",
+     "times": [
+      "2026-11-25T19:55"
+     ]
+    },
+    {
+     "venue": "Stratford Westfield Vue",
+     "times": [
+      "2026-11-25T15:55"
+     ]
+    }
+   ],
+   "title": "Ghosts: The Possession Of Button House"
+  },
+  {
+   "id": "thematch",
+   "page": "https://www.yourlocalcinema.com/thematch.html",
+   "poster": "https://www.yourlocalcinema.com/thematch.jpg",
+   "trailer": "https://www.youtube.com/watch?v=xED9MDEkezY",
+   "rating": "12A",
+   "runtime": "1h 30m",
+   "blurb": "Story of the historic 1986 World Cup football match between Argentina and England",
+   "shows": [
+    {
+     "venue": "Bexleyheath Cineworld",
+     "times": [
+      "2026-11-25T19:20"
+     ]
+    },
+    {
+     "venue": "Enfield Cineworld",
+     "times": [
+      "2026-11-25T19:15",
+      "2026-11-26T11:10"
+     ]
+    },
+    {
+     "venue": "Greenwich O2 Cineworld",
+     "times": [
+      "2026-11-25T20:00"
+     ]
+    },
+    {
+     "venue": "Wandsworth Cineworld",
+     "times": [
+      "2026-11-25T19:15"
+     ]
+    },
+    {
+     "venue": "West India Quay Cineworld",
+     "times": [
+      "2026-11-25T19:15"
+     ]
+    },
+    {
+     "venue": "Wood Green Cineworld",
+     "times": [
+      "2026-11-25T19:15"
+     ]
+    }
+   ],
+   "title": "The Match"
+  },
+  {
+   "id": "othermommy",
+   "page": "https://www.yourlocalcinema.com/more.html",
+   "poster": "https://www.yourlocalcinema.com/othermommy.jpg",
+   "trailer": "https://www.youtube.com/watch?v=bEpTgowZ1dI",
+   "rating": "15",
+   "runtime": "1h 34m",
+   "blurb": "Horror starring Jessica Chastain. An girl encounters a sinister entity that looks like her mother",
+   "shows": [
+    {
+     "venue": "Borough Everyman",
+     "times": [
+      "2026-11-30T09:30"
+     ]
+    }
+   ],
+   "title": "Other Mommy"
+  },
+  {
+   "id": "beingheumann",
+   "page": "https://www.yourlocalcinema.com/more.html",
+   "poster": "https://www.yourlocalcinema.com/beingheumann.jpg",
+   "trailer": "https://www.youtube.com/watch?v=CQp2pUXLvJk",
+   "rating": "12A",
+   "runtime": "2h 07m",
+   "blurb": "True story of Judith Heumann, the activist who helped fight for laws for individuals with disabilities",
+   "shows": [
+    {
+     "venue": "Hertford Beam The Wash",
+     "times": [
+      "2027-01-21T19:00"
+     ]
+    }
+   ],
+   "title": "Being Heumann"
+  },
+  {
+   "id": "thedevils",
+   "page": "https://www.yourlocalcinema.com/more.html",
+   "poster": "https://www.yourlocalcinema.com/thedevils.jpg",
+   "trailer": "https://www.youtube.com/watch?v=YXURZFQfZ10",
+   "rating": "18",
+   "runtime": "1h 54m",
+   "blurb": "Ken Russell's blasphemous masterpiece, restored to its intended fury",
+   "shows": [
+    {
+     "venue": "Waterloo BFI Southbank",
+     "times": [
+      "2026-11-29T15:00",
+      "2026-12-02T15:00",
+      "2026-11-25T15:00"
+     ]
+    }
+   ],
+   "title": "Ken Russell's The Devils"
+  },
+  {
+   "id": "onwardsandsideways",
+   "page": "https://www.yourlocalcinema.com/more.html",
+   "poster": "https://www.yourlocalcinema.com/onwardsandsideways.jpg",
+   "trailer": "https://www.youtube.com/watch?v=5dEZEEeEQzc",
+   "rating": "15",
+   "runtime": "1h 50m",
+   "blurb": "Drama. An English school teacher and an American composer meet when both are diagnosed with Parkinson's disease",
+   "shows": [
+    {
+     "venue": "Greenwich Picturehouse",
+     "times": [
+      "2026-11-30T10:45",
+      "2026-12-03T14:30"
+     ]
+    }
+   ],
+   "title": "Onwards And Sideways"
+  },
+  {
+   "id": "iseebuildings",
+   "page": "https://www.yourlocalcinema.com/more.html",
+   "poster": "https://www.yourlocalcinema.com/iseebuildings.jpg",
+   "trailer": "https://www.youtube.com/watch?v=sk7NF_LWhLs",
+   "rating": "15",
+   "runtime": "1h 49m",
+   "blurb": "Drama. Five childhood friends face adult struggles",
+   "shows": [
+    {
+     "venue": "Kensal Rise Lexi",
+     "times": [
+      "2026-12-17T18:10"
+     ]
+    }
+   ],
+   "title": "I See Buildings Fall Like Lightning"
+  },
+  {
+   "id": "tadandthemagiclamp",
+   "page": "https://www.yourlocalcinema.com/more.html",
+   "poster": "https://www.yourlocalcinema.com/tadandthemagiclamp.jpg",
+   "trailer": "https://www.youtube.com/watch?v=oGSs5kdUoqo",
+   "rating": "U",
+   "runtime": "1h 35m",
+   "blurb": "Tad and friends embark on an adventure after an ancient spell is accidentally unleashed",
+   "shows": [
+    {
+     "venue": "Sutton Surrey Omniplex",
+     "times": [
+      "2026-11-28T10:50",
+      "2026-11-29T10:10"
+     ]
+    }
+   ],
+   "title": "Tad and the Magic Lamp"
+  }
+ ]
+}

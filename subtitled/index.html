@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Subtitled films</title>
+<meta name="description" content="Subtitled film shows in London you can make, with travel time from home or work.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.png">
+<style>
+:root {
+  --bg: #f2f2f7; --card: #ffffff; --text: #000000; --muted: #6c6c70; --faint: #8e8e93;
+  --line: rgba(60,60,67,.18); --tint: #0a66d8; --pill: rgba(118,118,128,.12);
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #000000; --card: #1c1c1e; --text: #ffffff; --muted: #a1a1a6; --faint: #8e8e93;
+    --line: rgba(84,84,88,.6); --tint: #4ea1ff; --pill: rgba(118,118,128,.24); }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 17px/1.35 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 640px; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 16px calc(32px + env(safe-area-inset-bottom)); }
+h1 { font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -.01em; margin: 12px 0 6px; }
+.lede { color: var(--muted); margin: 0 0 22px; }
+button, input { font: inherit; color: inherit; }
+a { color: var(--tint); }
+:focus-visible { outline: 3px solid var(--tint); outline-offset: 2px; border-radius: 8px; }
+[hidden] { display: none !important; }
+
+/* Lists */
+.list { list-style: none; margin: 0; padding: 0; background: var(--card); border-radius: var(--radius); overflow: hidden; }
+.list > li + li { border-top: .5px solid var(--line); }
+.film { display: flex; gap: 14px; align-items: center; width: 100%; padding: 12px 14px; min-height: 92px;
+  background: none; border: 0; text-align: left; cursor: pointer; }
+.film:active { background: var(--pill); }
+.poster { width: 52px; height: 74px; border-radius: 6px; object-fit: cover; background: var(--pill); flex: none; }
+.film-text { flex: 1; min-width: 0; }
+.film-title { font-size: 19px; font-weight: 600; line-height: 1.2; margin: 0 0 4px; }
+.film-next { color: var(--muted); font-size: 15px; margin: 0; }
+.chev { color: var(--faint); flex: none; }
+
+.section-title { font-size: 15px; color: var(--muted); font-weight: 400; margin: 28px 4px 8px; }
+.quiet { color: var(--muted); font-size: 15px; padding: 12px 14px; margin: 0; }
+
+/* Film screen */
+.back { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 8px 0 0;
+  background: none; border: 0; color: var(--tint); cursor: pointer; font-size: 17px; }
+.film-head { display: flex; gap: 16px; align-items: flex-start; margin: 4px 0 22px; }
+.film-head .poster { width: 84px; height: 120px; border-radius: 8px; }
+.film-head h1 { margin: 0 0 6px; font-size: 26px; }
+.meta { color: var(--muted); font-size: 15px; margin: 0; }
+.day { font-size: 20px; font-weight: 600; margin: 26px 4px 8px; }
+.day:first-of-type { margin-top: 0; }
+.show { display: grid; grid-template-columns: 64px 1fr auto; gap: 2px 12px; align-items: start;
+  padding: 12px 14px; text-decoration: none; color: inherit; }
+.show:active { background: var(--pill); }
+.time { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; grid-row: span 3; line-height: 1.25; }
+.venue { font-size: 17px; font-weight: 500; }
+.go { grid-column: 3; grid-row: 1; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.go b { font-size: 20px; font-weight: 600; line-height: 1.1; }
+.detail { font-size: 14px; color: var(--muted); grid-column: 2 / span 2; }
+.more { display: block; width: 100%; min-height: 48px; margin: 10px 0 0; padding: 12px 14px; border: 0;
+  border-radius: var(--radius); background: var(--card); color: var(--tint); text-align: left; cursor: pointer; }
+
+/* Setup */
+label { display: block; font-size: 15px; color: var(--muted); margin: 18px 4px 6px; }
+input[type=text] { width: 100%; min-height: 48px; padding: 10px 14px; border: 0; border-radius: 12px;
+  background: var(--card); text-transform: uppercase; }
+.primary { width: 100%; min-height: 50px; margin-top: 26px; border: 0; border-radius: 12px;
+  background: var(--tint); color: #fff; font-weight: 600; cursor: pointer; }
+.error { color: #d70015; margin: 12px 4px 0; font-size: 15px; }
+@media (prefers-color-scheme: dark) { .error { color: #ff6961; } }
+
+footer { color: var(--faint); font-size: 13px; margin: 36px 4px 0; line-height: 1.5; }
+footer button { background: none; border: 0; padding: 0; color: var(--tint); cursor: pointer; font-size: 13px; min-height: 32px; }
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite"><p class="lede">Loading…</p></main>
+
+<script>
+"use strict";
+// ---- Rules (see DESIGN.md) ----
+const WEEKDAY_FROM = 17 * 60;   // weekday shows start 5pm or later
+const NEAR_MIN = 45;            // farther than this goes behind "Farther away"
+const WALK_FIRST_MIN = 20;      // walk if it's this short, or no slower than transport + 5
+const CACHE_DAYS = 30;
+
+const $app = document.getElementById("app");
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
+};
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+let DATA, VENUES, PLACES, holidays = new Set(), cameFromList = false;
+const walk = { home: {}, work: {} };     // venue -> {m, min}
+const transit = { home: {}, work: {} };  // venue -> {min, via} | {none: true}
+
+// ---- Places (home/work), saved on this device only ----
+function readHashPlaces() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.get("home") && h.get("work")) {
+    history.replaceState(null, "", location.pathname);
+    return { home: h.get("home"), work: h.get("work") };
+  }
+  return null;
+}
+async function geocode(pc) {
+  const r = await fetch("https://api.postcodes.io/postcodes/" + encodeURIComponent(pc.replace(/\s+/g, "")));
+  if (!r.ok) throw new Error(pc);
+  const j = (await r.json()).result;
+  return { postcode: j.postcode, lat: j.latitude, lon: j.longitude };
+}
+async function savePlaces(home, work) {
+  const [h, w] = await Promise.all([geocode(home), geocode(work)]);
+  PLACES = { home: h, work: w };
+  store.set("places", PLACES);
+  for (const o of ["home", "work"]) { walk[o] = {}; transit[o] = {}; }
+}
+
+// ---- Dates ----
+const DAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MON = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+function parse(t) { const [d, hm] = t.split("T"); const [y, m, dd] = d.split("-").map(Number); const [hh, mi] = hm.split(":").map(Number); return new Date(y, m - 1, dd, hh, mi); }
+function isFree(d) { const iso = d.toLocaleDateString("en-CA"); return d.getDay() === 0 || d.getDay() === 6 || holidays.has(iso); }
+function fits(d) { return isFree(d) || d.getHours() * 60 + d.getMinutes() >= WEEKDAY_FROM; }
+function dayLabel(d) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const diff = Math.round((new Date(d).setHours(0, 0, 0, 0) - today) / 864e5);
+  const base = `${DAY[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`;
+  return diff === 0 ? `Today, ${base}` : diff === 1 ? `Tomorrow, ${base}` : base;
+}
+function shortDay(d) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const diff = Math.round((new Date(d).setHours(0, 0, 0, 0) - today) / 864e5);
+  if (diff === 0) return "Today";
+  if (diff === 1) return "Tomorrow";
+  return `${DAY[d.getDay()].slice(0, 3)} ${d.getDate()} ${MON[d.getMonth()].slice(0, 3)}`;
+}
+const vname = v => VENUES[v]?.name || v;
+const hhmm = d => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+
+// ---- Travel ----
+const miles = m => (m / 1609.344);
+function fmtMiles(m) { const mi = miles(m); return mi < 10 ? mi.toFixed(1) : Math.round(mi); }
+function fmtMin(min) { if (min < 60) return `${min} min`; const h = Math.floor(min / 60), r = min % 60; return r ? `${h} hr ${r} min` : `${h} hr`; }
+function crowFly(a, b) {
+  const R = 6371e3, t = Math.PI / 180;
+  const x = (b.lon - a.lon) * t * Math.cos((a.lat + b.lat) / 2 * t), y = (b.lat - a.lat) * t;
+  return Math.sqrt(x * x + y * y) * R;
+}
+
+async function loadWalking(origin) {
+  const o = PLACES[origin], key = `walk:${o.postcode}`;
+  const cached = store.get(key);
+  const names = Object.keys(VENUES);
+  if (cached && Date.now() - cached.t < CACHE_DAYS * 864e5 && names.every(n => cached.v[n])) { walk[origin] = cached.v; return; }
+  const coords = [o, ...names.map(n => VENUES[n])].map(p => `${p.lon},${p.lat}`).join(";");
+  try {
+    const r = await fetch(`https://routing.openstreetmap.de/routed-foot/table/v1/driving/${coords}?sources=0&annotations=distance,duration`);
+    const j = await r.json();
+    if (j.code !== "Ok") throw 0;
+    names.forEach((n, i) => {
+      const m = j.distances[0][i + 1];
+      // Normal walking pace, 3 mph (20 minutes a mile).
+      walk[origin][n] = { m, min: Math.round(miles(m) * 20) };
+    });
+    store.set(key, { t: Date.now(), v: walk[origin] });
+  } catch {
+    // Fallback: straight line plus 30% for streets.
+    names.forEach(n => { const m = crowFly(o, VENUES[n]) * 1.3; walk[origin][n] = { m, min: Math.round(miles(m) * 20), rough: true }; });
+  }
+}
+
+function nextDate(weekend) {
+  const d = new Date(); d.setDate(d.getDate() + 1);
+  while (weekend ? d.getDay() !== 6 : (d.getDay() === 0 || d.getDay() === 6)) d.setDate(d.getDate() + 1);
+  return d.toLocaleDateString("en-CA").replaceAll("-", "");
+}
+const MODE = { tube: "Tube", bus: "Bus", dlr: "DLR", overground: "Overground", "elizabeth-line": "Elizabeth line",
+  "national-rail": "Train", tram: "Tram", "river-bus": "Boat", "cable-car": "Cable car", coach: "Coach",
+  "replacement-bus": "Replacement bus", cycle: "Cycle" };
+function describe(j) {
+  const parts = [];
+  for (const l of j.legs) {
+    const id = l.mode.id;
+    if (id === "walking") continue;
+    const name = l.routeOptions?.[0]?.name || "";
+    const label = id === "tube" && name ? `${name} line` : id === "bus" && name ? `Bus ${name}` : (MODE[id] || id);
+    if (!parts.includes(label)) parts.push(label);
+  }
+  return parts.length ? parts.slice(0, 2).join(" + ") + (parts.length > 2 ? " + more" : "") : "Walk";
+}
+async function tflOne(origin, venue) {
+  const o = PLACES[origin], v = VENUES[venue], key = `tfl:${o.postcode}:${venue}`;
+  const cached = store.get(key);
+  if (cached && Date.now() - cached.t < CACHE_DAYS * 864e5) { transit[origin][venue] = cached.v; return; }
+  const weekend = origin === "home";
+  const url = `https://api.tfl.gov.uk/Journey/JourneyResults/${encodeURIComponent(o.postcode.replace(/\s+/g, ""))}/to/${v.lat},${v.lon}` +
+    `?date=${nextDate(weekend)}&time=${weekend ? "1400" : "1730"}&timeIs=Departing&journeyPreference=leasttime`;
+  let val;
+  try {
+    const r = await fetch(url);
+    if (r.status === 429) { await new Promise(s => setTimeout(s, 4000)); return tflOne(origin, venue); }
+    const j = await r.json();
+    const best = (j.journeys || []).reduce((a, b) => (!a || b.duration < a.duration ? b : a), null);
+    val = best ? { min: best.duration, via: describe(best) } : { none: true };
+  } catch { val = { none: true, failed: true }; }
+  transit[origin][venue] = val;
+  if (!val.failed) store.set(key, { t: Date.now(), v: val });
+}
+let queueRunning = false;
+async function loadTransit(pairs) {
+  // pairs: [[origin, venue]] nearest first; three at a time, redraw as they arrive.
+  const todo = pairs.filter(([o, v]) => !transit[o][v]);
+  if (!todo.length || queueRunning) return;
+  queueRunning = true;
+  let i = 0, since = 0;
+  const worker = async () => {
+    while (i < todo.length) {
+      const [o, v] = todo[i++];
+      await tflOne(o, v);
+      if (++since >= 6) { since = 0; render(); }
+    }
+  };
+  await Promise.all([worker(), worker(), worker(), worker()]);
+  queueRunning = false;
+  render();
+}
+
+// The way to go: walk if short or no slower, otherwise public transport.
+function travel(origin, venue) {
+  const w = walk[origin][venue], t = transit[origin][venue];
+  if (!w) return null;
+  const hasT = t && !t.none;
+  let best;
+  // Until TfL answers: estimate from the walking distance (fitted to TfL times from central London).
+  if (!t && w.min > WALK_FIRST_MIN) best = { min: Math.round(14 + 5.5 * miles(w.m)), how: "Estimate", estimate: true };
+  else if (!hasT) best = { min: w.min, how: "Walk" };
+  else if (w.min <= WALK_FIRST_MIN || w.min <= t.min + 5) best = { min: w.min, how: "Walk" };
+  else best = { min: t.min, how: t.via };
+  return { best, walk: w, transit: hasT ? t : null, pendingTransit: !t };
+}
+function near(tr) { return !!tr && tr.best.min <= NEAR_MIN; }
+
+// ---- Shows you can make ----
+function showsFor(film) {
+  const now = new Date(), out = [];
+  for (const s of film.shows) {
+    if (!VENUES[s.venue]) continue;
+    for (const t of s.times) {
+      const d = parse(t);
+      if (d < now || !fits(d)) continue;
+      const origin = isFree(d) ? "home" : "work";
+      out.push({ d, venue: s.venue, origin, tr: travel(origin, s.venue) });
+    }
+  }
+  return out.sort((a, b) => a.d - b.d || (a.tr?.best.min ?? 999) - (b.tr?.best.min ?? 999));
+}
+
+// ---- Screens ----
+function render() {
+  if (!PLACES) return renderSetup();
+  const id = new URLSearchParams(location.hash.slice(1)).get("film");
+  const film = id && DATA.films.find(f => f.id === id);
+  film ? renderFilm(film) : renderHome();
+}
+
+function posterImg(f, cls = "poster") {
+  return `<img class="${cls}" src="${esc(f.poster)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
+}
+
+function renderHome() {
+  const rows = [], none = [];
+  for (const f of DATA.films) {
+    const shows = showsFor(f).filter(s => near(s.tr));
+    if (!shows.length) { none.push(f); continue; }
+    const s = shows[0];
+    rows.push({ f, s, n: shows.length });
+  }
+  rows.sort((a, b) => a.s.d - b.s.d);
+  const go = s => s.tr ? ` · ${s.tr.best.estimate ? "about " : ""}${fmtMin(s.tr.best.min)}` : "";
+  $app.innerHTML = `
+    <h1>Subtitled films</h1>
+    <p class="lede">Shows you can make. Weekday evenings from work, weekends from home.</p>
+    <ul class="list">${rows.map(({ f, s }) => `
+      <li><button class="film" data-film="${esc(f.id)}">
+        ${posterImg(f)}
+        <span class="film-text">
+          <p class="film-title">${esc(f.title)}</p>
+          <p class="film-next">Next: ${shortDay(s.d)}, ${hhmm(s.d)} at ${esc(vname(s.venue))}${go(s)}</p>
+        </span>
+        <svg class="chev" width="8" height="14" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button></li>`).join("") || `<li><p class="quiet">Nothing fits right now.</p></li>`}
+    </ul>
+    ${none.length ? `<h2 class="section-title">Nothing nearby at a time that works</h2>
+      <ul class="list">${none.map(f => `<li><button class="film" data-film="${esc(f.id)}" style="min-height:56px">
+        <span class="film-text"><p class="film-next" style="color:var(--text)">${esc(f.title)}</p></span></button></li>`).join("")}</ul>` : ""}
+    ${footer()}`;
+  $app.querySelectorAll("[data-film]").forEach(b => b.onclick = () => { cameFromList = true; location.hash = "film=" + b.dataset.film; });
+  wireFooter();
+  queueTransit();
+}
+
+function showRow(s) {
+  const tr = s.tr, v = VENUES[s.venue], from = PLACES[s.origin];
+  const maps = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from.postcode)}&destination=${v.lat},${v.lon}&travelmode=transit`;
+  // Headline: the way to go. Lines under the cinema give the other two measures, without repeating it.
+  let go = "", how = "", other = "";
+  if (tr) {
+    const w = `Walk ${fmtMiles(tr.walk.m)} mi, ${fmtMin(tr.walk.min)}${tr.walk.rough ? " (rough)" : ""}`;
+    const t = tr.transit ? `Transport ${fmtMin(tr.transit.min)}, ${tr.transit.via}` : tr.pendingTransit ? "Transport: checking TfL" : "No TfL route";
+    go = `<b>${tr.best.estimate ? "~" : ""}${fmtMin(tr.best.min)}</b>`;
+    if (tr.best.estimate) { how = `Estimate from ${s.origin}`; other = w; }
+    else if (tr.best.how === "Walk") { how = `${w}, from ${s.origin}`; other = t; }
+    else { how = `${tr.best.how}, from ${s.origin}`; other = w; }
+  }
+  return `<li><a class="show" href="${maps}" target="_blank" rel="noopener" aria-label="${hhmm(s.d)} at ${esc(vname(s.venue))}. ${tr ? esc(`${fmtMin(tr.best.min)}. ${how}. ${other}.`) : ""} Opens directions.">
+    <span class="time">${hhmm(s.d)}</span>
+    <span class="venue">${esc(vname(s.venue))}</span>
+    <span class="go">${go}</span>
+    <span class="detail">${esc(how)}</span>
+    <span class="detail">${esc(other)}</span>
+  </a></li>`;
+}
+
+function renderFilm(f) {
+  const all = showsFor(f);
+  const nearShows = all.filter(s => near(s.tr)), far = all.filter(s => !near(s.tr));
+  const showFar = sessionStorage.getItem("far:" + f.id) === "1";
+  const list = showFar ? all : nearShows;
+  const days = [];
+  for (const s of list) {
+    const k = s.d.toDateString();
+    if (!days.length || days[days.length - 1].k !== k) days.push({ k, d: s.d, shows: [] });
+    days[days.length - 1].shows.push(s);
+  }
+  for (const day of days) day.shows.sort((a, b) => a.d - b.d || (a.tr?.best.min ?? 999) - (b.tr?.best.min ?? 999));
+  const meta = [f.rating, f.runtime].filter(Boolean).join(" · ");
+  $app.innerHTML = `
+    <button class="back" id="back"><svg width="12" height="20" viewBox="0 0 12 20" aria-hidden="true"><path d="M10 2L2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Films</button>
+    <div class="film-head">
+      ${posterImg(f)}
+      <div><h1>${esc(f.title)}</h1><p class="meta">${esc(meta)}</p></div>
+    </div>
+    ${days.map(day => `<h2 class="day">${dayLabel(day.d)}</h2><ul class="list">${day.shows.map(showRow).join("")}</ul>`).join("")
+      || `<p class="quiet" style="padding:0 4px">No shows within ${NEAR_MIN} minutes at a time that works.</p>`}
+    ${far.length ? `<button class="more" id="far">${showFar ? "Only nearby cinemas" : `Farther away (${far.length})`}</button>` : ""}
+    ${footer()}`;
+  document.getElementById("back").onclick = () => { cameFromList ? history.back() : (location.hash = ""); };
+  const farBtn = document.getElementById("far");
+  if (farBtn) farBtn.onclick = () => { sessionStorage.setItem("far:" + f.id, showFar ? "0" : "1"); render(); };
+  wireFooter();
+  queueTransit(f);
+}
+
+function footer() {
+  const u = new Date(DATA.updated);
+  return `<footer>Listings from <a href="${esc(DATA.source)}" target="_blank" rel="noopener">Your Local Cinema</a>, updated ${u.getDate()} ${MON[u.getMonth()]} at ${hhmm(u)}. Travel: TfL Journey Planner and OpenStreetMap walking routes.<br>
+    <button id="places">Change home and work</button></footer>`;
+}
+function wireFooter() { const b = document.getElementById("places"); if (b) b.onclick = () => renderSetup(true); }
+
+function renderSetup(editing) {
+  $app.innerHTML = `
+    ${editing ? `<button class="back" id="back"><svg width="12" height="20" viewBox="0 0 12 20" aria-hidden="true"><path d="M10 2L2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Films</button>` : ""}
+    <h1>Where are home and work?</h1>
+    <p class="lede">Postcodes are enough. They're saved on this device only.</p>
+    <form id="f" novalidate>
+      <label for="home">Home postcode</label>
+      <input type="text" id="home" autocomplete="postal-code" value="${esc(PLACES?.home.postcode || "")}" required>
+      <label for="work">Work postcode</label>
+      <input type="text" id="work" value="${esc(PLACES?.work.postcode || "")}" required>
+      <p class="error" id="err" hidden></p>
+      <button class="primary" type="submit">Show my films</button>
+    </form>`;
+  if (editing) document.getElementById("back").onclick = render;
+  document.getElementById("f").onsubmit = async e => {
+    e.preventDefault();
+    const err = document.getElementById("err");
+    try {
+      await savePlaces(document.getElementById("home").value, document.getElementById("work").value);
+      await startTravel();
+      render();
+    } catch {
+      err.textContent = "One of those postcodes wasn't found. Check it and try again.";
+      err.hidden = false;
+    }
+  };
+}
+
+// Fetch TfL times for what's on screen, nearest first.
+function queueTransit(film) {
+  const films = film ? [film] : DATA.films;
+  const pairs = new Map();
+  for (const f of films) for (const s of showsFor(f)) {
+    const w = walk[s.origin][s.venue];
+    if (w && miles(w.m) <= 14) pairs.set(s.origin + "|" + s.venue, [s.origin, s.venue, w.m]);
+  }
+  loadTransit([...pairs.values()].sort((a, b) => a[2] - b[2]).map(([o, v]) => [o, v]));
+}
+
+async function startTravel() {
+  await Promise.all([loadWalking("home"), loadWalking("work")]);
+}
+
+window.addEventListener("hashchange", () => { render(); scrollTo(0, 0); });
+
+(async function init() {
+  try {
+    const [d, v] = await Promise.all([fetch("listings.json", { cache: "no-cache" }).then(r => r.json()), fetch("venues.json").then(r => r.json())]);
+    DATA = d; VENUES = v; holidays = new Set(d.holidays || []);
+  } catch {
+    $app.innerHTML = `<h1>Subtitled films</h1><p class="lede">The listings didn't load. Check your connection and reload.</p>`;
+    return;
+  }
+  const fromLink = readHashPlaces();
+  PLACES = store.get("places");
+  if (fromLink) { try { await savePlaces(fromLink.home, fromLink.work); } catch {} }
+  if (PLACES) await startTravel();
+  render();
+})();
+</script>
+</body>
+</html>

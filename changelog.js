@@ -2,6 +2,18 @@
 
 window.VERSIONS = [
   {
+    version: "2.8",
+    date: "2026-11-25",
+    title: "Subtitled films",
+    summary: "A new page for subtitled film shows in London.",
+    changes: [
+      "Added Subtitled films, a page of subtitled screenings at London-area cinemas that fit weekday evenings and weekends, with travel times. Its listings refresh every morning.",
+      "Publish site now also runs after the daily listings update.",
+    ],
+    why: "Shivam needs subtitles and was scrolling every film's full UK list to find a time and a cinema that work. Home and work are saved only on his devices, never in this public repository.",
+    shots: [],
+  },
+  {
     version: "2.7",
     date: "2026-11-22",
     title: "Warm Jackets",

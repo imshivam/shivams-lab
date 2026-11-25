@@ -12,7 +12,7 @@ on:
     # A change to the wish list or its photo tool is published by the photo job, once its photos are in.
     paths-ignore: [wishlist/wishes.js, wishlist/tools/**]
   workflow_run:
-    workflows: [Wish list photos]
+    workflows: [Wish list photos, Subtitled listings]
     types: [completed]
   workflow_dispatch:
 
