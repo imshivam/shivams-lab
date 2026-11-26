@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T17:29+00:00",
+ "updated": "2026-11-26T00:00+00:00",
  "source": "https://www.yourlocalcinema.com/",
  "holidays": [
   "2026-12-25",
@@ -170,7 +170,12 @@
      ]
     }
    ],
-   "title": "Avengers: Doomsday"
+   "title": "Avengers: Doomsday",
+   "image": "https://image.tmdb.org/t/p/w1280/rObL4of4eFA8yWaN9pRFo9aOVNi.jpg",
+   "tmdb": 1003596,
+   "overview": "Beloved heroes from three distinct universes are set on a deadly collision course and face an existential threat unlike anything they've ever encountered.",
+   "released": "2026-12-16",
+   "genre": "Science Fiction"
   },
   {
    "id": "dune3",
@@ -299,7 +304,12 @@
      ]
     }
    ],
-   "title": "Dune: Part Three"
+   "title": "Dune: Part Three",
+   "image": "https://image.tmdb.org/t/p/w1280/i5E9H7Ik0u61ylDDTbmUpTL3Yw.jpg",
+   "tmdb": 1170608,
+   "overview": "Nearly two decades after he seized control of the Imperium, Paul Atreides is now a ruthless Emperor, and must face the consequences of his reign as old allies return, terrifying new threats emerge, and betrayal lurks in every shadow. Haunted by visions of Imperial collapse and the reappearance of his long-lost love, Paul is drawn into a sweeping conspiracy, with Chani at the heart of its unfolding mystery. As enemies close in, Paul must confront the true cost of power and the fate of those he loves the most.",
+   "released": "2026-12-15",
+   "genre": "Science Fiction"
   },
   {
    "id": "hexed",
@@ -601,7 +611,18 @@
      ]
     }
    ],
-   "title": "Disney's Hexed"
+   "title": "Disney's Hexed",
+   "image": "https://image.tmdb.org/t/p/w1280/wdjW11Tp4w9EfDBxbjyBJvDVHDA.jpg",
+   "tmdb": 1538497,
+   "overview": "An impulsive and unconventional teenage girl named Billie discovers secret magical abilities which, once unleashed, hurtle her into a spectacle-filled journey out of suburbia and into a vast witch realm called Hexe. Forced to team up with her cautious mother, Alice, they uncover family mysteries that could change the world of witches forever.",
+   "released": "2026-11-25",
+   "genre": "Adventure",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.2 / 5"
+    }
+   ]
   },
   {
    "id": "thehungergames",
@@ -615,7 +636,6 @@
     {
      "venue": "Acton Odeon",
      "times": [
-      "2026-11-25T18:20",
       "2026-11-29T19:50"
      ]
     },
@@ -628,7 +648,6 @@
     {
      "venue": "Baker Street Everyman",
      "times": [
-      "2026-11-25T17:00",
       "2026-11-30T14:30"
      ]
     },
@@ -643,7 +662,6 @@
     {
      "venue": "Bluewater Showcase",
      "times": [
-      "2026-11-25T18:00",
       "2026-11-26T10:30",
       "2026-11-27T16:00"
      ]
@@ -696,7 +714,6 @@
     {
      "venue": "Crystal Palace Everyman",
      "times": [
-      "2026-11-25T14:30",
       "2026-11-26T13:00",
       "2026-11-26T17:30",
       "2026-12-01T09:45",
@@ -706,7 +723,6 @@
     {
      "venue": "Dulwich Picturehouse",
      "times": [
-      "2026-11-25T13:30",
       "2026-11-27T16:20",
       "2026-11-30T20:20",
       "2026-12-03T10:00"
@@ -715,7 +731,6 @@
     {
      "venue": "Edmonton Lee Valley Odeon",
      "times": [
-      "2026-11-25T17:50",
       "2026-11-29T20:20"
      ]
     },
@@ -742,7 +757,6 @@
     {
      "venue": "Epsom Odeon",
      "times": [
-      "2026-11-25T16:40",
       "2026-11-29T19:50"
      ]
     },
@@ -766,12 +780,6 @@
      ]
     },
     {
-     "venue": "Finsbury Everyman",
-     "times": [
-      "2026-11-25T17:00"
-     ]
-    },
-    {
      "venue": "Finsbury Picturehouse",
      "times": [
       "2026-11-27T13:10",
@@ -789,7 +797,6 @@
     {
      "venue": "Greenwich Odeon",
      "times": [
-      "2026-11-25T16:40",
       "2026-11-29T19:20"
      ]
     },
@@ -812,7 +819,6 @@
     {
      "venue": "Hackney Picturehouse",
      "times": [
-      "2026-11-25T13:50",
       "2026-12-02T13:20"
      ]
     },
@@ -825,7 +831,6 @@
     {
      "venue": "Hatfield Odeon",
      "times": [
-      "2026-11-25T18:40",
       "2026-11-29T20:40"
      ]
     },
@@ -862,14 +867,7 @@
     {
      "venue": "Kingston Odeon",
      "times": [
-      "2026-11-25T17:40",
       "2026-11-29T21:00"
-     ]
-    },
-    {
-     "venue": "Leicester Square Vue",
-     "times": [
-      "2026-11-25T13:15"
      ]
     },
     {
@@ -887,12 +885,6 @@
      ]
     },
     {
-     "venue": "Norwood Picturehouse",
-     "times": [
-      "2026-11-25T19:30"
-     ]
-    },
-    {
      "venue": "Piccadilly Circus Vue",
      "times": [
       "2026-11-26T19:30",
@@ -902,7 +894,6 @@
     {
      "venue": "Richmond Odeon",
      "times": [
-      "2026-11-25T20:00",
       "2026-11-29T20:20",
       "2026-12-02T13:30"
      ]
@@ -916,7 +907,6 @@
     {
      "venue": "South Woodford Odeon",
      "times": [
-      "2026-11-25T17:00",
       "2026-11-29T19:50"
      ]
     },
@@ -975,15 +965,8 @@
      ]
     },
     {
-     "venue": "Tottenham Court Rd Odeon",
-     "times": [
-      "2026-11-25T14:00"
-     ]
-    },
-    {
      "venue": "Uxbridge Odeon",
      "times": [
-      "2026-11-25T17:40",
       "2026-11-29T19:00"
      ]
     },
@@ -996,15 +979,8 @@
     {
      "venue": "Walthamstow Forest Cinema",
      "times": [
-      "2026-11-25T14:15",
       "2026-11-27T15:40",
       "2026-11-29T19:05"
-     ]
-    },
-    {
-     "venue": "Walton On Thames Everyman",
-     "times": [
-      "2026-11-25T17:00"
      ]
     },
     {
@@ -1037,7 +1013,6 @@
     {
      "venue": "Wimbledon Odeon",
      "times": [
-      "2026-11-25T19:20",
       "2026-11-29T21:00"
      ]
     },
@@ -1054,7 +1029,18 @@
      ]
     }
    ],
-   "title": "The Hunger Games: Sunrise on the Reaping"
+   "title": "The Hunger Games: Sunrise on the Reaping",
+   "image": "https://image.tmdb.org/t/p/w1280/aqFZcr2dxSZ2UwWSo1WC6C0rwDf.jpg",
+   "tmdb": 1300968,
+   "overview": "Return to the world of Panem 24 years before Katniss Everdeen volunteers in her sister's place, commencing on the morning of the reaping of the 50th Hunger Games, also known as the Second Quarter Quell.",
+   "released": "2026-11-18",
+   "genre": "Science Fiction",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "4.0 / 5"
+    }
+   ]
   },
   {
    "id": "fockerinlaw",
@@ -1161,7 +1147,6 @@
     {
      "venue": "Eltham Vue",
      "times": [
-      "2026-11-25T13:15",
       "2026-12-01T16:40"
      ]
     },
@@ -1205,7 +1190,6 @@
     {
      "venue": "Finchley North Vue",
      "times": [
-      "2026-11-25T14:10",
       "2026-11-28T10:40",
       "2026-12-01T16:35"
      ]
@@ -1250,12 +1234,6 @@
      "times": [
       "2026-12-01T18:00",
       "2026-12-03T09:40"
-     ]
-    },
-    {
-     "venue": "Harrow Vue",
-     "times": [
-      "2026-11-25T14:50"
      ]
     },
     {
@@ -1404,7 +1382,6 @@
     {
      "venue": "Swiss Cottage Odeon",
      "times": [
-      "2026-11-25T16:00",
       "2026-11-26T11:00"
      ]
     },
@@ -1419,7 +1396,6 @@
     {
      "venue": "Thurrock Vue",
      "times": [
-      "2026-11-25T13:35",
       "2026-11-26T17:30",
       "2026-11-28T14:25",
       "2026-11-28T17:15",
@@ -1496,13 +1472,23 @@
     {
      "venue": "Wood Green Vue",
      "times": [
-      "2026-11-25T14:00",
       "2026-11-26T18:20",
       "2026-12-01T17:05"
      ]
     }
    ],
-   "title": "Focker In-Law"
+   "title": "Focker In-Law",
+   "image": "https://image.tmdb.org/t/p/w1280/6IfsmHoVWwgJwzxA9DLim2XZbSn.jpg",
+   "tmdb": 1400336,
+   "overview": "Henry, son of Greg and Pam Focker, aims to marry Olivia, a strong-willed former hostage negotiator who appears to be his complete mismatch. To Greg's shock, father-in-law Jack Byrnes takes a liking to Olivia, and her unprecedented rise into his Circle of Trust sparks chaos in the family before Jack's 80th birthday party.",
+   "released": "2026-11-21",
+   "genre": "Comedy",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.2 / 5"
+    }
+   ]
   },
   {
    "id": "ebenezer",
@@ -1544,12 +1530,6 @@
      ]
     },
     {
-     "venue": "Canary Wharf Everyman",
-     "times": [
-      "2026-11-25T16:30"
-     ]
-    },
-    {
      "venue": "Chelsea Everyman",
      "times": [
       "2026-11-30T15:00"
@@ -1558,7 +1538,6 @@
     {
      "venue": "Croydon Valley Park Leisure Vue",
      "times": [
-      "2026-11-25T17:10",
       "2026-12-02T15:30"
      ]
     },
@@ -1598,12 +1577,6 @@
      "venue": "Finchley North Vue",
      "times": [
       "2026-12-02T16:25"
-     ]
-    },
-    {
-     "venue": "Fulham Broadway Vue",
-     "times": [
-      "2026-11-25T16:55"
      ]
     },
     {
@@ -1650,7 +1623,6 @@
     {
      "venue": "Islington Odeon",
      "times": [
-      "2026-11-25T14:50",
       "2026-11-30T20:20",
       "2026-12-01T14:15"
      ]
@@ -1696,7 +1668,6 @@
     {
      "venue": "Piccadilly Circus Vue",
      "times": [
-      "2026-11-25T18:00",
       "2026-12-02T13:00"
      ]
     },
@@ -1775,7 +1746,18 @@
      ]
     }
    ],
-   "title": "Ebenezer"
+   "title": "Ebenezer",
+   "image": "https://image.tmdb.org/t/p/w1280/274ahmbkJSzdmcWrWSTu9DFv5rp.jpg",
+   "tmdb": 1567605,
+   "overview": "An elderly miser embarks on a supernatural journey after visits from the ghost of his former business partner and the Spirits of Christmas Past, Present, and Yet to Come force him to confront his past and fight for a second chance at happiness.",
+   "released": "2026-11-11",
+   "genre": "Fantasy",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.2 / 5"
+    }
+   ]
   },
   {
    "id": "wicker",
@@ -1812,7 +1794,18 @@
      ]
     }
    ],
-   "title": "Wicker"
+   "title": "Wicker",
+   "image": "https://image.tmdb.org/t/p/w1280/r4DTGm1f1r23cyjRJ5kFMh7qYlj.jpg",
+   "tmdb": 1195803,
+   "overview": "On the outskirts of a village by the sea, lives a Fisherwoman; smelly, single and perpetually ridiculed. One day, fed up with her stuffy, small-minded neighbours, she commissions herself a husband to be made from wicker. In an otherwise conservative town, this unconventional romance sparks outrage, jealousy and chaos.",
+   "released": "2026-10-21",
+   "genre": "Romance",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.6 / 5"
+    }
+   ]
   },
   {
    "id": "thecatinthehat",
@@ -1873,7 +1866,18 @@
      ]
     }
    ],
-   "title": "The Cat in the Hat"
+   "title": "The Cat in the Hat",
+   "image": "https://image.tmdb.org/t/p/w1280/56Bepb58k71UUTVwKN1SxHmfzPK.jpg",
+   "tmdb": 1117898,
+   "overview": "Assigned his toughest mission yet, the Cat must cheer up siblings Gabby and Sebastian as they adjust to life in a new town. Known for pushing boundaries, this agent of chaos must prove himself or risk losing his magical hat forever.",
+   "released": "2026-10-31",
+   "genre": "Animation",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.1 / 5"
+    }
+   ]
   },
   {
    "id": "youcanseeeverything",
@@ -1985,7 +1989,6 @@
     {
      "venue": "Clapham Picturehouse",
      "times": [
-      "2026-11-25T18:45",
       "2026-11-26T11:40",
       "2026-12-03T10:45"
      ]
@@ -2113,7 +2116,6 @@
     {
      "venue": "Greenwich Picturehouse",
      "times": [
-      "2026-11-25T15:45",
       "2026-11-27T13:00",
       "2026-11-27T17:30",
       "2026-11-30T18:00",
@@ -2225,12 +2227,6 @@
      ]
     },
     {
-     "venue": "Notting Hill Picturehouse",
-     "times": [
-      "2026-11-25T13:35"
-     ]
-    },
-    {
      "venue": "Regent Street Cinema",
      "times": [
       "2026-12-02T19:00"
@@ -2241,12 +2237,6 @@
      "times": [
       "2026-11-30T13:20",
       "2026-12-03T13:20"
-     ]
-    },
-    {
-     "venue": "Shepherds Bush Westfield Vue",
-     "times": [
-      "2026-11-25T18:20"
      ]
     },
     {
@@ -2346,7 +2336,18 @@
      ]
     }
    ],
-   "title": "You Can See Everything"
+   "title": "You Can See Everything",
+   "image": "https://image.tmdb.org/t/p/w1280/rrbbzCyS45yooXpUGJatfptlHYI.jpg",
+   "tmdb": 1765072,
+   "overview": "Thirty-four days before she's sent to prison, notorious Silicon Valley founder Elizabeth Holmes invites a skeptical film crew to document her every move. What begins as an intimate portrait of an enigmatic felon becomes a mind-bending three-year journey into the abyss.",
+   "released": "2026-10-16",
+   "genre": "Documentary",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "4.6 / 5"
+    }
+   ]
   },
   {
    "id": "iplayrocky",
@@ -2394,18 +2395,6 @@
      ]
     },
     {
-     "venue": "Holloway Odeon",
-     "times": [
-      "2026-11-25T15:00"
-     ]
-    },
-    {
-     "venue": "Kensal Rise Lexi",
-     "times": [
-      "2026-11-25T15:00"
-     ]
-    },
-    {
      "venue": "Kilburn Kiln Cinema NW6",
      "times": [
       "2026-11-28T16:00",
@@ -2413,7 +2402,18 @@
      ]
     }
    ],
-   "title": "I Play Rocky"
+   "title": "I Play Rocky",
+   "image": "https://image.tmdb.org/t/p/w1280/1lnnjBCRLZzKRhQipK5zm61YkPe.jpg",
+   "tmdb": 1286656,
+   "overview": "The electrifying true story about an unknown actor with an unshakable belief that he wasn't just meant to write Rocky—he was meant to be Rocky Balboa. Told \"no\" at every turn, Sylvester Stallone bets everything on himself, holding the line on playing the lead against seemingly impossible odds.",
+   "released": "2026-11-06",
+   "genre": "Drama",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.8 / 5"
+    }
+   ]
   },
   {
    "id": "wildhorsenine",
@@ -2427,7 +2427,6 @@
     {
      "venue": "Barbican Centre Barbican",
      "times": [
-      "2026-11-25T18:10",
       "2026-12-03T17:55"
      ]
     },
@@ -2469,21 +2468,8 @@
      ]
     },
     {
-     "venue": "Egham Everyman",
-     "times": [
-      "2026-11-25T15:30"
-     ]
-    },
-    {
-     "venue": "Finchley PhoenixFinchley",
-     "times": [
-      "2026-11-25T17:00"
-     ]
-    },
-    {
      "venue": "Finsbury Picturehouse",
      "times": [
-      "2026-11-25T14:15",
       "2026-11-29T10:15"
      ]
     },
@@ -2552,12 +2538,6 @@
      ]
     },
     {
-     "venue": "PeckhamPlex",
-     "times": [
-      "2026-11-25T17:50"
-     ]
-    },
-    {
      "venue": "Stratford International Everyman",
      "times": [
       "2026-12-02T12:30"
@@ -2571,7 +2551,18 @@
      ]
     }
    ],
-   "title": "Wild Horse Nine"
+   "title": "Wild Horse Nine",
+   "image": "https://image.tmdb.org/t/p/w1280/3uLA0ujne91bkzFStZICCYeqhnt.jpg",
+   "tmdb": 891621,
+   "overview": "Shortly before the 1973 Chilean coup, CIA agents Chris and Lee are dispatched from Santiago to Easter Island by their bureau chief, MJ. Amongst the Island's iconic statues, and as the longtime partners wrestle with their dark pasts and present conspiracies, Chris's newfound bond with a pair of rebellious students threatens to send everyone’s trip to this remote paradise sideways.",
+   "released": "2026-10-30",
+   "genre": "Comedy",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "4.1 / 5"
+    }
+   ]
   },
   {
    "id": "primafacie",
@@ -2589,7 +2580,18 @@
      ]
     }
    ],
-   "title": "Prima Facie"
+   "title": "Prima Facie",
+   "image": "https://image.tmdb.org/t/p/w1280/6sVeW01ISakmuIFVCSZyVmLiVjH.jpg",
+   "tmdb": 1127282,
+   "overview": "Tessa is a brilliant British defence barrister dominating London’s ruthless courtrooms. Fierce, witty, and self-made, she defends men accused of sexual assault — until she is assaulted herself by a colleague from a powerful legal dynasty.  Suddenly, the system she trusted turns against her. As she faces the same tactics she once used in court, Tessa’s faith in justice unravels. Once in control, now exposed and disbelieved, she must fight to reclaim her voice and sense of self.",
+   "released": "2026-11-13",
+   "genre": "Drama",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.3 / 5"
+    }
+   ]
   },
   {
    "id": "primetime",
@@ -2604,12 +2606,6 @@
      "venue": "Aldgate Curzon",
      "times": [
       "2026-11-26T11:20"
-     ]
-    },
-    {
-     "venue": "Greenwich Picturehouse",
-     "times": [
-      "2026-11-25T14:30"
      ]
     },
     {
@@ -2639,15 +2635,20 @@
      "times": [
       "2026-11-26T20:10"
      ]
-    },
-    {
-     "venue": "Walthamstow Forest Cinema",
-     "times": [
-      "2026-11-25T17:15"
-     ]
     }
    ],
-   "title": "Primetime"
+   "title": "Primetime",
+   "image": "https://image.tmdb.org/t/p/w1280/sEsMwSDUWGIx9EfNxzM6KzVSsSQ.jpg",
+   "tmdb": 1375441,
+   "overview": "In 2006, To Catch a Predator host Chris Hansen sets out to make television history. When a high stakes operation goes fatally wrong, his veneered dream of fame curdles into a nightmare of performative justice.",
+   "released": "2026-09-23",
+   "genre": "Thriller",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.6 / 5"
+    }
+   ]
   },
   {
    "id": "atalentformurder",
@@ -2704,31 +2705,18 @@
      ]
     }
    ],
-   "title": "A Talent For Murder"
-  },
-  {
-   "id": "ghosts",
-   "page": "https://www.yourlocalcinema.com/ghosts.html",
-   "poster": "https://www.yourlocalcinema.com/ghosts.jpg",
-   "trailer": "https://www.youtube.com/watch?v=CPAuizBp8fY",
-   "rating": "PG",
-   "runtime": "1h 37m",
-   "blurb": "... The Possession of Button House. Comedy. A teenager is possessed by a ghost, with catastrophic consequences",
-   "shows": [
+   "title": "A Talent For Murder",
+   "image": "https://image.tmdb.org/t/p/w1280/b3EGc5Ucj7wIeUjFc64Wq4IYgkp.jpg",
+   "tmdb": 1084409,
+   "overview": "A young man travels from New York to Switzerland to try to persuade acclaimed thriller writer Patricia Highsmith to write one final installment of her Tom Ripley series, with his efforts gradually turning more sinister.",
+   "released": "2026-10-23",
+   "genre": "Thriller",
+   "ratings": [
     {
-     "venue": "Finchley Road O2 Vue",
-     "times": [
-      "2026-11-25T19:55"
-     ]
-    },
-    {
-     "venue": "Stratford Westfield Vue",
-     "times": [
-      "2026-11-25T15:55"
-     ]
+     "source": "Letterboxd",
+     "value": "3.1 / 5"
     }
-   ],
-   "title": "Ghosts: The Possession Of Button House"
+   ]
   },
   {
    "id": "thematch",
@@ -2740,44 +2728,24 @@
    "blurb": "Story of the historic 1986 World Cup football match between Argentina and England",
    "shows": [
     {
-     "venue": "Bexleyheath Cineworld",
-     "times": [
-      "2026-11-25T19:20"
-     ]
-    },
-    {
      "venue": "Enfield Cineworld",
      "times": [
-      "2026-11-25T19:15",
       "2026-11-26T11:10"
-     ]
-    },
-    {
-     "venue": "Greenwich O2 Cineworld",
-     "times": [
-      "2026-11-25T20:00"
-     ]
-    },
-    {
-     "venue": "Wandsworth Cineworld",
-     "times": [
-      "2026-11-25T19:15"
-     ]
-    },
-    {
-     "venue": "West India Quay Cineworld",
-     "times": [
-      "2026-11-25T19:15"
-     ]
-    },
-    {
-     "venue": "Wood Green Cineworld",
-     "times": [
-      "2026-11-25T19:15"
      ]
     }
    ],
-   "title": "The Match"
+   "title": "The Match",
+   "image": "https://image.tmdb.org/t/p/w1280/tVCg0HYPLFVYljiQXJCWTY43LJR.jpg",
+   "tmdb": 760497,
+   "overview": "When a legendary Go master loses his title to a one-time friend and protégé, he sets out to reclaim it in a high-stakes battle of wits and skill.",
+   "released": "2025-03-26",
+   "genre": "Drama",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.5 / 5"
+    }
+   ]
   },
   {
    "id": "othermommy",
@@ -2795,7 +2763,18 @@
      ]
     }
    ],
-   "title": "Other Mommy"
+   "title": "Other Mommy",
+   "image": "https://image.tmdb.org/t/p/w1280/smZ8BT4Vzw4iCEppTLCnN8jNYtn.jpg",
+   "tmdb": 1400837,
+   "overview": "Young Bela forms a relationship with a sinister entity in her home that looks uncannily like her own mother, drawing her into a terrifying and increasingly dark world.",
+   "released": "2026-10-07",
+   "genre": "Horror",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "2.2 / 5"
+    }
+   ]
   },
   {
    "id": "beingheumann",
@@ -2813,7 +2792,18 @@
      ]
     }
    ],
-   "title": "Being Heumann"
+   "title": "Being Heumann",
+   "image": "https://image.tmdb.org/t/p/w1280/25aB8RXP4mfQLFRSuEEhk0d0sTC.jpg",
+   "tmdb": 1050981,
+   "overview": "Scrappy, defiant, and done being treated like a burden, Judy Heumann turns her outrage into a revolution. In 1977, she and more than 100 disability rights protestors send a very loud message: The system is broken—not us.",
+   "released": "2026-11-06",
+   "genre": "Drama",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.6 / 5"
+    }
+   ]
   },
   {
    "id": "thedevils",
@@ -2828,12 +2818,12 @@
      "venue": "Waterloo BFI Southbank",
      "times": [
       "2026-11-29T15:00",
-      "2026-12-02T15:00",
-      "2026-11-25T15:00"
+      "2026-12-02T15:00"
      ]
     }
    ],
-   "title": "Ken Russell's The Devils"
+   "title": "Ken Russell's The Devils",
+   "image": "https://i.ytimg.com/vi/YXURZFQfZ10/maxresdefault.jpg"
   },
   {
    "id": "onwardsandsideways",
@@ -2852,7 +2842,18 @@
      ]
     }
    ],
-   "title": "Onwards And Sideways"
+   "title": "Onwards And Sideways",
+   "image": "https://i.ytimg.com/vi/5dEZEEeEQzc/maxresdefault.jpg",
+   "tmdb": 1567265,
+   "overview": "Tony Evans is the deputy head of a local primary school. Emma Dretzin is a pianist, composer and single mother of two daughters. Neither knows the other until a startling encounter changes the course of their lives: on the same morning, they are both confronted with a diagnosis of Parkinson’s.",
+   "released": "2026-11-06",
+   "genre": "Comedy",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.6 / 5"
+    }
+   ]
   },
   {
    "id": "iseebuildings",
@@ -2870,7 +2871,18 @@
      ]
     }
    ],
-   "title": "I See Buildings Fall Like Lightning"
+   "title": "I See Buildings Fall Like Lightning",
+   "image": "https://image.tmdb.org/t/p/w1280/hpeJZsjwcySRYOxveHZlETVBwE3.jpg",
+   "tmdb": 1455247,
+   "overview": "Childhood friends Patrick, Shiv, Rian, Oli, and Conor played together, skipped school together, and dreamt of the lives they would have one day. Now they’re thirty, and the future they imagined is slipping quietly out of reach.",
+   "released": "2026-12-04",
+   "genre": "Drama",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "3.6 / 5"
+    }
+   ]
   },
   {
    "id": "tadandthemagiclamp",
@@ -2889,7 +2901,18 @@
      ]
     }
    ],
-   "title": "Tad and the Magic Lamp"
+   "title": "Tad and the Magic Lamp",
+   "image": "https://image.tmdb.org/t/p/w1280/zbpimMxf6Ms96v3Zypuv8WltMSO.jpg",
+   "tmdb": 1187326,
+   "overview": "Tadeo, his girlfriend Sara, and his friends Momia, Jeff, and Belzoni embark on an adventure after Tadeo accidentally unleashes an ancient spell.",
+   "released": "2026-08-26",
+   "genre": "Animation",
+   "ratings": [
+    {
+     "source": "Letterboxd",
+     "value": "2.8 / 5"
+    }
+   ]
   }
  ]
 }

@@ -115,6 +115,50 @@ def entries(section, today, inline):
     return out
 
 
+TMDB_KEY = __import__("os").environ.get("TMDB_API_KEY", "")
+BROWSER_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
+
+
+def tmdb(path, **params):
+    params["api_key"] = TMDB_KEY
+    url = f"https://api.themoviedb.org/3/{path}?{urllib.parse.urlencode(params)}"
+    with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=30) as r:
+        return json.load(r)
+
+
+def enrich(f, today):
+    """Official 16:9 picture, synopsis, release date and genre from TMDB; Letterboxd score."""
+    vid = urllib.parse.parse_qs(urllib.parse.urlparse(f.get("trailer") or "").query).get("v", [None])[0]
+    if vid:
+        f["image"] = f"https://i.ytimg.com/vi/{vid}/maxresdefault.jpg"  # fallback picture
+    if not TMDB_KEY:
+        return
+    results = tmdb("search/movie", query=f["title"]).get("results", [])
+    # Only recent or upcoming films, so an older film with the same name isn't picked.
+    recent = [m for m in results if (m.get("release_date") or "") >= str(today.year - 1)]
+    if not recent:
+        return
+    m = max(recent, key=lambda x: x.get("popularity", 0))
+    d = tmdb(f"movie/{m['id']}", append_to_response="images", include_image_language="null")
+    f["tmdb"] = m["id"]
+    f["overview"] = d.get("overview") or f.get("blurb")
+    f["released"] = d.get("release_date")
+    f["genre"] = (d.get("genres") or [{}])[0].get("name")
+    backs = sorted((d.get("images") or {}).get("backdrops", []), key=lambda x: -x.get("vote_average", 0))
+    path = backs[0]["file_path"] if backs else d.get("backdrop_path")
+    if path:
+        f["image"] = "https://image.tmdb.org/t/p/w1280" + path
+    try:
+        req = urllib.request.Request(f"https://letterboxd.com/tmdb/{m['id']}/", headers={"User-Agent": BROWSER_UA})
+        page = urllib.request.urlopen(req, timeout=20).read().decode("utf-8", "replace")
+        lb = re.search(r'name="twitter:data2" content="([\d.]+) out of 5"', page)
+        if lb:
+            f["ratings"] = [{"source": "Letterboxd", "value": f"{float(lb.group(1)):.1f} / 5"}]
+    except Exception:
+        pass
+    time.sleep(0.3)
+
+
 def main():
     out_path = sys.argv[1] if len(sys.argv) > 1 else "listings.json"
     today = dt.date.today()
@@ -181,6 +225,12 @@ def main():
                     if today.isoformat() <= e["date"] <= (today + dt.timedelta(days=120)).isoformat()]
     except Exception as e:
         print("skip bank holidays", e, file=sys.stderr)
+
+    for f in films:
+        try:
+            enrich(f, today)
+        except Exception as e:
+            print("skip details", f["id"], e, file=sys.stderr)
 
     data = {"updated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes"),
             "source": BASE, "holidays": holidays, "films": films}

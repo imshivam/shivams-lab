@@ -2,6 +2,19 @@
 
 window.VERSIONS = [
   {
+    version: "2.9",
+    date: "2026-11-26",
+    title: "Subtitled films 2.0",
+    summary: "Subtitled films has a new design, a dark mode and official film pictures.",
+    changes: [
+      "Subtitled films: big official film pictures, a film page with travel from both work and home on every show, ratings, trailers and a maps choice for each cinema.",
+      "It follows the device's light or dark setting.",
+      "The morning update now also fetches film details from TMDB and Letterboxd.",
+    ],
+    why: "Shivam explored the design on a Claude Design canvas and chose a calm, picture-led direction inspired by mindmarket.com.",
+    shots: [],
+  },
+  {
     version: "2.8",
     date: "2026-11-25",
     title: "Subtitled films",

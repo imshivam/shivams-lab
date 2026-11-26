@@ -3,254 +3,219 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Subtitled films</title>
-<meta name="description" content="Subtitled film shows in London you can make, with travel time from home or work.">
+<title>Subtitled film shows in London</title>
+<meta name="description" content="Subtitled film shows in London after 5pm on weekdays and all day at weekends, with journey times from work and home.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F5F1E4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161715" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
 <style>
 :root {
-  --bg: #f2f2f7; --card: #ffffff; --text: #000000; --muted: #6c6c70; --faint: #8e8e93;
-  --line: rgba(60,60,67,.18); --tint: #0a66d8; --pill: rgba(118,118,128,.12);
-  --radius: 14px;
+  --bg: #F5F1E4; --card: #FFFFFF; --ink: #2C2E2A; --muted: #6E6B62; --line: #EFEBE0;
+  --accent: #8ED462; --on-accent: #2C2E2A; --soft: #F5F1E4; --shade: rgba(44,46,42,.35);
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #000000; --card: #1c1c1e; --text: #ffffff; --muted: #a1a1a6; --faint: #8e8e93;
-    --line: rgba(84,84,88,.6); --tint: #4ea1ff; --pill: rgba(118,118,128,.24); }
+  :root { --bg: #161715; --card: #23241F; --ink: #EDEBE4; --muted: #A3A097; --line: #34352F;
+    --accent: #8ED462; --on-accent: #1B1C19; --soft: #2E2F2A; --shade: rgba(0,0,0,.55); }
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--bg); color: var(--text);
-  font: 17px/1.35 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif; }
-main { max-width: 640px; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 16px calc(32px + env(safe-area-inset-bottom)); }
-h1 { font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -.01em; margin: 12px 0 6px; }
-.lede { color: var(--muted); margin: 0 0 22px; }
-button, input { font: inherit; color: inherit; }
-a { color: var(--tint); }
-:focus-visible { outline: 3px solid var(--tint); outline-offset: 2px; border-radius: 8px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 500 16px/1.4 Inter, -apple-system, system-ui, sans-serif; letter-spacing: -0.02em; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; letter-spacing: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
 [hidden] { display: none !important; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+@media (min-width: 760px) { .wrap { padding: 0 40px; } }
+@media (min-width: 1100px) { .wrap { padding: 0 56px; } }
+.link { background: none; border: 0; padding: 0; cursor: pointer; color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 
-/* Lists */
-.list { list-style: none; margin: 0; padding: 0; background: var(--card); border-radius: var(--radius); overflow: hidden; }
-.list > li + li { border-top: .5px solid var(--line); }
-.film { display: flex; gap: 14px; align-items: center; width: 100%; padding: 12px 14px; min-height: 92px;
-  background: none; border: 0; text-align: left; cursor: pointer; }
-.film:active { background: var(--pill); }
-.poster { width: 52px; height: 74px; border-radius: 6px; object-fit: cover; background: var(--pill); flex: none; }
-.film-text { flex: 1; min-width: 0; }
-.film-title { font-size: 19px; font-weight: 600; line-height: 1.2; margin: 0 0 4px; }
-.film-next { color: var(--muted); font-size: 15px; margin: 0; }
-.chev { color: var(--faint); flex: none; }
+/* What's on */
+.intro { padding: max(56px, env(safe-area-inset-top)) 0 0; display: flex; flex-direction: column; gap: 14px; }
+.intro h1 { margin: 0; font-size: 38px; font-weight: 500; letter-spacing: -0.06em; line-height: .95; }
+.intro p { margin: 0; color: var(--muted); font-size: 16px; letter-spacing: -0.03em; }
+@media (min-width: 760px) { .intro { padding-top: 64px; } .intro h1 { font-size: 58px; } .intro p { font-size: 20px; } }
+.grid { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 28px 0 64px; }
+@media (min-width: 640px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } }
+@media (min-width: 1000px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 36px; } }
+.card { background: var(--card); border-radius: 24px; padding: 10px 10px 18px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+.card:hover { transform: translateY(-2px); }
+.pic { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 16px; background: var(--soft); }
+.card .t { margin: 12px 8px 2px; font-size: 20px; letter-spacing: -0.035em; line-height: 1.15; }
+.card .when { margin: 0 8px; font-size: 15px; }
+.card .cin { margin: 0 8px; font-size: 14px; color: var(--muted); }
+.rest { color: var(--muted); padding-bottom: 32px; }
+.rest h2 { font-size: 16px; color: var(--ink); margin: 0 0 6px; font-weight: 500; }
+.rest p { margin: 0; }
+footer { color: var(--muted); font-size: 13px; padding: 0 0 max(40px, env(safe-area-inset-bottom)); }
 
-.section-title { font-size: 15px; color: var(--muted); font-weight: 400; margin: 28px 4px 8px; }
-.quiet { color: var(--muted); font-size: 15px; padding: 12px 14px; margin: 0; }
+/* Film page */
+.back { display: inline-flex; width: 44px; height: 44px; margin-top: max(20px, env(safe-area-inset-top)); border-radius: 50%; background: var(--card); align-items: center; justify-content: center; border: 0; cursor: pointer; }
+.film { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 14px 0 64px; }
+@media (min-width: 900px) { .film { grid-template-columns: 420px minmax(0, 1fr); gap: 48px; padding-top: 16px; } .about-col { position: sticky; top: 20px; align-self: start; } }
+.about-col, .shows-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.film .pic { border-radius: 20px; }
+.ttl { margin: 6px 4px 0; font-size: 30px; font-weight: 500; letter-spacing: -0.05em; line-height: 1; }
+@media (min-width: 900px) { .ttl { font-size: 40px; margin: 6px 0 0; } }
+.meta { margin: 0 4px; color: var(--muted); font-size: 14px; }
+.desc { margin: 0 4px; font-size: 16px; line-height: 1.45; letter-spacing: -0.025em; }
+.trailer { background: var(--card); border-radius: 18px; padding: 8px; display: flex; gap: 14px; align-items: center; text-decoration: none; }
+.trailer .th { position: relative; width: 104px; height: 58px; flex: none; border-radius: 12px; overflow: hidden; background: var(--soft); }
+.trailer .th img { width: 100%; height: 100%; object-fit: cover; }
+.play { position: absolute; inset: 0; margin: auto; width: 30px; height: 30px; border-radius: 50%; background: #fff; color: #2C2E2A; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.lbl { margin: 4px 4px 0; font-size: 13px; color: var(--muted); }
+.rcard { background: var(--card); border-radius: 18px; padding: 4px 14px; }
+.rr { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.rr:last-child { border-bottom: 0; }
+.ic { width: 24px; height: 24px; border-radius: 50%; background: var(--soft); flex: none; font-size: 8px; font-weight: 600; color: var(--muted); display: flex; align-items: center; justify-content: center; }
+.rr .src { flex: 1; margin: 0; font-size: 14px; }
+.rr .sc { margin: 0; font-size: 14px; font-weight: 600; }
+.seg { display: flex; background: var(--card); border-radius: 999px; padding: 4px; gap: 4px; margin: 6px 0 4px; }
+.seg button { flex: 1; border: 0; background: none; font-size: 15px; padding: 10px 0; border-radius: 999px; color: var(--muted); cursor: pointer; }
+.seg button[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+@media (min-width: 900px) { .seg { display: none; } .film [data-panel] { display: flex !important; } .phone-only { display: none !important; } }
+@media (max-width: 899px) { .desk-only { display: none !important; } }
+.days { display: flex; flex-direction: column; gap: 24px; }
+.dg { display: flex; flex-direction: column; gap: 10px; }
+.day { margin: 0 4px; font-size: 19px; letter-spacing: -0.04em; }
+@media (min-width: 900px) { .day { font-size: 22px; margin: 0; } }
+.show { background: var(--card); border-radius: 18px; padding: 14px 16px; }
+@media (min-width: 900px) { .show { padding: 18px 22px; border-radius: 20px; } }
+.top { display: flex; align-items: baseline; gap: 14px; }
+.tm { margin: 0; font-size: 20px; letter-spacing: -0.045em; min-width: 76px; }
+@media (min-width: 900px) { .tm { font-size: 24px; min-width: 96px; } }
+.cn { font-size: 15px; text-align: left; }
+@media (min-width: 900px) { .cn { font-size: 16px; } }
+.trv { display: grid; grid-template-columns: auto auto auto 1fr; column-gap: 14px; row-gap: 7px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); align-items: center; }
+@media (min-width: 900px) { .trv { column-gap: 20px; row-gap: 9px; font-size: 14px; margin-top: 16px; padding-top: 14px; } }
+.trv span { display: inline-flex; gap: 5px; align-items: center; white-space: nowrap; }
+.trv .ol { color: var(--ink); }
+.note { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+.more { border: 0; background: var(--card); color: var(--ink); border-radius: 999px; padding: 12px 20px; cursor: pointer; align-self: flex-start; }
 
-/* Film screen */
-.back { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 8px 0 0;
-  background: none; border: 0; color: var(--tint); cursor: pointer; font-size: 17px; }
-.film-head { display: flex; gap: 16px; align-items: flex-start; margin: 4px 0 22px; }
-.film-head .poster { width: 84px; height: 120px; border-radius: 8px; }
-.film-head h1 { margin: 0 0 6px; font-size: 26px; }
-.meta { color: var(--muted); font-size: 15px; margin: 0; }
-.day { font-size: 20px; font-weight: 600; margin: 26px 4px 8px; }
-.day:first-of-type { margin-top: 0; }
-.show { display: grid; grid-template-columns: 64px 1fr auto; gap: 2px 12px; align-items: start;
-  padding: 12px 14px; text-decoration: none; color: inherit; }
-.show:active { background: var(--pill); }
-.time { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; grid-row: span 3; line-height: 1.25; }
-.venue { font-size: 17px; font-weight: 500; }
-.go { grid-column: 3; grid-row: 1; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.go b { font-size: 20px; font-weight: 600; line-height: 1.1; }
-.detail { font-size: 14px; color: var(--muted); grid-column: 2 / span 2; }
-.more { display: block; width: 100%; min-height: 48px; margin: 10px 0 0; padding: 12px 14px; border: 0;
-  border-radius: var(--radius); background: var(--card); color: var(--tint); text-align: left; cursor: pointer; }
-
-/* Setup */
-label { display: block; font-size: 15px; color: var(--muted); margin: 18px 4px 6px; }
-input[type=text] { width: 100%; min-height: 48px; padding: 10px 14px; border: 0; border-radius: 12px;
-  background: var(--card); text-transform: uppercase; }
-.primary { width: 100%; min-height: 50px; margin-top: 26px; border: 0; border-radius: 12px;
-  background: var(--tint); color: #fff; font-weight: 600; cursor: pointer; }
-.error { color: #d70015; margin: 12px 4px 0; font-size: 15px; }
-@media (prefers-color-scheme: dark) { .error { color: #ff6961; } }
-
-footer { color: var(--faint); font-size: 13px; margin: 36px 4px 0; line-height: 1.5; }
-footer button { background: none; border: 0; padding: 0; color: var(--tint); cursor: pointer; font-size: 13px; min-height: 32px; }
+/* Sheets: maps menu and places */
+.scrim { position: fixed; inset: 0; background: var(--shade); z-index: 10; display: flex; align-items: flex-end; justify-content: center; }
+@media (min-width: 640px) { .scrim { align-items: center; } }
+.sheet { background: var(--card); width: 100%; max-width: 420px; border-radius: 24px 24px 0 0; padding: 14px 18px max(24px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; }
+@media (min-width: 640px) { .sheet { border-radius: 24px; padding-bottom: 20px; } }
+.sheet h2 { margin: 6px 4px 4px; font-size: 18px; font-weight: 500; letter-spacing: -0.03em; }
+.sheet p { margin: 0 4px 6px; color: var(--muted); font-size: 14px; }
+.opt { display: block; padding: 14px 16px; border-radius: 14px; background: var(--soft); text-decoration: none; font-size: 16px; border: 0; text-align: left; cursor: pointer; width: 100%; }
+.field { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); font: inherit; font-size: 17px; text-transform: uppercase; }
+.primary { background: var(--accent); color: var(--on-accent); border: 0; border-radius: 999px; padding: 14px; font-size: 16px; cursor: pointer; margin-top: 6px; }
+.err { color: #D2453B; }
 </style>
 </head>
 <body>
-<main id="app" aria-live="polite"><p class="lede">Loading…</p></main>
+<main id="app"><div class="wrap intro"><p>Loading…</p></div></main>
+<div id="layer"></div>
 
 <script>
 "use strict";
-// ---- Rules (see DESIGN.md) ----
-const WEEKDAY_FROM = 17 * 60;   // weekday shows start 5pm or later
-const NEAR_MIN = 45;            // farther than this goes behind "Farther away"
-const WALK_FIRST_MIN = 20;      // walk if it's this short, or no slower than transport + 5
-const CACHE_DAYS = 30;
-
-const $app = document.getElementById("app");
+const WEEKDAY_FROM = 17 * 60, NEAR_MIN = 45, WALK_FIRST_MIN = 20, CACHE_DAYS = 30;
+const $app = document.getElementById("app"), $layer = document.getElementById("layer");
 const store = {
   get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
-  del(k) { try { localStorage.removeItem(k); } catch {} },
 };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ICON = {
+  work: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>',
+  home: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>',
+  train: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Public transport"><rect x="5" y="3" width="14" height="13" rx="3"/><path d="M5 10h14M8 20l2-4M16 20l-2-4"/></svg>',
+  walk: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Walking"><circle cx="13" cy="4" r="2"/><path d="M9 21l2-6 3 2v4M7 12l3-4 4 1 2 4M11 9l-1 5"/></svg>',
+};
 
-let DATA, VENUES, PLACES, holidays = new Set(), cameFromList = false;
-const walk = { home: {}, work: {} };     // venue -> {m, min}
-const transit = { home: {}, work: {} };  // venue -> {min, via} | {none: true}
+let DATA, VENUES, PLACES = store.get("places") || {}, holidays = new Set(), tab = "shows";
+const walk = { home: {}, work: {} }, transit = { home: {}, work: {} };
 
-// ---- Places (home/work), saved on this device only ----
-function readHashPlaces() {
-  const h = new URLSearchParams(location.hash.slice(1));
-  if (h.get("home") && h.get("work")) {
-    history.replaceState(null, "", location.pathname);
-    return { home: h.get("home"), work: h.get("work") };
-  }
-  return null;
-}
+// ---- Dates (12-hour times) ----
+const DAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MON = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const parse = t => { const [d, hm] = t.split("T"); const [y, m, dd] = d.split("-").map(Number); const [h, mi] = hm.split(":").map(Number); return new Date(y, m - 1, dd, h, mi); };
+const t12 = d => { const h = d.getHours() % 12 || 12, m = d.getMinutes(); return `${h}${m ? ":" + String(m).padStart(2, "0") : ""}${d.getHours() < 12 ? "am" : "pm"}`; };
+const dayDiff = d => { const a = new Date(); a.setHours(0, 0, 0, 0); return Math.round((new Date(d).setHours(0, 0, 0, 0) - a) / 864e5); };
+const isFree = d => d.getDay() === 0 || d.getDay() === 6 || holidays.has(d.toLocaleDateString("en-CA"));
+const fits = d => isFree(d) || d.getHours() * 60 + d.getMinutes() >= WEEKDAY_FROM;
+function whenShort(d) { const n = dayDiff(d); return n === 0 ? (d.getHours() >= 17 ? "Tonight" : "Today") : n === 1 ? "Tomorrow" : n < 7 ? DAY[d.getDay()] : `${DAY[d.getDay()].slice(0, 3)} ${d.getDate()} ${MON[d.getMonth()].slice(0, 3)}`; }
+function dayHeading(d) { const n = dayDiff(d); return n === 0 ? (d.getHours() >= 17 ? "Tonight" : "Today") : n === 1 ? "Tomorrow" : `${DAY[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`; }
+const dur = m => m < 60 ? `${m} min` : (m % 60 ? `${Math.floor(m / 60)} hr ${m % 60} min` : `${m / 60} hr`);
+const miles = m => m / 1609.344;
+const fmtMi = m => { const v = miles(m); return v < 10 ? v.toFixed(1) : Math.round(v); };
+const vname = v => VENUES[v]?.name || v;
+const runtime = r => r ? r.replace(/(\d+)h\s*(\d+)m/, "$1 hr $2 min").replace(/^(\d+)h$/, "$1 hr") : "";
+
+// ---- Places ----
 async function geocode(pc) {
   const r = await fetch("https://api.postcodes.io/postcodes/" + encodeURIComponent(pc.replace(/\s+/g, "")));
-  if (!r.ok) throw new Error(pc);
+  if (!r.ok) throw new Error("not found");
   const j = (await r.json()).result;
   return { postcode: j.postcode, lat: j.latitude, lon: j.longitude };
 }
-async function savePlaces(home, work) {
-  const [h, w] = await Promise.all([geocode(home), geocode(work)]);
-  PLACES = { home: h, work: w };
-  store.set("places", PLACES);
-  for (const o of ["home", "work"]) { walk[o] = {}; transit[o] = {}; }
+function readHashPlaces() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (!h.get("home") || !h.get("work")) return null;
+  history.replaceState(null, "", location.pathname);
+  return { home: h.get("home"), work: h.get("work") };
 }
-
-// ---- Dates ----
-const DAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const MON = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-function parse(t) { const [d, hm] = t.split("T"); const [y, m, dd] = d.split("-").map(Number); const [hh, mi] = hm.split(":").map(Number); return new Date(y, m - 1, dd, hh, mi); }
-function isFree(d) { const iso = d.toLocaleDateString("en-CA"); return d.getDay() === 0 || d.getDay() === 6 || holidays.has(iso); }
-function fits(d) { return isFree(d) || d.getHours() * 60 + d.getMinutes() >= WEEKDAY_FROM; }
-function dayLabel(d) {
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  const diff = Math.round((new Date(d).setHours(0, 0, 0, 0) - today) / 864e5);
-  const base = `${DAY[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`;
-  return diff === 0 ? `Today, ${base}` : diff === 1 ? `Tomorrow, ${base}` : base;
-}
-function shortDay(d) {
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  const diff = Math.round((new Date(d).setHours(0, 0, 0, 0) - today) / 864e5);
-  if (diff === 0) return "Today";
-  if (diff === 1) return "Tomorrow";
-  return `${DAY[d.getDay()].slice(0, 3)} ${d.getDate()} ${MON[d.getMonth()].slice(0, 3)}`;
-}
-const vname = v => VENUES[v]?.name || v;
-const hhmm = d => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 
 // ---- Travel ----
-const miles = m => (m / 1609.344);
-function fmtMiles(m) { const mi = miles(m); return mi < 10 ? mi.toFixed(1) : Math.round(mi); }
-function fmtMin(min) { if (min < 60) return `${min} min`; const h = Math.floor(min / 60), r = min % 60; return r ? `${h} hr ${r} min` : `${h} hr`; }
-function crowFly(a, b) {
-  const R = 6371e3, t = Math.PI / 180;
-  const x = (b.lon - a.lon) * t * Math.cos((a.lat + b.lat) / 2 * t), y = (b.lat - a.lat) * t;
-  return Math.sqrt(x * x + y * y) * R;
-}
-
 async function loadWalking(origin) {
-  const o = PLACES[origin], key = `walk:${o.postcode}`;
-  const cached = store.get(key);
-  const names = Object.keys(VENUES);
+  const o = PLACES[origin]; if (!o) return;
+  const key = `walk:${o.postcode}`, names = Object.keys(VENUES), cached = store.get(key);
   if (cached && Date.now() - cached.t < CACHE_DAYS * 864e5 && names.every(n => cached.v[n])) { walk[origin] = cached.v; return; }
-  const coords = [o, ...names.map(n => VENUES[n])].map(p => `${p.lon},${p.lat}`).join(";");
   try {
-    const r = await fetch(`https://routing.openstreetmap.de/routed-foot/table/v1/driving/${coords}?sources=0&annotations=distance,duration`);
-    const j = await r.json();
+    const coords = [o, ...names.map(n => VENUES[n])].map(p => `${p.lon},${p.lat}`).join(";");
+    const j = await (await fetch(`https://routing.openstreetmap.de/routed-foot/table/v1/driving/${coords}?sources=0&annotations=distance`)).json();
     if (j.code !== "Ok") throw 0;
-    names.forEach((n, i) => {
-      const m = j.distances[0][i + 1];
-      // Normal walking pace, 3 mph (20 minutes a mile).
-      walk[origin][n] = { m, min: Math.round(miles(m) * 20) };
-    });
+    walk[origin] = {};
+    names.forEach((n, i) => { const m = j.distances[0][i + 1]; walk[origin][n] = { m, min: Math.round(miles(m) * 20) }; });
     store.set(key, { t: Date.now(), v: walk[origin] });
   } catch {
-    // Fallback: straight line plus 30% for streets.
-    names.forEach(n => { const m = crowFly(o, VENUES[n]) * 1.3; walk[origin][n] = { m, min: Math.round(miles(m) * 20), rough: true }; });
+    names.forEach(n => { const v = VENUES[n], R = 6371e3, r = Math.PI / 180;
+      const x = (v.lon - o.lon) * r * Math.cos((v.lat + o.lat) / 2 * r), y = (v.lat - o.lat) * r;
+      const m = Math.sqrt(x * x + y * y) * R * 1.3; walk[origin][n] = { m, min: Math.round(miles(m) * 20) }; });
   }
 }
-
-function nextDate(weekend) {
-  const d = new Date(); d.setDate(d.getDate() + 1);
-  while (weekend ? d.getDay() !== 6 : (d.getDay() === 0 || d.getDay() === 6)) d.setDate(d.getDate() + 1);
-  return d.toLocaleDateString("en-CA").replaceAll("-", "");
-}
-const MODE = { tube: "Tube", bus: "Bus", dlr: "DLR", overground: "Overground", "elizabeth-line": "Elizabeth line",
-  "national-rail": "Train", tram: "Tram", "river-bus": "Boat", "cable-car": "Cable car", coach: "Coach",
-  "replacement-bus": "Replacement bus", cycle: "Cycle" };
-function describe(j) {
-  const parts = [];
-  for (const l of j.legs) {
-    const id = l.mode.id;
-    if (id === "walking") continue;
-    const name = l.routeOptions?.[0]?.name || "";
-    const label = id === "tube" && name ? `${name} line` : id === "bus" && name ? `Bus ${name}` : (MODE[id] || id);
-    if (!parts.includes(label)) parts.push(label);
-  }
-  return parts.length ? parts.slice(0, 2).join(" + ") + (parts.length > 2 ? " + more" : "") : "Walk";
-}
+function nextDate(weekend) { const d = new Date(); d.setDate(d.getDate() + 1); while (weekend ? d.getDay() !== 6 : (d.getDay() === 0 || d.getDay() === 6)) d.setDate(d.getDate() + 1); return d.toLocaleDateString("en-CA").replaceAll("-", ""); }
 async function tflOne(origin, venue) {
-  const o = PLACES[origin], v = VENUES[venue], key = `tfl:${o.postcode}:${venue}`;
-  const cached = store.get(key);
+  const o = PLACES[origin], v = VENUES[venue], key = `tfl:${o.postcode}:${venue}`, cached = store.get(key);
   if (cached && Date.now() - cached.t < CACHE_DAYS * 864e5) { transit[origin][venue] = cached.v; return; }
   const weekend = origin === "home";
-  const url = `https://api.tfl.gov.uk/Journey/JourneyResults/${encodeURIComponent(o.postcode.replace(/\s+/g, ""))}/to/${v.lat},${v.lon}` +
-    `?date=${nextDate(weekend)}&time=${weekend ? "1400" : "1730"}&timeIs=Departing&journeyPreference=leasttime`;
   let val;
   try {
-    const r = await fetch(url);
+    const r = await fetch(`https://api.tfl.gov.uk/Journey/JourneyResults/${encodeURIComponent(o.postcode.replace(/\s+/g, ""))}/to/${v.lat},${v.lon}?date=${nextDate(weekend)}&time=${weekend ? "1400" : "1730"}&timeIs=Departing&journeyPreference=leasttime`);
     if (r.status === 429) { await new Promise(s => setTimeout(s, 4000)); return tflOne(origin, venue); }
     const j = await r.json();
     const best = (j.journeys || []).reduce((a, b) => (!a || b.duration < a.duration ? b : a), null);
-    val = best ? { min: best.duration, via: describe(best) } : { none: true };
+    val = best ? { min: best.duration } : { none: true };
   } catch { val = { none: true, failed: true }; }
   transit[origin][venue] = val;
   if (!val.failed) store.set(key, { t: Date.now(), v: val });
 }
-let queueRunning = false;
+let queueBusy = false;
 async function loadTransit(pairs) {
-  // pairs: [[origin, venue]] nearest first; three at a time, redraw as they arrive.
-  const todo = pairs.filter(([o, v]) => !transit[o][v]);
-  if (!todo.length || queueRunning) return;
-  queueRunning = true;
-  let i = 0, since = 0;
-  const worker = async () => {
-    while (i < todo.length) {
-      const [o, v] = todo[i++];
-      await tflOne(o, v);
-      if (++since >= 6) { since = 0; render(); }
-    }
-  };
+  const todo = pairs.filter(([o, v]) => PLACES[o] && !transit[o][v]);
+  if (!todo.length || queueBusy) return;
+  queueBusy = true;
+  let i = 0, n = 0;
+  const worker = async () => { while (i < todo.length) { const [o, v] = todo[i++]; await tflOne(o, v); if (++n % 6 === 0) render(); } };
   await Promise.all([worker(), worker(), worker(), worker()]);
-  queueRunning = false;
-  render();
+  queueBusy = false; render();
 }
-
-// The way to go: walk if short or no slower, otherwise public transport.
-function travel(origin, venue) {
+// How long a show takes to reach from its likely starting point; used to hide far cinemas.
+function bestMin(origin, venue) {
   const w = walk[origin][venue], t = transit[origin][venue];
   if (!w) return null;
-  const hasT = t && !t.none;
-  let best;
-  // Until TfL answers: estimate from the walking distance (fitted to TfL times from central London).
-  if (!t && w.min > WALK_FIRST_MIN) best = { min: Math.round(14 + 5.5 * miles(w.m)), how: "Estimate", estimate: true };
-  else if (!hasT) best = { min: w.min, how: "Walk" };
-  else if (w.min <= WALK_FIRST_MIN || w.min <= t.min + 5) best = { min: w.min, how: "Walk" };
-  else best = { min: t.min, how: t.via };
-  return { best, walk: w, transit: hasT ? t : null, pendingTransit: !t };
+  if (t && !t.none) return Math.min(t.min, w.min <= WALK_FIRST_MIN || w.min <= t.min + 5 ? w.min : t.min);
+  return w.min <= WALK_FIRST_MIN ? w.min : Math.round(14 + 5.5 * miles(w.m));
 }
-function near(tr) { return !!tr && tr.best.min <= NEAR_MIN; }
 
-// ---- Shows you can make ----
+// ---- Shows ----
 function showsFor(film) {
   const now = new Date(), out = [];
   for (const s of film.shows) {
@@ -259,172 +224,160 @@ function showsFor(film) {
       const d = parse(t);
       if (d < now || !fits(d)) continue;
       const origin = isFree(d) ? "home" : "work";
-      out.push({ d, venue: s.venue, origin, tr: travel(origin, s.venue) });
+      out.push({ d, venue: s.venue, origin, best: bestMin(origin, s.venue) });
     }
   }
-  return out.sort((a, b) => a.d - b.d || (a.tr?.best.min ?? 999) - (b.tr?.best.min ?? 999));
+  return out.sort((a, b) => a.d - b.d || (a.best ?? 999) - (b.best ?? 999));
 }
+const near = s => s.best === null || s.best <= NEAR_MIN;
 
 // ---- Screens ----
 function render() {
-  if (!PLACES) return renderSetup();
   const id = new URLSearchParams(location.hash.slice(1)).get("film");
   const film = id && DATA.films.find(f => f.id === id);
+  document.title = film ? `${film.title} · Subtitled` : "Subtitled film shows in London";
   film ? renderFilm(film) : renderHome();
 }
 
-function posterImg(f, cls = "poster") {
-  return `<img class="${cls}" src="${esc(f.poster)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
-}
-
 function renderHome() {
-  const rows = [], none = [];
+  const cards = [], none = [];
   for (const f of DATA.films) {
-    const shows = showsFor(f).filter(s => near(s.tr));
-    if (!shows.length) { none.push(f); continue; }
-    const s = shows[0];
-    rows.push({ f, s, n: shows.length });
+    const s = showsFor(f).find(near);
+    s ? cards.push({ f, s }) : none.push(f);
   }
-  rows.sort((a, b) => a.s.d - b.s.d);
-  const go = s => s.tr ? ` · ${s.tr.best.estimate ? "about " : ""}${fmtMin(s.tr.best.min)}` : "";
+  cards.sort((a, b) => a.s.d - b.s.d);
   $app.innerHTML = `
-    <h1>Subtitled films</h1>
-    <p class="lede">Shows you can make. Weekday evenings from work, weekends from home.</p>
-    <ul class="list">${rows.map(({ f, s }) => `
-      <li><button class="film" data-film="${esc(f.id)}">
-        ${posterImg(f)}
-        <span class="film-text">
-          <p class="film-title">${esc(f.title)}</p>
-          <p class="film-next">Next: ${shortDay(s.d)}, ${hhmm(s.d)} at ${esc(vname(s.venue))}${go(s)}</p>
-        </span>
-        <svg class="chev" width="8" height="14" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button></li>`).join("") || `<li><p class="quiet">Nothing fits right now.</p></li>`}
-    </ul>
-    ${none.length ? `<h2 class="section-title">Nothing nearby at a time that works</h2>
-      <ul class="list">${none.map(f => `<li><button class="film" data-film="${esc(f.id)}" style="min-height:56px">
-        <span class="film-text"><p class="film-next" style="color:var(--text)">${esc(f.title)}</p></span></button></li>`).join("")}</ul>` : ""}
-    ${footer()}`;
-  $app.querySelectorAll("[data-film]").forEach(b => b.onclick = () => { cameFromList = true; location.hash = "film=" + b.dataset.film; });
-  wireFooter();
-  queueTransit();
+  <div class="wrap">
+    <header class="intro">
+      <h1>Subtitled film shows in London</h1>
+      <p>Shows after 5pm on weekdays and all day at weekends, with journey times from your <button class="link" data-place="work">work</button> and <button class="link" data-place="home">home</button>.</p>
+    </header>
+    <div class="grid">${cards.map(({ f, s }) => {
+      const w = walk[s.origin][s.venue];
+      return `<a class="card" href="#film=${esc(f.id)}">
+        <img class="pic" src="${esc(f.image || f.poster)}" alt="" loading="lazy">
+        <p class="t">${esc(f.title)}</p>
+        <p class="when">${whenShort(s.d)} · ${t12(s.d)}</p>
+        <p class="cin">${esc(vname(s.venue))}${w ? ` · ${fmtMi(w.m)} mi` : ""}</p>
+      </a>`; }).join("")}</div>
+    ${none.length ? `<section class="rest"><h2>Also showing, but not nearby at a time that fits</h2><p>${none.map(f => esc(f.title)).join(", ")}</p></section>` : ""}
+    <footer>Listings from Your Local Cinema, updated ${new Date(DATA.updated).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}. Journeys: TfL and OpenStreetMap. Film details: TMDB and Letterboxd.</footer>
+  </div>`;
+  queueTransit(cards.map(c => c.f));
 }
 
-function showRow(s) {
-  const tr = s.tr, v = VENUES[s.venue], from = PLACES[s.origin];
-  const maps = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from.postcode)}&destination=${v.lat},${v.lon}&travelmode=transit`;
-  // Headline: the way to go. Lines under the cinema give the other two measures, without repeating it.
-  let go = "", how = "", other = "";
-  if (tr) {
-    const w = `Walk ${fmtMiles(tr.walk.m)} mi, ${fmtMin(tr.walk.min)}${tr.walk.rough ? " (rough)" : ""}`;
-    const t = tr.transit ? `Transport ${fmtMin(tr.transit.min)}, ${tr.transit.via}` : tr.pendingTransit ? "Transport: checking TfL" : "No TfL route";
-    go = `<b>${tr.best.estimate ? "~" : ""}${fmtMin(tr.best.min)}</b>`;
-    if (tr.best.estimate) { how = `Estimate from ${s.origin}`; other = w; }
-    else if (tr.best.how === "Walk") { how = `${w}, from ${s.origin}`; other = t; }
-    else { how = `${tr.best.how}, from ${s.origin}`; other = w; }
-  }
-  return `<li><a class="show" href="${maps}" target="_blank" rel="noopener" aria-label="${hhmm(s.d)} at ${esc(vname(s.venue))}. ${tr ? esc(`${fmtMin(tr.best.min)}. ${how}. ${other}.`) : ""} Opens directions.">
-    <span class="time">${hhmm(s.d)}</span>
-    <span class="venue">${esc(vname(s.venue))}</span>
-    <span class="go">${go}</span>
-    <span class="detail">${esc(how)}</span>
-    <span class="detail">${esc(other)}</span>
-  </a></li>`;
+function travelRows(venue) {
+  const row = o => {
+    const w = walk[o][venue], t = transit[o][venue];
+    if (!PLACES[o]) return `<span class="ol">${ICON[o]}${o === "work" ? "Work" : "Home"}</span><span style="grid-column: span 3"><button class="link" data-place="${o}">Add ${o} postcode</button></span>`;
+    return `<span class="ol">${ICON[o]}${o === "work" ? "Work" : "Home"}</span><span>${w ? fmtMi(w.m) + " mi" : "…"}</span><span>${ICON.train}${t ? (t.none ? "No route" : dur(t.min)) : "…"}</span><span>${ICON.walk}${w ? dur(w.min) : "…"}</span>`;
+  };
+  return `<div class="trv">${row("work")}${row("home")}</div>`;
 }
 
 function renderFilm(f) {
-  const all = showsFor(f);
-  const nearShows = all.filter(s => near(s.tr)), far = all.filter(s => !near(s.tr));
-  const showFar = sessionStorage.getItem("far:" + f.id) === "1";
-  const list = showFar ? all : nearShows;
-  const days = [];
-  for (const s of list) {
-    const k = s.d.toDateString();
-    if (!days.length || days[days.length - 1].k !== k) days.push({ k, d: s.d, shows: [] });
-    days[days.length - 1].shows.push(s);
-  }
-  for (const day of days) day.shows.sort((a, b) => a.d - b.d || (a.tr?.best.min ?? 999) - (b.tr?.best.min ?? 999));
-  const meta = [f.rating, f.runtime].filter(Boolean).join(" · ");
+  const all = showsFor(f), showFar = sessionStorage.getItem("far:" + f.id) === "1";
+  const list = showFar ? all : all.filter(near), far = all.length - all.filter(near).length;
+  const groups = [];
+  for (const s of list) { const k = s.d.toDateString(); if (!groups.length || groups.at(-1).k !== k) groups.push({ k, d: s.d, shows: [] }); groups.at(-1).shows.push(s); }
+  const vid = (f.trailer || "").match(/[?&]v=([^&]+)/)?.[1];
+  const released = f.released ? new Date(f.released + "T12:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "";
+  const meta = [f.rating, runtime(f.runtime), f.genre].filter(Boolean).join(" · ");
+  const ratings = f.ratings || [];
   $app.innerHTML = `
-    <button class="back" id="back"><svg width="12" height="20" viewBox="0 0 12 20" aria-hidden="true"><path d="M10 2L2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Films</button>
-    <div class="film-head">
-      ${posterImg(f)}
-      <div><h1>${esc(f.title)}</h1><p class="meta">${esc(meta)}</p></div>
+  <div class="wrap">
+    <button class="back" aria-label="Back to all films">‹</button>
+    <div class="film">
+      <div class="about-col">
+        <img class="pic" src="${esc(f.image || f.poster)}" alt="">
+        <h1 class="ttl">${esc(f.title)}</h1>
+        <p class="meta">${esc(meta)}<span class="desk-only">${released ? ` · Released ${released}` : ""}</span></p>
+        <div class="seg" role="tablist">
+          <button role="tab" aria-selected="${tab === "shows"}" data-tab="shows">Shows</button>
+          <button role="tab" aria-selected="${tab === "about"}" data-tab="about">About</button>
+        </div>
+        <div data-panel="about" style="display:${tab === "about" ? "flex" : "none"};flex-direction:column;gap:12px">
+          ${f.overview || f.blurb ? `<p class="desc">${esc(f.overview || f.blurb)}</p>` : ""}
+          ${vid ? `<a class="trailer" href="${esc(f.trailer)}" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/${esc(vid)}/hqdefault.jpg" alt=""><span class="play">▶</span></span><span>Watch trailer</span></a>` : ""}
+          ${released ? `<p class="meta phone-only">Released <span style="color:var(--ink)">${released}</span></p>` : ""}
+          ${ratings.length ? `<p class="lbl">Ratings</p><div class="rcard">${ratings.map(r => `<div class="rr"><span class="ic">${esc(r.source.split(" ").map(w => w[0]).join("").slice(0, 2))}</span><p class="src">${esc(r.source)}</p><p class="sc">${esc(r.value)}</p></div>`).join("")}</div>` : ""}
+        </div>
+      </div>
+      <div class="shows-col" data-panel="shows" style="display:${tab === "shows" ? "flex" : "none"}">
+        <div class="days">${groups.map(g => `
+          <div class="dg"><h2 class="day">${dayHeading(g.d)}</h2>
+          ${g.shows.map(s => `<div class="show"><div class="top"><p class="tm">${t12(s.d)}</p><button class="link cn" data-venue="${esc(s.venue)}">${esc(vname(s.venue))}</button></div>${travelRows(s.venue)}</div>`).join("")}
+          </div>`).join("") || `<p class="note">No shows within ${NEAR_MIN} minutes at a time that fits.</p>`}
+        </div>
+        ${far ? `<button class="more" data-far>${showFar ? "Only nearby cinemas" : `Farther away (${far})`}</button>` : ""}
+      </div>
     </div>
-    ${days.map(day => `<h2 class="day">${dayLabel(day.d)}</h2><ul class="list">${day.shows.map(showRow).join("")}</ul>`).join("")
-      || `<p class="quiet" style="padding:0 4px">No shows within ${NEAR_MIN} minutes at a time that works.</p>`}
-    ${far.length ? `<button class="more" id="far">${showFar ? "Only nearby cinemas" : `Farther away (${far.length})`}</button>` : ""}
-    ${footer()}`;
-  document.getElementById("back").onclick = () => { cameFromList ? history.back() : (location.hash = ""); };
-  const farBtn = document.getElementById("far");
-  if (farBtn) farBtn.onclick = () => { sessionStorage.setItem("far:" + f.id, showFar ? "0" : "1"); render(); };
-  wireFooter();
-  queueTransit(f);
+  </div>`;
+  queueTransit([f], true);
 }
 
-function footer() {
-  const u = new Date(DATA.updated);
-  return `<footer>Listings from <a href="${esc(DATA.source)}" target="_blank" rel="noopener">Your Local Cinema</a>, updated ${u.getDate()} ${MON[u.getMonth()]} at ${hhmm(u)}. Travel: TfL Journey Planner and OpenStreetMap walking routes.<br>
-    <button id="places">Change home and work</button></footer>`;
-}
-function wireFooter() { const b = document.getElementById("places"); if (b) b.onclick = () => renderSetup(true); }
-
-function renderSetup(editing) {
-  $app.innerHTML = `
-    ${editing ? `<button class="back" id="back"><svg width="12" height="20" viewBox="0 0 12 20" aria-hidden="true"><path d="M10 2L2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Films</button>` : ""}
-    <h1>Where are home and work?</h1>
-    <p class="lede">Postcodes are enough. They're saved on this device only.</p>
-    <form id="f" novalidate>
-      <label for="home">Home postcode</label>
-      <input type="text" id="home" autocomplete="postal-code" value="${esc(PLACES?.home.postcode || "")}" required>
-      <label for="work">Work postcode</label>
-      <input type="text" id="work" value="${esc(PLACES?.work.postcode || "")}" required>
-      <p class="error" id="err" hidden></p>
-      <button class="primary" type="submit">Show my films</button>
-    </form>`;
-  if (editing) document.getElementById("back").onclick = render;
-  document.getElementById("f").onsubmit = async e => {
-    e.preventDefault();
-    const err = document.getElementById("err");
-    try {
-      await savePlaces(document.getElementById("home").value, document.getElementById("work").value);
-      await startTravel();
-      render();
-    } catch {
-      err.textContent = "One of those postcodes wasn't found. Check it and try again.";
-      err.hidden = false;
-    }
-  };
-}
-
-// Fetch TfL times for what's on screen, nearest first.
-function queueTransit(film) {
-  const films = film ? [film] : DATA.films;
+function queueTransit(films, both) {
   const pairs = new Map();
-  for (const f of films) for (const s of showsFor(f)) {
-    const w = walk[s.origin][s.venue];
-    if (w && miles(w.m) <= 14) pairs.set(s.origin + "|" + s.venue, [s.origin, s.venue, w.m]);
+  for (const f of films) for (const s of showsFor(f)) for (const o of both ? ["work", "home"] : [s.origin]) {
+    const w = walk[o][s.venue];
+    if (w && miles(w.m) <= 14) pairs.set(o + "|" + s.venue, [o, s.venue, w.m]);
   }
   loadTransit([...pairs.values()].sort((a, b) => a[2] - b[2]).map(([o, v]) => [o, v]));
 }
 
-async function startTravel() {
-  await Promise.all([loadWalking("home"), loadWalking("work")]);
+// ---- Sheets ----
+function closeSheet() { $layer.innerHTML = ""; }
+function openMaps(venue) {
+  const v = VENUES[venue], name = vname(venue), q = encodeURIComponent(name + ", London");
+  $layer.innerHTML = `<div class="scrim" data-close><div class="sheet" role="dialog" aria-label="Open ${esc(name)} in a maps app">
+    <h2>${esc(name)}</h2>
+    <a class="opt" href="https://citymapper.com/directions?endcoord=${v.lat},${v.lon}&endname=${encodeURIComponent(name)}" target="_blank" rel="noopener">Citymapper</a>
+    <a class="opt" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">Google Maps</a>
+    <a class="opt" href="https://maps.apple.com/?q=${encodeURIComponent(name)}&ll=${v.lat},${v.lon}" target="_blank" rel="noopener">Apple Maps</a>
+  </div></div>`;
+}
+function openPlace(which) {
+  const label = which === "work" ? "Work" : "Home";
+  $layer.innerHTML = `<div class="scrim" data-close><form class="sheet" role="dialog" aria-label="${label} postcode">
+    <h2>${label} postcode</h2>
+    <p>Used to work out journey times. Saved on this device only.</p>
+    <input class="field" name="pc" autocomplete="postal-code" value="${esc(PLACES[which]?.postcode || "")}" aria-label="${label} postcode" required>
+    <p class="err" hidden>That postcode wasn't found. Check it and try again.</p>
+    <button class="primary" type="submit">Save</button>
+  </form></div>`;
+  const form = $layer.querySelector("form"); form.pc.focus();
+  form.onsubmit = async e => {
+    e.preventDefault();
+    try {
+      PLACES[which] = await geocode(form.pc.value);
+      store.set("places", PLACES); walk[which] = {}; transit[which] = {};
+      closeSheet(); await loadWalking(which); render();
+    } catch { form.querySelector(".err").hidden = false; }
+  };
 }
 
-window.addEventListener("hashchange", () => { render(); scrollTo(0, 0); });
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-place],[data-venue],[data-tab],[data-far],.back,[data-close]");
+  if (!el) return;
+  if (el.matches("[data-close]") && e.target !== el) return;
+  if (el.dataset.place) openPlace(el.dataset.place);
+  else if (el.dataset.venue) openMaps(el.dataset.venue);
+  else if (el.dataset.tab) { tab = el.dataset.tab; render(); }
+  else if (el.hasAttribute("data-far")) { const id = new URLSearchParams(location.hash.slice(1)).get("film"); sessionStorage.setItem("far:" + id, sessionStorage.getItem("far:" + id) === "1" ? "0" : "1"); render(); }
+  else if (el.classList.contains("back")) history.length > 1 ? history.back() : (location.hash = "");
+  else if (el.matches("[data-close]")) closeSheet();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+window.addEventListener("hashchange", () => { tab = "shows"; closeSheet(); render(); scrollTo(0, 0); });
 
 (async function init() {
   try {
     const [d, v] = await Promise.all([fetch("listings.json", { cache: "no-cache" }).then(r => r.json()), fetch("venues.json").then(r => r.json())]);
     DATA = d; VENUES = v; holidays = new Set(d.holidays || []);
-  } catch {
-    $app.innerHTML = `<h1>Subtitled films</h1><p class="lede">The listings didn't load. Check your connection and reload.</p>`;
-    return;
-  }
+  } catch { $app.innerHTML = `<div class="wrap intro"><h1>Subtitled film shows in London</h1><p>The listings didn't load. Check your connection and reload.</p></div>`; return; }
   const fromLink = readHashPlaces();
-  PLACES = store.get("places");
-  if (fromLink) { try { await savePlaces(fromLink.home, fromLink.work); } catch {} }
-  if (PLACES) await startTravel();
+  if (fromLink) { try { const [h, w] = await Promise.all([geocode(fromLink.home), geocode(fromLink.work)]); PLACES = { home: h, work: w }; store.set("places", PLACES); } catch {} }
+  await Promise.all([loadWalking("work"), loadWalking("home")]);
   render();
 })();
 </script>

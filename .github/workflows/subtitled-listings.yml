@@ -27,6 +27,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Read the listings
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: python3 subtitled/scrape.py subtitled/listings.json
       - name: Commit changes
         run: |

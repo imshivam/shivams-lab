@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.0 — 26 November 2026
+
+The new design, chosen on the Claude Design canvas (direction A, inspired by mindmarket.com).
+
+- What's on: big official 16:9 film pictures on white cards over cream, three across on desktop, one on phone. Each card shows the title, the next show (e.g. "Tonight · 6pm") and the cinema with its distance.
+- One line under the title: "Shows after 5pm on weekdays and all day at weekends, with journey times from your work and home." Tapping "work" or "home" sets that postcode.
+- Film page: picture, title and film details on the left (desktop) with the shows on the right; on phone, Shows and About tabs.
+- Every show lists the distance, public transport time and walking time from both work and home, in an aligned table.
+- About: description, trailer, release date, then ratings as rows (Letterboxd for now; IMDb, Rotten Tomatoes and Metacritic once an OMDb key is added).
+- Tapping a cinema offers Citymapper, Google Maps or Apple Maps, opening the cinema's page rather than directions.
+- Dark mode follows the device's setting.
+- The morning update now also fetches each film's official picture, description, genre and release date from TMDB, and its Letterboxd score.
+
+Why: Shivam wanted the films to feel exciting (big pictures, breathing room), travel from both places on every show, and ratings only where he's deciding on a film.
+
+## Design exploration — 25 November 2026 (not shipped)
+
+Four directions in `explore/`: Gallery, When can I go, One film at a time, Magazine. They share one film screen: big picture, then shows grouped by Today, Tomorrow and the date.
+
+- Times are now 12-hour (6:45pm).
+- Pictures are clean frames from each film's trailer, with the black bars trimmed off. The cinema site's own images are 640px banners with text on them, and Wikipedia's posters are about 260px wide, so neither can be shown big.
+- Answered Shivam's privacy question: the live page doesn't show where he lives. His postcodes are saved only in his own browsers.
+
+Why: Shivam found the small-thumbnail list unexciting and crowded, and wanted big pictures and breathing room on desktop as well as on the phone. Principles: `explore/PRINCIPLES.md`.
+
 ## 1.0 — 25 November 2026
 
 First version.
