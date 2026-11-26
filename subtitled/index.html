@@ -377,6 +377,7 @@ window.addEventListener("hashchange", () => { tab = "shows"; closeSheet(); rende
   } catch { $app.innerHTML = `<div class="wrap intro"><h1>Subtitled film shows in London</h1><p>The listings didn't load. Check your connection and reload.</p></div>`; return; }
   const fromLink = readHashPlaces();
   if (fromLink) { try { const [h, w] = await Promise.all([geocode(fromLink.home), geocode(fromLink.work)]); PLACES = { home: h, work: w }; store.set("places", PLACES); } catch {} }
+  render();
   await Promise.all([loadWalking("work"), loadWalking("home")]);
   render();
 })();
