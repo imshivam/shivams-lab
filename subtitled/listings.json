@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26T15:29+00:00",
+ "updated": "2026-11-27T15:20+00:00",
  "source": "https://www.yourlocalcinema.com/",
  "holidays": [
   "2026-12-25",
@@ -538,6 +538,7 @@
     {
      "venue": "Piccadilly Circus Vue",
      "times": [
+      "2026-11-29T10:20",
       "2026-11-29T12:30"
      ]
     },
@@ -668,7 +669,7 @@
    "tmdb": 1538497,
    "overview": "An impulsive and unconventional teenage girl named Billie discovers secret magical abilities which, once unleashed, hurtle her into a spectacle-filled journey out of suburbia and into a vast witch realm called Hexe. Forced to team up with her cautious mother, Alice, they uncover family mysteries that could change the world of witches forever.",
    "released": "2026-11-25",
-   "genre": "Adventure",
+   "genre": "Animation",
    "ratings": [
     {
      "source": "Letterboxd",
@@ -731,7 +732,6 @@
     {
      "venue": "Bromley Vue",
      "times": [
-      "2026-11-26T17:35",
       "2026-12-03T18:20"
      ]
     },
@@ -770,7 +770,6 @@
     {
      "venue": "Crystal Palace Everyman",
      "times": [
-      "2026-11-26T17:30",
       "2026-12-01T09:45",
       "2026-12-03T09:30"
      ]
@@ -800,12 +799,6 @@
      "venue": "Eltham Vue",
      "times": [
       "2026-12-03T15:50"
-     ]
-    },
-    {
-     "venue": "Enfield Cineworld",
-     "times": [
-      "2026-11-26T18:00"
      ]
     },
     {
@@ -869,17 +862,10 @@
     {
      "venue": "Greenwich Picturehouse",
      "times": [
-      "2026-11-26T16:30",
       "2026-11-27T19:30",
       "2026-11-28T12:30",
       "2026-11-30T16:15",
       "2026-12-02T19:45"
-     ]
-    },
-    {
-     "venue": "Greenwich O2 Cineworld",
-     "times": [
-      "2026-11-26T17:00"
      ]
     },
     {
@@ -967,7 +953,8 @@
      "venue": "Piccadilly Circus Vue",
      "times": [
       "2026-11-26T19:30",
-      "2026-12-03T17:15"
+      "2026-12-03T17:15",
+      "2026-12-03T18:20"
      ]
     },
     {
@@ -975,12 +962,6 @@
      "times": [
       "2026-11-29T20:20",
       "2026-12-02T13:30"
-     ]
-    },
-    {
-     "venue": "Ruislip Cineworld",
-     "times": [
-      "2026-11-26T18:30"
      ]
     },
     {
@@ -1005,7 +986,6 @@
     {
      "venue": "Stratford International Everyman",
      "times": [
-      "2026-11-26T16:30",
       "2026-12-01T13:20",
       "2026-12-03T10:30"
      ]
@@ -1046,8 +1026,7 @@
     {
      "venue": "Thurrock Vue",
      "times": [
-      "2026-12-03T17:00",
-      "2026-12-03T18:20"
+      "2026-12-03T17:00"
      ]
     },
     {
@@ -1066,7 +1045,8 @@
      "venue": "Walthamstow Forest Cinema",
      "times": [
       "2026-11-27T15:40",
-      "2026-11-29T19:05"
+      "2026-11-29T19:05",
+      "2026-12-02T12:00"
      ]
     },
     {
@@ -1091,7 +1071,6 @@
     {
      "venue": "Whitechapel Genesis",
      "times": [
-      "2026-11-26T17:45",
       "2026-12-01T17:45",
       "2026-12-03T17:45"
      ]
@@ -1100,12 +1079,6 @@
      "venue": "Wimbledon Odeon",
      "times": [
       "2026-11-29T21:00"
-     ]
-    },
-    {
-     "venue": "Wood Green Cineworld",
-     "times": [
-      "2026-11-26T16:50"
      ]
     },
     {
@@ -1170,16 +1143,20 @@
     {
      "venue": "Bexleyheath Cineworld",
      "times": [
-      "2026-11-29T16:25",
       "2026-11-30T16:20"
      ]
     },
     {
      "venue": "Bluewater Showcase",
      "times": [
-      "2026-11-26T13:40",
       "2026-11-28T11:55",
       "2026-12-02T19:45"
+     ]
+    },
+    {
+     "venue": "Borehamwood Reel",
+     "times": [
+      "2026-12-01T17:55"
      ]
     },
     {
@@ -1340,7 +1317,7 @@
     {
      "venue": "Harrow Vue",
      "times": [
-      "2026-11-28T13:00",
+      "2026-11-28T13:05",
       "2026-12-01T18:30"
      ]
     },
@@ -1426,6 +1403,7 @@
     {
      "venue": "Piccadilly Circus Vue",
      "times": [
+      "2026-12-01T13:20",
       "2026-12-01T17:00"
      ]
     },
@@ -1509,7 +1487,6 @@
     {
      "venue": "Thurrock Vue",
      "times": [
-      "2026-11-26T17:30",
       "2026-11-28T14:25",
       "2026-11-28T17:15",
       "2026-12-01T17:10"
@@ -1538,7 +1515,6 @@
     {
      "venue": "Wandsworth Cineworld",
      "times": [
-      "2026-11-26T19:00",
       "2026-11-29T12:40",
       "2026-11-30T18:00",
       "2026-12-03T16:20"
@@ -1592,7 +1568,6 @@
     {
      "venue": "Wood Green Vue",
      "times": [
-      "2026-11-26T18:20",
       "2026-12-01T17:05"
      ]
     }
@@ -1606,7 +1581,7 @@
    "ratings": [
     {
      "source": "Letterboxd",
-     "value": "3.2 / 5"
+     "value": "3.1 / 5"
     }
    ]
   },
@@ -1762,15 +1737,8 @@
      ]
     },
     {
-     "venue": "Leicester Square Cineworld",
-     "times": [
-      "2026-11-26T17:00"
-     ]
-    },
-    {
      "venue": "Leicester Square Odeon",
      "times": [
-      "2026-11-26T17:00",
       "2026-11-30T20:30",
       "2026-12-03T17:40"
      ]
@@ -1779,12 +1747,6 @@
      "venue": "Leicester Square Vue",
      "times": [
       "2026-12-02T16:10"
-     ]
-    },
-    {
-     "venue": "Muswell Hill Everyman",
-     "times": [
-      "2026-11-26T17:20"
      ]
     },
     {
@@ -1898,18 +1860,6 @@
    "blurb": "Comedy with Olivia Colman. A smelly Fisherwoman finds herself a husband made from wicker, which sparks outrage, jealousy and chaos in the village",
    "shows": [
     {
-     "venue": "Islington Screen On The Green Everyman",
-     "times": [
-      "2026-11-26T14:15"
-     ]
-    },
-    {
-     "venue": "Leicester Square Vue",
-     "times": [
-      "2026-11-26T16:25"
-     ]
-    },
-    {
      "venue": "Walthamstow Forest Cinema",
      "times": [
       "2026-11-28T17:35",
@@ -1949,7 +1899,6 @@
      "venue": "Dulwich Picturehouse",
      "times": [
       "2026-12-05T09:40",
-      "2026-12-05T10:00",
       "2026-12-06T13:00"
      ]
     },
@@ -2013,12 +1962,6 @@
    "blurb": "Documentary. Before she's sent to prison, notorious Silicon Valley founder Elizabeth Holmes invites a skeptical film crew to document her every move",
    "shows": [
     {
-     "venue": "Acton Act One",
-     "times": [
-      "2026-11-26T16:00"
-     ]
-    },
-    {
      "venue": "Acton Odeon",
      "times": [
       "2026-11-26T19:40"
@@ -2050,7 +1993,6 @@
     {
      "venue": "Barnet Everyman",
      "times": [
-      "2026-11-26T17:15",
       "2026-12-01T11:40"
      ]
     },
@@ -2084,7 +2026,6 @@
     {
      "venue": "Camden Curzon",
      "times": [
-      "2026-11-26T17:40",
       "2026-12-03T15:45"
      ]
     },
@@ -2224,12 +2165,6 @@
      ]
     },
     {
-     "venue": "Fulham Broadway Vue",
-     "times": [
-      "2026-11-26T13:45"
-     ]
-    },
-    {
      "venue": "Gerrards Cross Everyman",
      "times": [
       "2026-12-02T09:00",
@@ -2267,14 +2202,7 @@
     {
      "venue": "Harrow Vue",
      "times": [
-      "2026-11-26T18:40",
       "2026-11-26T22:10"
-     ]
-    },
-    {
-     "venue": "Hatfield Odeon",
-     "times": [
-      "2026-11-26T19:00"
      ]
     },
     {
@@ -2282,12 +2210,6 @@
      "times": [
       "2026-11-27T13:40",
       "2026-12-03T20:00"
-     ]
-    },
-    {
-     "venue": "Islington Vue",
-     "times": [
-      "2026-11-26T15:30"
      ]
     },
     {
@@ -2356,6 +2278,14 @@
      ]
     },
     {
+     "venue": "Shaftesbury Avenue Picturehouse",
+     "times": [
+      "2026-11-27T11:15",
+      "2026-11-28T10:00",
+      "2026-12-03T11:30"
+     ]
+    },
+    {
      "venue": "Shepherds Bush Westfield Vue",
      "times": [
       "2026-11-27T18:45"
@@ -2374,12 +2304,6 @@
      ]
     },
     {
-     "venue": "Staines Vue",
-     "times": [
-      "2026-11-26T15:30"
-     ]
-    },
-    {
      "venue": "Stratford International Everyman",
      "times": [
       "2026-12-01T10:15"
@@ -2388,7 +2312,6 @@
     {
      "venue": "Stratford Westfield Vue",
      "times": [
-      "2026-11-26T18:10",
       "2026-11-26T21:45",
       "2026-11-27T15:30"
      ]
@@ -2426,12 +2349,6 @@
      ]
     },
     {
-     "venue": "Watford Vue",
-     "times": [
-      "2026-11-26T14:15"
-     ]
-    },
-    {
      "venue": "West End Odeon",
      "times": [
       "2026-11-30T13:10",
@@ -2458,7 +2375,7 @@
     }
    ],
    "title": "You Can See Everything",
-   "image": "https://image.tmdb.org/t/p/w1280/rrbbzCyS45yooXpUGJatfptlHYI.jpg",
+   "image": "https://image.tmdb.org/t/p/w1280/fnIcdPVaO4JAzfLhv8OVEqFK6a7.jpg",
    "tmdb": 1765072,
    "overview": "Thirty-four days before she's sent to prison, notorious Silicon Valley founder Elizabeth Holmes invites a skeptical film crew to document her every move. What begins as an intimate portrait of an enigmatic felon becomes a mind-bending three-year journey into the abyss.",
    "released": "2026-10-16",
@@ -2486,21 +2403,9 @@
      ]
     },
     {
-     "venue": "Bromley Vue",
-     "times": [
-      "2026-11-30T11:30"
-     ]
-    },
-    {
      "venue": "Esher Everyman",
      "times": [
       "2026-12-01T12:30"
-     ]
-    },
-    {
-     "venue": "Feltham Cineworld",
-     "times": [
-      "2026-11-26T17:50"
      ]
     },
     {
@@ -2583,12 +2488,6 @@
      ]
     },
     {
-     "venue": "Dulwich Picturehouse",
-     "times": [
-      "2026-11-26T17:30"
-     ]
-    },
-    {
      "venue": "Finsbury Picturehouse",
      "times": [
       "2026-11-29T10:15"
@@ -2633,15 +2532,8 @@
      ]
     },
     {
-     "venue": "King's Cross Everyman",
-     "times": [
-      "2026-11-26T17:00"
-     ]
-    },
-    {
      "venue": "Kingston Curzon",
      "times": [
-      "2026-11-26T15:20",
       "2026-12-03T21:00"
      ]
     },
@@ -2655,6 +2547,12 @@
      "venue": "Norwood Picturehouse",
      "times": [
       "2026-12-02T20:30"
+     ]
+    },
+    {
+     "venue": "Shaftesbury Avenue Picturehouse",
+     "times": [
+      "2026-11-30T14:50"
      ]
     },
     {
@@ -2783,8 +2681,7 @@
     {
      "venue": "Clapham Picturehouse",
      "times": [
-      "2026-12-03T14:40",
-      "2026-12-03T17:40"
+      "2026-12-03T14:40"
      ]
     },
     {
@@ -2800,12 +2697,6 @@
      ]
     },
     {
-     "venue": "Holloway Odeon",
-     "times": [
-      "2026-11-26T18:30"
-     ]
-    },
-    {
      "venue": "Kensal Rise Lexi",
      "times": [
       "2026-12-01T18:10"
@@ -2817,6 +2708,12 @@
       "2026-12-05T12:30",
       "2026-12-09T11:00",
       "2026-12-09T17:00"
+     ]
+    },
+    {
+     "venue": "Shaftesbury Avenue Picturehouse",
+     "times": [
+      "2026-12-01T11:00"
      ]
     }
    ],
