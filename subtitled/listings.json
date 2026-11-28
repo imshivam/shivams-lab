@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T15:20+00:00",
+ "updated": "2026-11-28T14:21+00:00",
  "source": "https://www.yourlocalcinema.com/",
  "holidays": [
   "2026-12-25",
@@ -712,12 +712,6 @@
      ]
     },
     {
-     "venue": "Bluewater Showcase",
-     "times": [
-      "2026-11-27T16:00"
-     ]
-    },
-    {
      "venue": "Borehamwood Reel",
      "times": [
       "2026-11-24T16:40"
@@ -743,12 +737,6 @@
      ]
     },
     {
-     "venue": "Chiswick Cinema",
-     "times": [
-      "2026-11-26T20:25"
-     ]
-    },
-    {
      "venue": "Clapham Picturehouse",
      "times": [
       "2026-11-30T13:00"
@@ -757,7 +745,6 @@
     {
      "venue": "Crouch End Picturehouse",
      "times": [
-      "2026-11-26T19:45",
       "2026-12-01T16:20"
      ]
     },
@@ -777,7 +764,6 @@
     {
      "venue": "Dulwich Picturehouse",
      "times": [
-      "2026-11-27T16:20",
       "2026-11-30T20:20",
       "2026-12-03T10:00"
      ]
@@ -816,7 +802,6 @@
     {
      "venue": "Esher Everyman",
      "times": [
-      "2026-11-26T20:15",
       "2026-12-01T10:30"
      ]
     },
@@ -836,7 +821,6 @@
     {
      "venue": "Finsbury Picturehouse",
      "times": [
-      "2026-11-27T13:10",
       "2026-12-01T15:30"
      ]
     },
@@ -862,7 +846,6 @@
     {
      "venue": "Greenwich Picturehouse",
      "times": [
-      "2026-11-27T19:30",
       "2026-11-28T12:30",
       "2026-11-30T16:15",
       "2026-12-02T19:45"
@@ -952,7 +935,6 @@
     {
      "venue": "Piccadilly Circus Vue",
      "times": [
-      "2026-11-26T19:30",
       "2026-12-03T17:15",
       "2026-12-03T18:20"
      ]
@@ -1044,7 +1026,6 @@
     {
      "venue": "Walthamstow Forest Cinema",
      "times": [
-      "2026-11-27T15:40",
       "2026-11-29T19:05",
       "2026-12-02T12:00"
      ]
@@ -1058,14 +1039,7 @@
     {
      "venue": "West End Odeon",
      "times": [
-      "2026-11-26T20:50",
       "2026-11-29T21:00"
-     ]
-    },
-    {
-     "venue": "West India Quay Cineworld",
-     "times": [
-      "2026-11-26T20:00"
      ]
     },
     {
@@ -1410,14 +1384,12 @@
     {
      "venue": "Putney Odeon",
      "times": [
-      "2026-11-26T20:30",
       "2026-11-29T10:00"
      ]
     },
     {
      "venue": "Richmond Odeon",
      "times": [
-      "2026-11-26T20:45",
       "2026-12-03T20:15"
      ]
     },
@@ -1495,7 +1467,6 @@
     {
      "venue": "Tottenham Court Rd Odeon",
      "times": [
-      "2026-11-26T20:00",
       "2026-12-02T14:30"
      ]
     },
@@ -1643,12 +1614,6 @@
      ]
     },
     {
-     "venue": "Epsom Picturehouse",
-     "times": [
-      "2026-11-27T12:30"
-     ]
-    },
-    {
      "venue": "Esher Everyman",
      "times": [
       "2026-12-03T11:15"
@@ -1675,7 +1640,6 @@
     {
      "venue": "Gerrards Cross Everyman",
      "times": [
-      "2026-11-26T20:45",
       "2026-12-01T09:30"
      ]
     },
@@ -1790,12 +1754,6 @@
      "venue": "Stratford Westfield Vue",
      "times": [
       "2026-12-02T11:55"
-     ]
-    },
-    {
-     "venue": "Swiss Cottage Odeon",
-     "times": [
-      "2026-11-26T20:45"
      ]
     },
     {
@@ -1962,27 +1920,14 @@
    "blurb": "Documentary. Before she's sent to prison, notorious Silicon Valley founder Elizabeth Holmes invites a skeptical film crew to document her every move",
    "shows": [
     {
-     "venue": "Acton Odeon",
-     "times": [
-      "2026-11-26T19:40"
-     ]
-    },
-    {
      "venue": "Aldgate Curzon",
      "times": [
       "2026-12-03T16:00"
      ]
     },
     {
-     "venue": "Baker Street Everyman",
-     "times": [
-      "2026-11-26T20:00"
-     ]
-    },
-    {
      "venue": "Barbican Centre Barbican",
      "times": [
-      "2026-11-27T12:00",
       "2026-11-28T10:30",
       "2026-11-28T12:30",
       "2026-11-29T18:50",
@@ -2070,12 +2015,6 @@
      ]
     },
     {
-     "venue": "Croydon Valley Park Leisure Vue",
-     "times": [
-      "2026-11-26T20:20"
-     ]
-    },
-    {
      "venue": "Crystal Palace Everyman",
      "times": [
       "2026-12-02T12:45"
@@ -2090,31 +2029,12 @@
     {
      "venue": "Dulwich Picturehouse",
      "times": [
-      "2026-11-27T19:50",
       "2026-11-28T15:40",
       "2026-11-28T19:40",
       "2026-11-29T15:40",
       "2026-11-29T19:40",
       "2026-12-01T14:10",
       "2026-12-02T11:20"
-     ]
-    },
-    {
-     "venue": "Edmonton Lee Valley Odeon",
-     "times": [
-      "2026-11-26T19:30"
-     ]
-    },
-    {
-     "venue": "Eltham Vue",
-     "times": [
-      "2026-11-26T20:05"
-     ]
-    },
-    {
-     "venue": "Epsom Odeon",
-     "times": [
-      "2026-11-26T19:50"
      ]
     },
     {
@@ -2136,18 +2056,6 @@
      ]
     },
     {
-     "venue": "Finchley North Vue",
-     "times": [
-      "2026-11-26T19:45"
-     ]
-    },
-    {
-     "venue": "Finchley Road O2 Vue",
-     "times": [
-      "2026-11-26T19:45"
-     ]
-    },
-    {
      "venue": "Finsbury Everyman",
      "times": [
       "2026-11-30T12:45",
@@ -2159,7 +2067,6 @@
     {
      "venue": "Finsbury Picturehouse",
      "times": [
-      "2026-11-27T12:00",
       "2026-11-29T12:30",
       "2026-12-03T12:30"
      ]
@@ -2174,9 +2081,6 @@
     {
      "venue": "Greenwich Picturehouse",
      "times": [
-      "2026-11-27T10:00",
-      "2026-11-27T13:00",
-      "2026-11-27T17:30",
       "2026-11-30T18:00",
       "2026-12-02T12:00"
      ]
@@ -2200,15 +2104,8 @@
      ]
     },
     {
-     "venue": "Harrow Vue",
-     "times": [
-      "2026-11-26T22:10"
-     ]
-    },
-    {
      "venue": "Hoxton Curzon",
      "times": [
-      "2026-11-27T13:40",
       "2026-12-03T20:00"
      ]
     },
@@ -2245,12 +2142,6 @@
      ]
     },
     {
-     "venue": "Kingston Odeon",
-     "times": [
-      "2026-11-26T20:00"
-     ]
-    },
-    {
      "venue": "Muswell Hill Everyman",
      "times": [
       "2026-11-29T10:30",
@@ -2260,7 +2151,6 @@
     {
      "venue": "Norwood Picturehouse",
      "times": [
-      "2026-11-27T12:30",
       "2026-12-03T15:30"
      ]
     },
@@ -2280,15 +2170,8 @@
     {
      "venue": "Shaftesbury Avenue Picturehouse",
      "times": [
-      "2026-11-27T11:15",
       "2026-11-28T10:00",
       "2026-12-03T11:30"
-     ]
-    },
-    {
-     "venue": "Shepherds Bush Westfield Vue",
-     "times": [
-      "2026-11-27T18:45"
      ]
     },
     {
@@ -2298,28 +2181,9 @@
      ]
     },
     {
-     "venue": "South Woodford Odeon",
-     "times": [
-      "2026-11-26T19:40"
-     ]
-    },
-    {
      "venue": "Stratford International Everyman",
      "times": [
       "2026-12-01T10:15"
-     ]
-    },
-    {
-     "venue": "Stratford Westfield Vue",
-     "times": [
-      "2026-11-26T21:45",
-      "2026-11-27T15:30"
-     ]
-    },
-    {
-     "venue": "Streatham Odeon",
-     "times": [
-      "2026-11-26T19:30"
      ]
     },
     {
@@ -2330,15 +2194,8 @@
      ]
     },
     {
-     "venue": "Uxbridge Odeon",
-     "times": [
-      "2026-11-26T20:00"
-     ]
-    },
-    {
      "venue": "Victoria Curzon",
      "times": [
-      "2026-11-27T14:00",
       "2026-12-02T20:15"
      ]
     },
@@ -2365,12 +2222,6 @@
      "venue": "Wimbledon Curzon",
      "times": [
       "2026-12-03T17:20"
-     ]
-    },
-    {
-     "venue": "Wimbledon Odeon",
-     "times": [
-      "2026-11-26T19:30"
      ]
     }
    ],
@@ -2412,12 +2263,6 @@
      "venue": "Gerrards Cross Everyman",
      "times": [
       "2026-12-03T09:30"
-     ]
-    },
-    {
-     "venue": "Greenwich Odeon",
-     "times": [
-      "2026-11-26T20:00"
      ]
     },
     {
@@ -2514,18 +2359,6 @@
      ]
     },
     {
-     "venue": "Hoxton Curzon",
-     "times": [
-      "2026-11-26T21:10"
-     ]
-    },
-    {
-     "venue": "Islington Odeon",
-     "times": [
-      "2026-11-26T20:20"
-     ]
-    },
-    {
      "venue": "Islington Screen On The Green Everyman",
      "times": [
       "2026-12-02T16:00"
@@ -2564,7 +2397,6 @@
     {
      "venue": "Walthamstow Forest Cinema",
      "times": [
-      "2026-11-27T13:10",
       "2026-12-01T16:25",
       "2026-12-03T13:15"
      ]
@@ -2624,7 +2456,6 @@
     {
      "venue": "Haymarket Odeon",
      "times": [
-      "2026-11-26T20:40",
       "2026-12-01T20:30",
       "2026-12-02T12:40"
      ]
@@ -2632,21 +2463,8 @@
     {
      "venue": "Kilburn Kiln Cinema NW6",
      "times": [
-      "2026-11-27T15:30",
       "2026-11-28T13:00",
       "2026-12-03T20:30"
-     ]
-    },
-    {
-     "venue": "PeckhamPlex",
-     "times": [
-      "2026-11-27T15:00"
-     ]
-    },
-    {
-     "venue": "Shaftesbury Avenue Picturehouse",
-     "times": [
-      "2026-11-26T20:10"
      ]
     }
    ],
